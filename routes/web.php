@@ -11,12 +11,58 @@
 |
 */
 
+/**
+ * 
+ * Laravel is providing the auth middleware defined in Illuminate\Auth\Middleware\Authenticate
+ * 
+ * example: 
+ *              Route::get('profile' , function(){
+ *                  ...authenticated users may enter....
+ *              })->middleware('auth');
+ * 
+ */
+
 Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/first', function(){
-    return view('first');
-});
-Route::get('/second', function(){
-    return view('second');
-});
+    return view('member-log');
+})->middleware('auth');
+
+Auth::routes(); 
+// Route::get('/system-management/{option}', 'SystemMgmtController@index');
+Route::get('/profile', 'ProfileController@index');
+
+Route::post('user-management/search', 'UserManagementController@search')->name('user-management.search');
+Route::resource('user-management', 'UserManagementController');
+
+Route::resource('member-log', 'MemberLogController');
+Route::post('member-log/search', 'MemberLogController@search')->name('member-log.search');     
+
+Route::post('member-log/log_detail_add', ['as'=>'ajaxImageUpload','uses'=>'MemberLogController@ajaxImageUpload']);  
+
+Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_delete');  
+
+Route::resource('employee-management', 'EmployeeManagementController');
+Route::post('employee-management/search', 'EmployeeManagementController@search')->name('employee-management.search');
+
+Route::resource('system-management/department', 'DepartmentController');
+Route::post('system-management/department/search', 'DepartmentController@search')->name('department.search');
+
+Route::resource('system-management/division', 'DivisionController');
+Route::post('system-management/division/search', 'DivisionController@search')->name('division.search');
+
+Route::resource('system-management/country', 'CountryController');
+Route::post('system-management/country/search', 'CountryController@search')->name('country.search');
+
+Route::resource('system-management/state', 'StateController');
+Route::post('system-management/state/search', 'StateController@search')->name('state.search');
+
+Route::resource('system-management/city', 'CityController');
+Route::post('system-management/city/search', 'CityController@search')->name('city.search');
+
+Route::get('system-management/report', 'ReportController@index');
+Route::post('system-management/report/search', 'ReportController@search')->name('report.search');
+Route::post('system-management/report/excel', 'ReportController@exportExcel')->name('report.excel');
+Route::post('system-management/report/pdf', 'ReportController@exportPDF')->name('report.pdf');
+
+Route::get('avatars/{name}', 'EmployeeManagementController@load');
+
+

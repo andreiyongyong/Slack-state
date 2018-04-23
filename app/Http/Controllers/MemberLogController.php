@@ -93,9 +93,9 @@ class MemberLogController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    { 
-        $member_log_temp = [ ];
-        $logdetails     = DB::select('select * from memberdetail where m_id = ?', [$id]); 
+    {
+        $member_log_temp = [];
+        $logdetails     = DB::select('select * from memberdetail where m_id = ?', [$id]);
 
         $member_logs = MemberLog::find($id);
         // Redirect to state list if updating state wasn't existed
@@ -103,7 +103,7 @@ class MemberLogController extends Controller
             return redirect()->intended('/member-log');
         }  
 
-        foreach($logdetails as $logdetail){ 
+        foreach($logdetails as $logdetail){
 
             $member_log_temp['tot_task']   = isset($member_log_temp['tot_task'])?$member_log_temp['tot_task']." ".$logdetail->task_:'';
             $member_log_temp['tot_update'] = isset($member_log_temp['tot_update'])? $member_log_temp['tot_update']." ".$logdetail->update_:'';
@@ -112,7 +112,7 @@ class MemberLogController extends Controller
             // echo "<pre>";
             // print_r($member_log_temp['tot_task']);
             // exit;
-        } 
+        }
         
         return view('member-log/edit', ['member_logs' => $member_logs , 'logdetails' => $logdetails , 'member_log_temps' => $member_log_temp ]);
          

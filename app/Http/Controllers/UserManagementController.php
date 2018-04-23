@@ -55,7 +55,16 @@ class UserManagementController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validateInput($request);
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $image = $request->file('image');
+        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/image');
+
+        $image->move($destinationPath, $input['imagename']);
+
          User::create([
             'username' => $request['username'],
             'email' => $request['email'],
@@ -64,6 +73,7 @@ class UserManagementController extends Controller
             'lastname' => $request['lastname'],
             'type' => $request['type'],
             'level' => $request['level'],
+            'image' => $input['imagename'],
         ]);
 
         return redirect()->intended('/user-management');

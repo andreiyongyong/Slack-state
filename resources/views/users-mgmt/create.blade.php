@@ -8,7 +8,7 @@
                 <h2>Add new user</h2> 
             </div>
             <div class="body">
-                <form id="form_advanced_validation" class="form-horizontal" role="form" method="POST" action="{{ route('user-management.store') }}" enctype="multipart/form-data">
+                <form id="" class="form-horizontal" role="form" method="POST" action="{{ route('user-management.store') }}" enctype="multipart/form-data">
                     {{ csrf_field() }} 
                     <div class="row clearfix">
                         <div class="col-md-12">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     <div class="row clearfix">
-                        <div class="col-md-4 col-md-offset-2">
+                        <div class="col-md-3 col-md-offset-1">
                             <div class="form-group form-float">
                                 <div>
                                     <label class="form-label">Type </label>
@@ -68,7 +68,7 @@
 
                             </div>
                         </div>
-                        <div class="col-md-4 col-md-offset-2">
+                        <div class="col-md-3 col-md-offset-1">
                             <div class="form-group form-float">
                                 <div>
                                     <label class="form-label">Level </label>
@@ -80,6 +80,10 @@
                                 </div>
 
                             </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Upload image</label>
+                           <input type="file" name="image"/>
                         </div>
                     </div>
                     <div class="row clearfix">

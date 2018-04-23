@@ -61,7 +61,9 @@ class UserManagementController extends Controller
             'email' => $request['email'],
             'password' => bcrypt($request['password']),
             'firstname' => $request['firstname'],
-            'lastname' => $request['lastname']
+            'lastname' => $request['lastname'],
+            'type' => $request['type'],
+            'level' => $request['level'],
         ]);
 
         return redirect()->intended('/user-management');

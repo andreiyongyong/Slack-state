@@ -22,10 +22,10 @@
  * 
  */
 
-Route::get('/', function () {
-    return view('member-log');
-})->middleware('auth');
-
+//Route::get('/', function () {
+//    return view('member-log');
+//})->middleware('auth');
+Route::get('/', 'MemberLogController@index')->middleware('auth');
 Auth::routes(); 
 // Route::get('/system-management/{option}', 'SystemMgmtController@index');
 Route::get('/profile', 'ProfileController@index');
@@ -33,7 +33,8 @@ Route::get('/profile', 'ProfileController@index');
 Route::post('user-management/search', 'UserManagementController@search')->name('user-management.search');
 Route::resource('user-management', 'UserManagementController');
 
-Route::resource('member-log', 'MemberLogController');
+Route::resource('/member-log', 'MemberLogController');
+Route::resource('/resource', 'ResourceController');
 Route::post('member-log/search', 'MemberLogController@search')->name('member-log.search');   
 Route::post('member-log/log_detail_add', ['as'=>'ajaxImageUpload','uses'=>'MemberLogController@ajaxImageUpload']);   
 Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_delete');   

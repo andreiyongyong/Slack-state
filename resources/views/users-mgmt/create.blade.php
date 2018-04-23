@@ -53,7 +53,35 @@
                                 <div class="help-info"> Max. 50 characters</div>
                             </div>
                         </div>
-                    </div>    
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-md-4 col-md-offset-2">
+                            <div class="form-group form-float">
+                                <div>
+                                    <label class="form-label">Type </label>
+                                    <select name="type">
+                                        <option value="2">Developer</option>
+                                        <option value="1">Member</option>
+                                        <option value="0">Admin</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-md-offset-2">
+                            <div class="form-group form-float">
+                                <div>
+                                    <label class="form-label">Level </label>
+                                    <select name="level">
+                                        @for($i=11;$i>0;$i--)
+                                        <option value="{{$i}}">{{$i}}</option>
+                                            @endfor
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group form-float">

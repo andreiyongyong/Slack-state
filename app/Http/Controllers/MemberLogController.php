@@ -33,9 +33,7 @@ class MemberLogController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //DB::delete("delete from member_logs where task is null and url = 'null' and track_hour = 'null' and summary = 'null' and log_date = 'null' and validated = 'null' and penalty = 'null' ");
-
+    { 
         $member_logs = DB::table('member_logs')  
         ->select('member_logs.*')
         ->paginate(50);
@@ -54,8 +52,7 @@ class MemberLogController extends Controller
             [
                 'userid'    => Auth::id()  
             ]
-        ); 
-        //$logdetails = DB::select('select * from memberdetail where m_id = ?', [$id]);
+        );  
         return view('member-log/create', ['memberid' => $id] );  
     } 
     
@@ -70,8 +67,7 @@ class MemberLogController extends Controller
     {     
         $input['userid'] = Auth::id(); 
         $keys = ['task', 'url', 'track_hour', 'log_date', 'summary'];
-        $input = $this->createQueryInput($keys, $request); 
-        
+        $input = $this->createQueryInput($keys, $request);  
 
         MemberLog::where('id',$request['member_id'])
             ->update($input); 
@@ -107,10 +103,15 @@ class MemberLogController extends Controller
             return redirect()->intended('/member-log');
         }  
 
-        foreach($logdetails as $logdetail){
-        $member_log_temp['tot_task'] = isset($member_log_temp['tot_task'])?$member_log_temp['tot_task']." ".$logdetail->task_:'';
-        $member_log_temp['tot_update'] = isset($member_log_temp['tot_update'])? $member_log_temp['tot_update']." ".$logdetail->update_:'';
-        $member_log_temp['tot_track'] = isset($member_log_temp['tot_track'])? $member_log_temp['tot_track']+$logdetail->track_:0;
+        foreach($logdetails as $logdetail){ 
+
+            $member_log_temp['tot_task']   = isset($member_log_temp['tot_task'])?$member_log_temp['tot_task']." ".$logdetail->task_:'';
+            $member_log_temp['tot_update'] = isset($member_log_temp['tot_update'])? $member_log_temp['tot_update']." ".$logdetail->update_:'';
+            $member_log_temp['tot_track']  = isset($member_log_temp['tot_track'])? $member_log_temp['tot_track']+$logdetail->track_:0;
+
+            // echo "<pre>";
+            // print_r($member_log_temp['tot_task']);
+            // exit;
         } 
         
         return view('member-log/edit', ['member_logs' => $member_logs , 'logdetails' => $logdetails , 'member_log_temps' => $member_log_temp ]);
@@ -148,44 +149,7 @@ class MemberLogController extends Controller
         DB::delete('delete from memberdetail where m_id = ?', [$id]); 
 
          return redirect()->intended('/member-log');
-    }
-
-    /**
-     * Search state from database base on some specific constraints 
-     * @param  \Illuminate\Http\Request  $request
-     *  @return \Illuminate\Http\Response
-     */
-    public function search(Request $request) {
-        $constraints = [
-            'firstname' => $request['firstname'],
-            'department.name' => $request['department_name']
-            ];
-        $employees = $this->doSearchingQuery($constraints);
-        $constraints['department_name'] = $request['department_name'];
-        return view('employees-mgmt/index', ['employees' => $employees, 'searchingVals' => $constraints]);
-    }
- 
-
-     /**
-     * Load image resource.
-     *
-     * @param  string  $name
-     * @return \Illuminate\Http\Response
-     */
-    public function load($name) {
-        $path = storage_path().'/app/avatars/'.$name;
-        if (file_exists($path)) {
-            return Response::download($path);
-        }
-    }
-
-    private function validateInput($request) {
-        $this->validate($request, [
-            'lastname'   => 'required|max:60',
-            'firstname'  => 'required|max:60',
-            'middlename' => 'required|max:60', 
-        ]);
-    }
+    }   
 
     private function createQueryInput($keys, $request) {
         $queryInput = [];

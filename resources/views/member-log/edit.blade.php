@@ -47,9 +47,9 @@
                     <div class="row clearfix">
                         <div class="col-md-4">  
                             <div class="form-group form-float">
-                                <div class="form-line"> 
-                                    <input type="text" class="form-control" name="task" id="task" min="1" max="100" value="{{ $member_log_temps['tot_task'] }}"  required>
-                                
+                                <div class="form-line">  
+                                    <input type="text" class="form-control" name="task" id="task" min="1" max="100" value="{{ $member_logs->task }}"  required>
+                                    
                                     <label class="form-label">Task</label>
                                 </div> 
                                 <div class="help-info"> Max. 200 characters</div>

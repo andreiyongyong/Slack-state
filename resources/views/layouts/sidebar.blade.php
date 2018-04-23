@@ -31,13 +31,14 @@
                     <i class="material-icons">assignment</i>
                     <span>Projects</span>
                 </a>
-            </li>
-            <!-- <li>
-                <a href="{{ url('employee-management') }}">
+            </li> 
+            </li>  
+            <li>
+                <a href="{{ url('member-log') }}">
                     <i class="material-icons">assignment</i>
-                    <span>System Management</span>
+                    <span>Resource Management</span>
                 </a>
-            </li> -->
+            </li> 
             <li>
                 <a href="{{ route('user-management.index') }}">
                     <i class="material-icons">assignment</i>

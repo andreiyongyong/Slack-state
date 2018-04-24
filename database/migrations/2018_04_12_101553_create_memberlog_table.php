@@ -13,14 +13,14 @@ class CreateMemberlogTable extends Migration
      */
     public function up()
     {
-        Schema::create('memberlog', function (Blueprint $table) {
+        Schema::create('member_logs', function (Blueprint $table) {
             $table->increments('id' , true);
             $table->integer('userid')->unsigned();  
             $table->string('task' , 100);
             $table->string('url' , 100);
             $table->string('track_hour' , 20);
             $table->integer('validated')->unsigned();
-            $table->string('penalty' , 100);
+            $table->string('penalty' , 200);
             $table->date('log_date');
             $table->string('summary' , 1000); 
             $table->timestamps();
@@ -35,6 +35,6 @@ class CreateMemberlogTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('memberlog');
+        Schema::dropIfExists('member_logs');
     }
 }

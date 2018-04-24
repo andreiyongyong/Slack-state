@@ -13,7 +13,9 @@
                   </h2>
                   <ul class="header-dropdown m-r--5">
                       <li class="dropdown">
+                        @if( Auth::user()->type != '1' )
                           <a class="btn btn-primary" href="{{ route('member-log.create') }}">Add New Track</a>
+                        @endif
                       </li>
                   </ul>
               </div>
@@ -58,7 +60,9 @@
                                           <a href="{{ route('member-log.edit', ['id' => $memberlog->id]) }}" class="btn btn-info waves-effect">
                                             Update
                                           </a>
+                                          @if( Auth::user()->type != '1' )
                                           <input type = 'button' class="btn btn-danger waves-effect"  data-type="confirm" value = 'Delete' onclick = 'showConfirmMessage();'> 
+                                          @endif
                                       </form>
                                   </td>
                               </tr>

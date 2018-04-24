@@ -41,6 +41,29 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row clearfix"> 
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="penalty" id="penalty" value="{{ old('penalty') }}"  required>
+                                    <label class="form-label">Penalty</label>
+                                </div>
+                                <div class="help-info"> Max. 200 characters</div> 
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                             
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="number" class="form-control" name="validated" id="validated" min="1" max="100" value="{{ old('validated') }}"  required>
+                                    <label class="form-label">Validated Percentage</label>
+                                </div> 
+                                <div class="help-info">Numbers only</div>
+                            </div> 
+                        </div>
+                    </div>  
                     <div class="row clearfix">
                         <div class="col-md-4">
                             <div class="form-group form-float">

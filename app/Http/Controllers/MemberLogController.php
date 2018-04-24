@@ -66,7 +66,7 @@ class MemberLogController extends Controller
     public function store(Request $request)
     {     
         $input['userid'] = Auth::id(); 
-        $keys = ['task', 'url', 'track_hour', 'log_date', 'summary'];
+        $keys = ['task', 'url', 'track_hour', 'log_date', 'summary' , 'validated' , 'penalty'];
         $input = $this->createQueryInput($keys, $request);  
 
         MemberLog::where('id',$request['member_id'])
@@ -97,23 +97,21 @@ class MemberLogController extends Controller
         $member_log_temp = [];
         $logdetails     = DB::select('select * from memberdetail where m_id = ?', [$id]);
 
-        $member_logs = MemberLog::find($id);
-        // Redirect to state list if updating state wasn't existed
+        $member_logs = MemberLog::find($id); 
+
         if ($member_logs == null || count($member_logs) == 0) {
             return redirect()->intended('/member-log');
         }  
+        $member_log_temp['tot_task']   = '';
+        $member_log_temp['tot_update'] = '';
+        $member_log_temp['tot_track']  = 0;
 
         foreach($logdetails as $logdetail){
+            $member_log_temp['tot_task']   = $member_log_temp['tot_task']." ".$logdetail->task_; 
+            $member_log_temp['tot_update']   = $member_log_temp['tot_update']." ".$logdetail->update_; 
+            $member_log_temp['tot_track']   = $member_log_temp['tot_track'] + $logdetail->track_;  
+        }  
 
-            $member_log_temp['tot_task']   = isset($member_log_temp['tot_task'])?$member_log_temp['tot_task']." ".$logdetail->task_:'';
-            $member_log_temp['tot_update'] = isset($member_log_temp['tot_update'])? $member_log_temp['tot_update']." ".$logdetail->update_:'';
-            $member_log_temp['tot_track']  = isset($member_log_temp['tot_track'])? $member_log_temp['tot_track']+$logdetail->track_:0;
-
-            // echo "<pre>";
-            // print_r($member_log_temp['tot_task']);
-            // exit;
-        }
-        
         return view('member-log/edit', ['member_logs' => $member_logs , 'logdetails' => $logdetails , 'member_log_temps' => $member_log_temp ]);
          
     }
@@ -128,7 +126,7 @@ class MemberLogController extends Controller
     public function update(Request $request, $id)
     { 
         $input['userid'] = Auth::id(); 
-        $keys = ['task', 'url', 'track_hour', 'log_date', 'summary'];
+        $keys = ['task', 'url', 'track_hour', 'log_date', 'summary' , 'validated' , 'penalty'];
         $input = $this->createQueryInput($keys, $request);  
 
         MemberLog::where('id',$id)

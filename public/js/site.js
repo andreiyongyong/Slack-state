@@ -47,7 +47,17 @@ function registerEvents() {
   });
 }
 
+function onViewTrackDetail(val){
+  $( "#task_" ).parent('.form-line').addClass("focused");
+  $( "#update_" ).parent('.form-line').addClass("focused");
+  $( "#track_" ).parent('.form-line').addClass("focused");
 
+  task_.value   = $('#member_log_table > #detail_content > #' + val + ' > td:nth-of-type(1)').text(); 
+  update_.value = $('#member_log_table > #detail_content > #' + val + ' > td:nth-of-type(2)').text(); 
+  track_.value  = $('#member_log_table > #detail_content > #' + val + ' > td:nth-of-type(3)').text(); 
+  
+	return false; 
+} 
  
 $("document").on('click', '.save_track_detail', function (e) {  
   
@@ -84,25 +94,24 @@ $(document).on('click', '.delete-btn-mem', function (e) {
           if(response == 'yes'){  }
           else alert("Error!!"); 
       }
-  }); 
+  });  
   wholeResult(count); 
   return false; 
 });  
 
 function wholeResult(val){ 
-  task_.value   = '';
-  update_.value = '';
-  track_.value  = '';	
+  task.value        = '';
+  summary.value     = '';
+  track_hour.value  = '';	
  
-  $( "#task_" ).parent('.form-line').addClass("focused");
-  $( "#update_" ).parent('.form-line').addClass("focused");
-  $( "#track_" ).parent('.form-line').addClass("focused");
+  $( "#task" ).parent('.form-line').addClass("focused");
+  $( "#summary" ).parent('.form-line').addClass("focused");
+  $( "#track_hour" ).parent('.form-line').addClass("focused");
 
   for(var i=1; i<=val;i++){ 
-    task_.value   += $('#member_log_table > #detail_content > tr:nth-of-type('+i+') > td:nth-of-type(1)').text() + ' ';
-    update_.value += $('#member_log_table > #detail_content > tr:nth-of-type('+i+') > td:nth-of-type(2)').text() + ' ';
-    track_.value  = track_.value*1 + $('#member_log_table > #detail_content > tr:nth-of-type('+i+') > td:nth-of-type(3)').text()*1;
-    
+    task.value        += $('#member_log_table > #detail_content > tr:nth-of-type('+i+') > td:nth-of-type(1)').text() + ' ';
+    summary.value     += $('#member_log_table > #detail_content > tr:nth-of-type('+i+') > td:nth-of-type(2)').text() + ' ';
+    track_hour.value  = track_hour.value*1 + $('#member_log_table > #detail_content > tr:nth-of-type('+i+') > td:nth-of-type(3)').text()*1; 
   }  
 }
 

@@ -21,6 +21,7 @@
                     <input type="hidden" name="_method" value="PATCH">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <input type="hidden" id="member_id" value="{{$member_logs->id}}">
+                    <input type="hidden" id="hint_update" value="{{$member_logs->id}}">
                     <div class="row clearfix">
                         <div class="col-md-4">
                             <div class="form-group form-float">
@@ -37,19 +38,49 @@
                         <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
+                                @if( Auth::user()->type != '1' )
                                     <input type="url" class="form-control" name="url" id="url" value="{{ $member_logs->url }}"  required>
+                                @else
+                                    <input type="url" class="form-control" name="url" id="url" value="{{ $member_logs->url }}" readonly  required>
+                                @endif
                                     <label class="form-label">Url</label>
                                 </div>
                                 <div class="help-info">Starts with http://, https://, ftp:// etc</div>
                             </div>
                         </div>
                     </div>
+                    <div class="row clearfix"> 
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="penalty" id="penalty" value="{{  $member_logs->penalty}}"  required>
+                                    <label class="form-label">Penalty</label>
+                                </div>
+                                <div class="help-info"> Max. 200 characters</div> 
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                             
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="number" class="form-control" name="validated" id="validated" min="1" max="100" value="{{  $member_logs->validated  }}"  required>
+                                    <label class="form-label">Validated Percentage</label>
+                                </div> 
+                                <div class="help-info">Numbers only</div>
+                            </div> 
+                        </div>
+                    </div>  
                     <div class="row clearfix">
                         <div class="col-md-4">  
                             <div class="form-group form-float">
-                                <div class="form-line">  
-                                    <input type="text" class="form-control" name="task" id="task" min="1" max="100" value="{{ $member_logs->task }}"  required>
-                                    
+                                <div class="form-line">   
+                                @if($member_logs->task != $member_log_temps['tot_task'] )
+                                    <input type="text" class="form-control" name="task" id="task" min="1" max="100" value="{{ $member_log_temps['tot_task'] }}" readonly  required>
+                                @else
+                                    <input type="text" class="form-control" name="task" id="task" min="1" max="100" value="{{ $member_logs->task }}" readonly  required>
+                                @endif
                                     <label class="form-label">Task</label>
                                 </div> 
                                 <div class="help-info"> Max. 200 characters</div>
@@ -61,8 +92,11 @@
                         <div class="col-md-4">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                     
-                                        <input type="number" class="form-control" name="track_hour" id="track_hour" value="{{ $member_logs->track_hour }}"  required>
+                                    @if($member_logs->track != $member_log_temps['tot_track'] )
+                                        <input type="number" class="form-control" name="track_hour" id="track_hour" value="{{ $member_log_temps['tot_track'] }}" readonly  required>
+                                    @else
+                                        <input type="number" class="form-control" name="track_hour" id="track_hour" value="{{ $member_logs->track_hour }}" readonly required>
+                                    @endif
                                     
                                     <label class="form-label">Track Hour</label>
                                 </div>
@@ -73,8 +107,12 @@
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group form-float">
-                                <div class="form-line">  
-                                        <input type="text" class="form-control" name="summary" id="summary" value="{{ $member_logs->summary }}"  min="1" max="200" required>
+                                <div class="form-line">
+                                @if($member_log_temps['tot_update'] != $member_logs->summary )  
+                                    <input type="text" class="form-control" name="summary" id="summary" value="{{ $member_log_temps['tot_update'] }}"  min="1" max="200" readonly required>
+                                @else
+                                    <input type="text" class="form-control" name="summary" id="summary" value="{{ $member_logs->summary }}"  min="1" max="200" readonly required>
+                                @endif
                                  
                                     <label class="form-label">Summary</label>
                                 </div> 
@@ -98,8 +136,9 @@
                 </h2>
                 <ul class="header-dropdown m-r--5">
                     <li class="dropdown"> 
+                    @if( Auth::user()->type != '1' )
                         <button type="button" id="add_track_detail" class="btn bg-cyan waves-effect m-r-20" data-toggle="modal" data-target="#defaultModal">Add Track Detail</button>
-                        <!--<input type = 'button' class="recipe-table__add-row-btn btn btn-primary pull-right" value = 'Add Track Detail'>--> 
+                    @endif
                     </li>
                 </ul> 
             </div>
@@ -185,7 +224,12 @@
                             <td>{{ $logdetail->update_ }}</td>
                             <td>{{ $logdetail->track_ }}</td>  
                             <td align = 'center'><img src = "{{asset ("/upload_img/".$logdetail->screen_)}}" width="150px" height="70px" class = 'img-thumbnail-small-width'></td>
-                            <td><button  class="btn btn-danger waves-effect delete-btn-mem">Delete</button></td>
+                            <td>
+                            @if( Auth::user()->type != '1' )
+                                <button id = "view_track_detail" type="button" class="btn bg-cyan waves-effect m-r-20" data-toggle="modal" data-target="#defaultModal" onclick = "onViewTrackDetail({{ $logdetail->id }})">View</button>
+                                <button  class="btn btn-danger waves-effect delete-btn-mem">Delete</button>
+                            @endif
+                            </td>
                         </tr> 
                     @endforeach  
                     </tbody>

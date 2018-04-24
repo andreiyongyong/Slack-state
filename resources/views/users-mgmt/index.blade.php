@@ -22,6 +22,7 @@
                       <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                               <tr>
+                                  <th>IMAGE</th>
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
                                   <th>FIRSTNAME</th>
@@ -33,6 +34,7 @@
                           </thead>
                           <tfoot>
                               <tr>
+                                  <th>IMAGE</th>
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
                                   <th>FIRSTNAME</th>
@@ -45,23 +47,27 @@
                           <tbody>
                           @foreach ($users as $user)
                               <tr>
+                                  <td align="center"><img src="{{ asset ("/image/".$user->image) }}" width="50" height="50" /></td>
                                   <td>{{ $user->username }}</td>
                                   <td>{{ $user->email }}</td>  
                                   <td>{{ $user->firstname }}</td>
                                   <td>{{ $user->lastname }}</td> 
                                   <td>{{ $user->type }}</td>
                                   <td>{{ $user->level }}</td>
-                                  <td>
+                                  <td align = 'center'>
                                       <form class="row" method="POST" action="{{ route('user-management.destroy', ['id' => $user->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <a href="{{ route('user-management.edit', ['id' => $user->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin">
-                                            Update
-                                            </a>
-                                            @if ($user->username != Auth::user()->username)
-                                            <button type="submit" class="btn btn-danger col-sm-3 col-xs-5 btn-margin">
-                                            Delete
-                                            </button>
+                                            @if(Auth::user()->type == '0' || $user->id == Auth::user()->id)
+                                                <a href="{{ route('user-management.edit', ['id' => $user->id]) }}" class="btn btn-warning">
+                                                Update
+                                                </a>
+                                                &nbsp;
+                                            @endif
+                                            @if ( Auth::user()->type == '0' )
+                                                <button type="submit" class="btn btn-danger">
+                                                Delete
+                                                </button>
                                             @endif
                                         </form>
                                   </td>

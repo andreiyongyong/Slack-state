@@ -26,20 +26,22 @@
     <div class="menu">
         <ul class="list">
             <li class="header">NAVIGATION</li>
-            <li class="active">
+            <li class="{{ Request::segment(1) == "member-log" ? "active" : "" }}" >
                 <a href="{{ url('member-log') }}">
                     <i class="material-icons">assignment</i>
                     <span>Projects</span>
                 </a>
             </li> 
             </li>  
-            <li>
-                <a href="{{ url('member-log') }}">
+            <li class="{{ Request::segment(1) == "resource-management" ? "active" : "" }}" >
+                <a href="{{ url('resource-management') }}">
                     <i class="material-icons">assignment</i>
                     <span>Resource Management</span>
                 </a>
             </li>  
             <li>
+            </li> 
+            <li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >
                 <a href="{{ route('user-management.index') }}">
                     <i class="material-icons">assignment</i>
                     <span>User Management</span>

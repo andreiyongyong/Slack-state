@@ -100,7 +100,7 @@ class UserManagementController extends Controller
     {
         $user = User::find($id);
         // Redirect to user list if updating user wasn't existed
-        if ($user == null || count($user) == 0) {
+        if ($user == null || $user->count() == 0) {
             return redirect()->intended('/user-management');
         }
 
@@ -125,7 +125,9 @@ class UserManagementController extends Controller
         $input = [
             'username' => $request['username'],
             'firstname' => $request['firstname'],
-            'lastname' => $request['lastname']
+            'lastname' => $request['lastname'],
+            'type' => $request['type'],
+            'level' => $request['level'],
         ];
         if ($request['password'] != null && strlen($request['password']) > 0) {
             $constraints['password'] = 'required|min:6|confirmed';

@@ -14,7 +14,7 @@
     <div class="menu">
         <ul class="list">
             <li class="header">NAVIGATION</li>
-            <li class="active" >
+            <li >
                 <a href="{{ url('member-log') }}">
                     <i class="material-icons">assignment</i>
                     <span>Tracks</span>
@@ -65,8 +65,8 @@
                     <span>AWS</span>
                 </a>
             </li> 
-            <li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >
-                <a href="{{ route('user-management.index') }}">
+            <li class="{{ Request::segment(1) == "forum-master" ? "active" : "" }}" >
+                <a href="{{ route('forum-master.index') }}">
                     <i class="material-icons">assignment</i>
                     <span>Forum</span>
                 </a>

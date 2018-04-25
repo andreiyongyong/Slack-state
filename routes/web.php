@@ -31,10 +31,12 @@ Auth::routes();
 Route::get('/profile', 'ProfileController@index');
 
 Route::post('user-management/search', 'UserManagementController@search')->name('user-management.search');
+
 Route::resource('user-management', 'UserManagementController');
 Route::resource('resource-management', 'ResourceManagementController');
-
+Route::resource('forum-master', 'ForumMasterController');
 Route::resource('/member-log', 'MemberLogController');
+
 Route::post('member-log/search', 'MemberLogController@search')->name('member-log.search');   
 Route::post('member-log/log_detail_add', ['as'=>'ajaxImageUpload','uses'=>'MemberLogController@ajaxImageUpload']);   
 Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_delete');   

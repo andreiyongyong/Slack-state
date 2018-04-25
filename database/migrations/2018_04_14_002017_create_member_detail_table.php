@@ -13,7 +13,7 @@ class CreateMemberDetailTable extends Migration
      */
     public function up()
     {  
-        Schema::create('member_details', function (Blueprint $table) {
+        Schema::create('memberdetail', function (Blueprint $table) {
             $table->increments('id' , true);
             $table->integer('m_id')->unsigned();  
             $table->string('task_' , 100);
@@ -32,7 +32,7 @@ class CreateMemberDetailTable extends Migration
      */
     public function down()
     {
-        Schema::table('member_detail', function (Blueprint $table) {
+        Schema::table('memberdetail', function (Blueprint $table) {
             //
         });
     }

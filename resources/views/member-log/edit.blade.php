@@ -239,7 +239,7 @@
     </div>
 </div> 
 <div id="myModal" class="modal_image_display">
-  <span class="close">×</span>
+  <span id="span_close" class="close">×</span>
   <img class="modal-content-image-display" id="modalImg">
   <div id="caption"></div>
 </div>

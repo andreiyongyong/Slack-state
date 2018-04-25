@@ -21,8 +21,7 @@
                   <div class="table-responsive">
                       <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
-                              <tr>
-                                  <th>IMAGE</th>
+                              <tr> 
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
                                   <th>FIRSTNAME</th>
@@ -33,8 +32,7 @@
                               </tr>
                           </thead>
                           <tfoot>
-                              <tr>
-                                  <th>IMAGE</th>
+                              <tr> 
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
                                   <th>FIRSTNAME</th>
@@ -47,8 +45,7 @@
                           <tbody>
                           @foreach ($users as $user)
                               <tr>
-                                  <td align="center"><img src="{{ asset ("/image/".$user->image) }}" width="50" height="50" /></td>
-                                  <td>{{ $user->username }}</td>
+                                  <td><img class="users-circle" src="{{ $user->image ? asset ("/image/".$user->image) :  asset ("/image/user_temp.jpg") }}" width="50" height="50" />&nbsp;{{ $user->username }}</td>
                                   <td>{{ $user->email }}</td>  
                                   <td>{{ $user->firstname }}</td>
                                   <td>{{ $user->lastname }}</td> 
@@ -59,13 +56,13 @@
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                             @if(Auth::user()->type == '0' || $user->id == Auth::user()->id)
-                                                <a href="{{ route('user-management.edit', ['id' => $user->id]) }}" class="btn btn-warning">
+                                                <a href="{{ route('user-management.edit', ['id' => $user->id]) }}" class="btn btn-info waves-effect">
                                                 Update
                                                 </a>
                                                 &nbsp;
                                             @endif
                                             @if ( Auth::user()->type == '0' )
-                                                <button type="submit" class="btn btn-danger">
+                                                <button type="submit" class="btn btn-danger waves-effect">
                                                 Delete
                                                 </button>
                                             @endif

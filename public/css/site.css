@@ -96,3 +96,14 @@
         width: 100%;
     }
 }
+
+
+/*users managemnet css*/
+
+.users-circle{ 
+    border-radius: 50%!important;
+    border-top-left-radius: 50% !important;
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+}

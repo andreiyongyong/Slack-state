@@ -53,7 +53,7 @@
                                   <td>{{ $memberlog->track_hour }}</td>
                                   <td>{{ $memberlog->validated }}</td>
                                   <td>{{ $memberlog->penalty }}</td> 
-                                  <td>
+                                  <td align="center">
                                       <form class="row clear-fix js-sweetalert" id = 'mem_index_delete' method="POST" action="{{ route('member-log.destroy', ['id' => $memberlog->id]) }}" >
                                           <input type="hidden" name="_method"  value="DELETE">
                                           <input type="hidden" name="_token" value="{{ csrf_token() }}">

@@ -67,8 +67,7 @@
                                                 <option value="1">Member</option>
                                                 <option value="0">Admin</option>
                                             </select>
-                                        </div>
-
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -80,14 +79,15 @@
                                                 <option value="{{$i}}">{{$i}}</option>
                                                     @endfor
                                             </select>
-                                        </div>
-
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">Upload image</label> 
-                                </div class="col-md-2">
-                                <div><input type="file" name="image"/></div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="file" name="image"/>
+                                </div>
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-12">

@@ -116,12 +116,14 @@ class UserManagementController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        
         $constraints = [
             'username' => 'required|max:20',
             'firstname'=> 'required|max:60',
             'lastname' => 'required|max:60'
             ];
+             
+        
         $input = [
             'username' => $request['username'],
             'firstname' => $request['firstname'],

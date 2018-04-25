@@ -48,15 +48,15 @@
                                   <td>{{ $resource->content }}</td>
                                   <td>{{ $resource->type }}</td>
                                   <td>{{ $resource->level }}</td>
-                                  <td>
+                                  <td align = "center">
                                       <form class="row" method="POST" action="{{ route('resource-management.destroy', ['id' => $resource->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <a href="{{ route('resource-management.edit', ['id' => $resource->id]) }}" class="btn btn-warning col-sm-3 col-xs-5 btn-margin">
+                                            <a href="{{ route('resource-management.edit', ['id' => $resource->id]) }}" class="btn btn-info waves-effect">
                                             Update
                                             </a>
                                             {{--@if ($user->username != Auth::user()->username)--}}
-                                            <button type="submit" class="btn btn-danger col-sm-3 col-xs-5 btn-margin">
+                                            <button type="submit" class="btn btn-danger waves-effect">
                                             Delete
                                             </button>
                                             {{--@endif--}}

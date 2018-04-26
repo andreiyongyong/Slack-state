@@ -14,7 +14,7 @@
     <div class="menu">
         <ul class="list">
             <li class="header">NAVIGATION</li>
-            <li >
+            <li class="active" >
                 <a href="{{ url('member-log') }}">
                     <i class="material-icons">assignment</i>
                     <span>Tracks</span>
@@ -35,20 +35,20 @@
                     <span>Users</span>
                 </a>
             </li>  
-            <li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >
+            <li class="{{ Request::segment(1) == "applicant" ? "active" : "" }}" >
                 <a href="{{ route('user-management.index') }}">
                     <i class="material-icons">assignment</i>
                     <span>Applicants</span>
                 </a>
             </li>  
-            <li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >
-                <a href="{{ route('user-management.index') }}">
+            <li class="{{ Request::segment(1) == "project" ? "active" : "" }}" >
+                <a href="{{ route('project.index') }}">
                     <i class="material-icons">assignment</i>
                     <span>Projects</span>
                 </a>
             </li>  
-            <li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >
-                <a href="{{ route('user-management.index') }}">
+            <li class="{{ Request::segment(1) == "upwork" ? "active" : "" }}" >
+                <a href="{{ route('upwork.index') }}">
                     <i class="material-icons">assignment</i>
                     <span>Upwork</span>
                 </a>

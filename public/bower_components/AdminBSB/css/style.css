@@ -8040,3 +8040,67 @@ html.ie11 .dropdown-menu ul.menu li a {
 html.ie11 .bs-searchbox .form-control {
   width: 90%; }
 
+
+.forum-block {
+  background-color: #f1f3fa;
+  position: relative;
+}
+.forum-block:before{
+  content: "";
+  position: absolute;
+  left: 58px;
+  border: 2px solid #ffffff;
+  height: calc(100% - 70px);
+  top: 20px;
+}
+.forum-block .img-circle{
+  border: 3px solid #ffffff;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.forum-block .table-div {
+  width: 100%;
+  height: 100%;
+  display: table;
+  padding: 20px;
+}
+.forum-block .table-cell {
+  display: table-cell;
+  vertical-align: top;
+}
+.forum-block .w-100-px {
+  width: 100px;
+  position: relative;
+}
+.forum-block .info-div{
+  background-color: #fff;
+  padding: 25px 20px;
+  position: relative;
+}
+.forum-block .info-div:before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 15px 15px 15px 0;
+  border-color: transparent #ffffff transparent transparent;
+  position: absolute;
+  left: -15px;
+  top: 25px;
+}
+.forum-block .first-name {
+  color: #578ebe;
+  display: inline-block;
+  margin-right: 15px;
+  font-size: 16px;
+}
+.forum-block .reply-time {
+  color: #afa5ae;
+  display: inline-block;
+}
+.forum-block .info-txt {
+  color: #afa5ae;
+  margin: 20px 0 0;
+}

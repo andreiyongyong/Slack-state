@@ -62,7 +62,7 @@
 
   </head> 
 
-  <body class="theme-Deep Purple">
+  <body class="theme-blue">
     <div class="page-loader-wrapper">
         <div class="loader">
             <div class="preloader">

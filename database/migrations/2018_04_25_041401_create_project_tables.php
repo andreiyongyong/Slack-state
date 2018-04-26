@@ -17,7 +17,6 @@ class CreateProjectTables extends Migration
             $table->increments('id' , true);
             $table->string('p_name' , 100);
             $table->string('p_client' , 50);
-            $table->string('task' , 50);
             $table->double('price', 10, 2);
             $table->tinyInteger('developer');
             $table->tinyInteger('meet_time');

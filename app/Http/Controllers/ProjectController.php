@@ -127,5 +127,6 @@ class ProjectController extends Controller
         Project::where('id', $id)->delete();
         return redirect()->intended('/project');
     }
+
     
 }

@@ -154,16 +154,19 @@ $(".img-thumbnail-small-width").click(function(){
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on <span> (x), close the modal
-span.onclick = function() { 
-    modal.style.display = "none";
-} 
+if(typeof span !== 'undefined'){
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+}
+
 
 function init() {
   registerEvents();
 } 
 
-
-
 init();
 
+$('select.forum_project').on('change', function() {
 
+})

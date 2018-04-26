@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class AwsInstance extends Model
 {
-    //
+    protected $table = 'awsinstance';
 }

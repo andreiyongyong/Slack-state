@@ -14,7 +14,7 @@
     <div class="menu">
         <ul class="list">
             <li class="header">NAVIGATION</li>
-            <li >
+            <li class="active" >
                 <a href="{{ url('member-log') }}">
                     <i class="material-icons">assignment</i>
                     <span>Tracks</span>

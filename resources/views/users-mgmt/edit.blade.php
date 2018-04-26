@@ -16,7 +16,7 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
                             <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="username" id="username" value="{{ $user->username }}"  min="1" max="50" required>
@@ -25,9 +25,7 @@
                                         <div class="help-info"> Max. 50 characters</div>
                                     </div>
                                 </div>
-                            </div> 
-                            <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="email" id="email" value="{{ $user->email }}"  min="1" max="50" required>
@@ -36,9 +34,9 @@
                                         <div class="help-info"> Max. 50 characters</div>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>  
                             <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $user->firstname  }}"  min="1" max="50" required>
@@ -47,9 +45,7 @@
                                         <div class="help-info"> Max. 50 characters</div>
                                     </div>
                                 </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $user->lastname  }}"  min="1" max="50" required>
@@ -69,8 +65,7 @@
                                                 <option value="1" {{ $user->type == 1 ? "selected" : "" }}>Member</option>
                                                 <option value="0" {{ $user->type == 0 ? "selected" : "" }}>Admin</option>
                                             </select>
-                                        </div>
-
+                                        </div> 
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -94,15 +89,113 @@
                                 <div class="col-md-12">
                                     <div class="form-group form-float">
                                         <div class="form-line">
+                                            <input type="text" class="form-control" name="stack" id="stack" value="{{ $user->stack  }}"  min="1" max="100" required>
+                                            <label class="form-label">Stack</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="skypeid" id="skypeid" value="{{ $user->skypeid  }}"  min="1" max="100" required>
+                                            <label class="form-label">Skype ID</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="room" id="room" value="{{ $user->room  }}"  min="1" max="100" required>
+                                            <label class="form-label">Room</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="country" id="country" value="{{ $user->country  }}"  min="1" max="100" required>
+                                            <label class="form-label">Country</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="age" id="age" value="{{ $user->age  }}"  min="1" max="100" required>
+                                            <label class="form-label">Age</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="time_doctor_email" id="time_doctor_email" value="{{ $user->time_doctor_email  }}"  min="1" max="100" required>
+                                            <label class="form-label">Time Doctor Email</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="time_doctor_password" id="time_doctor_password" value="{{ $user->time_doctor_password  }}"  min="1" max="100" required>
+                                            <label class="form-label">Time Doctor Password</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix"> 
+                                <div class="col-md-8">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="notes" id="notes" value="{{ $user->notes  }}"  min="1" max="200" required>
+                                            <label class="form-label">Notes</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 200 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="called" id="called" value="{{ $user->called  }}"  min="1" max="200" required>
+                                            <label class="form-label">Called</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 200 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="approved" id="approved" value="{{ $user->approved}}"  min="1" max="200" required>
+                                            <label class="form-label">Approve</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 200 characters</div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
                                             <input type="password" class="form-control" name="password" id="password"  min="1" max="200" required>
                                             <label class="form-label">Password</label>
                                         </div> 
                                         <div class="help-info"> Max. 200 characters</div>
                                     </div>
                                 </div>
-                            </div>     
-                            <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="password" class="form-control" name="password_confirmation" id="password_confirmation"    min="1" max="200" required>
@@ -111,7 +204,8 @@
                                         <div class="help-info"> Max. 200 characters</div>
                                     </div>
                                 </div>
-                            </div>      
+                            </div>     
+                                
                             <button class="btn btn-primary waves-effect" type="submit">Update</button>
                         </div> 
                     </div>  

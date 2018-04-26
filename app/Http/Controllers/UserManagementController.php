@@ -74,6 +74,16 @@ class UserManagementController extends Controller
             'type' => $request['type'],
             'level' => $request['level'],
             'image' => $input['imagename'],
+            'stack' => $request['stack'] , 
+            'skypeid'=>$request['skypeid'] , 
+            'room' => $request['room'] , 
+            'country'=>$request['country'] ,
+            'age' => $request['age'] , 
+            'notes' => $request['notes'] ,
+            'called'=>$request['called'] ,
+            'approved' => $request['approved'] , 
+            'time_doctor_email' => $request['time_doctor_email'] , 
+            'time_doctor_password' => $request['time_doctor_password']
         ]);
 
         return redirect()->intended('/user-management');
@@ -115,29 +125,46 @@ class UserManagementController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        
+    { 
         $constraints = [
             'username' => 'required|max:20',
             'firstname'=> 'required|max:60',
             'lastname' => 'required|max:60'
             ];
-             
-        
+        if($request->file('image')){
+            $image = $request->file('image');
+            $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/image');
+
+            $image->move($destinationPath, $input['imagename']);
+        }  
+
         $input = [
             'username' => $request['username'],
             'firstname' => $request['firstname'],
             'lastname' => $request['lastname'],
             'type' => $request['type'],
             'level' => $request['level'],
-        ];
+            'image' => '', 
+            'stack' => $request['stack'] , 
+            'skypeid'=>$request['skypeid'] , 
+            'room' => $request['room'] , 
+            'country'=>$request['country'] ,
+            'age' => $request['age'] , 
+            'notes' => $request['notes'] ,
+            'called'=>$request['called'] ,
+            'approved' => $request['approved'] , 
+            'time_doctor_email' => $request['time_doctor_email'] , 
+            'time_doctor_password' => $request['time_doctor_password']
+        ];  
         if ($request['password'] != null && strlen($request['password']) > 0) {
             $constraints['password'] = 'required|min:6|confirmed';
             $input['password'] =  bcrypt($request['password']);
         }
-        $this->validate($request, $constraints);
-        User::where('id', $id)
+        //$this->validate($request, $constraints);
+         User::where('id', $id)
             ->update($input);
+        
         
         return redirect()->intended('/user-management');
     }
@@ -185,6 +212,7 @@ class UserManagementController extends Controller
         }
         return $query->paginate(5);
     }
+    
     private function validateInput($request) {
         $this->validate($request, [
         'username' => 'required|max:20',

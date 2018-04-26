@@ -14,7 +14,7 @@
                         <div class="col-md-1"></div>
                         <div class="col-md-10">
                             <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="username" id="username" value="{{ old('username') }}"  min="1" max="50" required>
@@ -23,9 +23,7 @@
                                         <div class="help-info"> Max. 50 characters</div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="email" id="email" value="{{ old('email') }}"  min="1" max="50" required>
@@ -36,7 +34,7 @@
                                 </div>
                             </div> 
                             <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="firstname" id="firstname" value="{{ old('firstname') }}"  min="1" max="50" required>
@@ -45,9 +43,7 @@
                                         <div class="help-info"> Max. 50 characters</div>
                                     </div>
                                 </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="lastname" id="lastname" value="{{ old('lastname') }}"  min="1" max="50" required>
@@ -56,7 +52,7 @@
                                         <div class="help-info"> Max. 50 characters</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>   
                             <div class="row clearfix">
                                 <div class="col-md-3">
                                     <div class="form-group form-float">
@@ -89,6 +85,106 @@
                                     <input type="file" name="image"/>
                                 </div>
                             </div>
+                            <div class="row clearfix">
+                                <div class="col-md-12">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="stack" id="stack" value="{{ old('stack')  }}"  min="1" max="100" required>
+                                            <label class="form-label">Stack</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="skypeid" id="skypeid" value="{{ old('skypeid')  }}"  min="1" max="100" required>
+                                            <label class="form-label">Skype ID</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="room" id="room" value="{{ old('room')  }}"  min="1" max="100" required>
+                                            <label class="form-label">Room</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="country" id="country" value="{{ old('country') }}"  min="1" max="100" required>
+                                            <label class="form-label">Country</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="age" id="age" value="{{ old('age') }}"  min="1" max="100" required>
+                                            <label class="form-label">Age</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="time_doctor_email" id="time_doctor_email" value="{{ old('time_doctor_email') }}"  min="1" max="100" required>
+                                            <label class="form-label">Time Doctor Email</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="time_doctor_password" id="time_doctor_password" value="{{ old('time_doctor_password') }}"  min="1" max="100" required>
+                                            <label class="form-label">Time Doctor Password</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix"> 
+                                <div class="col-md-8">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="notes" id="notes" value="{{ old('notes') }}"  min="1" max="200" required>
+                                            <label class="form-label">Notes</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 200 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="called" id="called" value="{{  old('called')   }}"  min="1" max="200" required>
+                                            <label class="form-label">Called</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 200 characters</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="approved" id="approved" value="{{  old('approved') }}"  min="1" max="200" required>
+                                            <label class="form-label">Approve</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 200 characters</div>
+                                    </div>
+                                </div>
+                            </div>  
                             <div class="row clearfix">
                                 <div class="col-md-12">
                                     <div class="form-group form-float">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ForumMaster;
+use App\Task;
 use App\ForumInstance;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,15 @@ class ForumMasterController extends Controller
      */
     public function create()
     {
-        return view('forummaster/create');
+        $tasks = Task::with('project')->get();
+
+        $projects = [];
+
+        foreach($tasks as $task){
+            $projects[$task->project['id']] = $task->project['p_name'];
+        }
+
+        return view('forummaster/create',['projects'=>$projects,'tasks'=>$tasks]);
     }
 
     /**

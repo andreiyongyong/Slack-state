@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateForummasterTables extends Migration
+class CreateTasksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateForummasterTables extends Migration
      */
     public function up()
     {
-        Schema::create('forummaster', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->increments('id' , true);
-            $table->integer('task_id');
-            $table->string('question');
-            $table->date('posted_date'); 
+            $table->string('task_name' );
+            $table->integer('project_id');
             $table->timestamps();
         });
     }

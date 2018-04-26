@@ -21,8 +21,8 @@
                     <div class="row clearfix">
                         <div class="col-md-4">
                             <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="log_date" id="log_date" value="{{ old('log_date') }}" required>
+                                <div class="form-line focused">
+                                    <input type="date" class="form-control focused" name="log_date" id="log_date" value="{{ old('log_date') }}" required>
                                     <label class="form-label">Date</label>
                                 </div>
                                 <div class="help-info">YYYY-MM-DD format</div>

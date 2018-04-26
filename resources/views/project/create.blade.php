@@ -62,8 +62,8 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="date" class="form-control" name="meet_time" id="meet_time" value="{{ old('meet_time') }}" required>
+                                <div class="form-line focused">
+                                    <input type="date" class="form-control focused" name="meet_time" id="meet_time" value="{{ old('meet_time') }}" required>
                                     <label class="form-label">Meet Time</label>
                                 </div>  
                             </div>

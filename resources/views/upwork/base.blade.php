@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="block-header">
             <h2>
-              Project
+              Upwork
             </h2>
         </div> 
         @yield('action-content') 

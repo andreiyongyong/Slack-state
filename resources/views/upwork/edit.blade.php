@@ -5,81 +5,142 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
-                <h2>Add new project</h2> 
+                <h2>Update Upworkf</h2> 
             </div>
             <div class="body">
-                <form class="form-horizontal" id="project" role="form" method="POST" action="{{ route('project.update', ['id' => $project->id]) }}">
+                <form class="form-horizontal" id="upwork" role="form" method="POST" action="{{ route('upwork.update', ['id' => $upwork->id]) }}">
                     <input type="hidden" name="_method" value="PATCH">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         {{ csrf_field() }} 
                     <div class="row clearfix">
-                        <div class="col-md-8">
+                        <div class="col-md-3"> 
+                        </div>
+                        <div class="col-md-3">
                             <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="p_name" id="p_name" value="{{ $project->p_name }}"  min="1" max="100" required>
-                                    <label class="form-label">Project</label>
-                                </div> 
-                                <div class="help-info"> Max. 100 characters</div>
+                                <div class="form-line  focused">
+                                    <input type="date" class="form-control focused" name="date" id="date" value="{{$upwork->date}}" required>
+                                    <label class="form-label">Date</label>
+                                </div>  
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="p_client" id="p_client" value="{{ $project->p_client }}"  min="1" max="200" required>
-                                    <label class="form-label">Client</label>
+                                    <input type="text" class="form-control" name="country" id="country" value="{{ $upwork->country }}"  min="1" max="200" required>
+                                    <label class="form-label">Country</label>
                                 </div> 
                                 <div class="help-info"> Max. 200 characters</div>
                             </div>
+                        </div>
+                        <div class="col-md-3"> 
                         </div>
                     </div>   
                     <div class="row clearfix">
                         <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="task" id="task" value="{{ $project->task }}"  min="1" max="200" required>
-                                    <label class="form-label">Task</label>
-                                </div> 
-                                <div class="help-info"> Max. 200 characters</div>
+                                    <input type="text" class="form-control" name="upwork_name" id="upwork_name" value="{{ $upwork->upwork_name }}"  min="1" max="200" required>
+                                    <label class="form-label">Upwork Name</label>
+                                </div>  
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="number" class="form-control" name="price" id="price" value="{{ $project->price }}" required>
-                                    <label class="form-label">Price</label>
-                                </div> 
-                                <div class="help-info"> No Limit . $</div>
+                                    <input type="text" class="form-control" name="upwork_id" id="upwork_id" value="{{ $upwork->upwork_id }}"  min="1" max="200" required>
+                                    <label class="form-label">Upwork Id</label>
+                                </div>  
                             </div>
-                        </div>
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-md-4">
+                        </div>  
+                    </div> 
+                    <div class="row clearfix"> 
+                        <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="developer" id="developer" value="{{ $project->developer }}"  min="1" max="200" required>
-                                    <label class="form-label">Developer</label>
+                                    <input type="text" class="form-control" name="email" id="email" value="{{ $upwork->email }}"  min="1" max="200" required>
+                                    <label class="form-label">Email</label>
                                 </div> 
                                 <div class="help-info"> Max. 200 characters</div>
                             </div>
-                        </div>
-                        <div class="col-md-4">
+                        </div> 
+                        <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="date" class="form-control" name="meet_time" id="meet_time" value="{{ $project->meet_time }}" required>
-                                    <label class="form-label">Meet Time</label>
-                                </div>  
+                                    <input type="text" class="form-control" name="password" id="password" value="{{ $upwork->password }}"  min="1" max="200" required>
+                                    <label class="form-label">Password</label>
+                                </div> 
+                                <div class="help-info"> Max. 200 characters</div>
+                            </div>
+                        </div> 
+                    </div> 
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="rising_talent" id="rising_talent" value="{{ $upwork->rising_talent }}"  min="1" max="200" required>
+                                    <label class="form-label">Rising Talent</label>
+                                </div> 
+                                <div class="help-info">top rate , rising talent</div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="mode" id="mode" value="{{ $project->mode }}" required>
-                                    <label class="form-label">Mode</label>
+                                    <input type="text" class="form-control" name="test" id="test" value="{{ $upwork->test }}" required>
+                                    <label class="form-label">Test</label>
+                                </div>  
+                                <div class="help-info"></div>
+                            </div>
+                        </div> 
+                    </div>  
+                    <div class="row clearfix"> 
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line focused">
+                                    <input type="date" class="form-control focused" name="bid_date" id="bid_date" value="{{$upwork->bid_date}}" required>
+                                    <label class="form-label">Bid Date</label>
                                 </div> 
                                 <div class="help-info"></div>
                             </div>
                         </div>
-                    </div> 
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="lancer_type" id="lancer_type" value="{{ $upwork->lancer_type }}" required>
+                                    <label class="form-label">Freelancer Type</label>
+                                </div> 
+                                <div class="help-info">ex: developer , graphic designer , translator , writer ,,,</div>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="row clearfix">
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="security_question" id="security_question"  value="{{ $upwork->security_question }}"  required>
+                                    <label class="form-label">Security Question</label>
+                                </div>   
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="security_answer" id="security_answer"  value="{{ $upwork->security_answer }}"  required>
+                                    <label class="form-label">Security Answer</label>
+                                </div>   
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="row clearfix">
+                        <div class="col-md-12">
+                            <div class="form-group form-float">
+                                <div class="form-line">
+                                    <input type="text" class="form-control" name="series" id="series"  value="{{ $upwork->series }}"  required>
+                                    <label class="form-label">Series</label>
+                                </div>   
+                            </div>
+                        </div> 
+                    </div>  
                     <button class="btn btn-primary waves-effect" type="submit">Update</button>
                 </form>
             </div>

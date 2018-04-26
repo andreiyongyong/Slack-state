@@ -37,6 +37,7 @@ Route::resource('resource-management', 'ResourceManagementController');
 Route::resource('forum-master', 'ForumMasterController');
 Route::resource('/member-log', 'MemberLogController');
 Route::resource('project' , 'ProjectController');
+Route::resource('upwork' , 'UpworkController');
 
 Route::post('member-log/search', 'MemberLogController@search')->name('member-log.search');   
 Route::post('member-log/log_detail_add', ['as'=>'ajaxImageUpload','uses'=>'MemberLogController@ajaxImageUpload']);   

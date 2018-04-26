@@ -1,4 +1,4 @@
-@extends('project.base')
+@extends('upwork.base')
 @section('action-content') 
 <div class="row clearfix">
   <div class="col-sm-6"></div>
@@ -9,56 +9,59 @@
           <div class="card">
               <div class="header">
                   <h2>
-                      Project
+                      Upwork
                   </h2>
                   <ul class="header-dropdown m-r--5">
                       <li class="dropdown">
-                          <a class="btn btn-primary" href="{{ route('project.create') }}">Add new project</a>
+                          <a class="btn btn-primary" href="{{ route('upwork.create') }}">Add new upwork</a>
                       </li>
                   </ul>
-              </div> 
+              </div>  
+   
               <div class="body">
                   <div class="table-responsive">
                       <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead> 
                               <tr>
-                                  <th>PROJECT</th>
-                                  <th>CLIENT</th>
-                                  <th>CHAT MODE</th>
-                                  <th>TASK</th>
-                                  <th>PIRCE</th>
-                                  <th>DEVELOPER</th>
-                                  <th>MEET TIME</th>
-                                  <th>PROCESS MODE</th>
+                                  <th>DATE</th>
+                                  <th>COUNTRY</th>
+                                  <th>UPWORK NAME</th>
+                                  <th>UPWORK ID</th>
+                                  <th>EMAIL</th>
+                                  <th>RISING TALENT</th>
+                                  <th>BID DATE</th>
+                                  <th>LANCER TYPE</th> 
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
-                                  <th>PROJECT</th>
-                                  <th>CLIENT</th>
-                                  <th>CHAT MODE</th>
-                                  <th>TASK</th>
-                                  <th>PIRCE</th>
-                                  <th>DEVELOPER</th>
-                                  <th>MEET TIME</th>
-                                  <th>PROCESS MODE</th>
+                                  <th>DATE</th>
+                                  <th>COUNTRY</th>
+                                  <th>UPWORK NAME</th>
+                                  <th>UPWORK ID</th>
+                                  <th>EMAIL</th>
+                                  <th>RISING TALENT</th>
+                                  <th>BID DATE</th>
+                                  <th>LANCER TYPE</th> 
                               </tr>
                           </tfoot>
                           <tbody>
-                          @foreach ($projects as $project)
+
+                          @foreach ($upworks as $upwork)
                               <tr>
-                                  <td>{{ $project->p_name }}</td>
-                                  <td>{{ $project->p_client }}</td>
-                                  <td>{{ $project->task }}</td>
-                                  <td>{{ $project->price }}</td>
-                                  <td>{{ $project->developer }}</td>
-                                  <td>{{ $project->meet_time }}</td>
-                                  <td>{{ $project->mode }}</td>
+                                  <td>{{ $upwork->date }}</td>
+                                  <td>{{ $upwork->country }}</td>
+                                  <td>{{ $upwork->upwork_name }}</td>
+                                  <td>{{ $upwork->upwork_id }}</td>
+                                  <td>{{ $upwork->email }}</td>
+                                  <td>{{ $upwork->rising_talent }}</td>
+                                  <td>{{ $upwork->bid_date }}</td>
+                                  <td>{{ $upwork->lancer_type }}</td> 
                                   <td align = "center">
-                                      <form class="row" method="POST" action="{{ route('project.destroy', ['id' => $project->id]) }}" onsubmit = "return confirm('Are you sure?')">
+                                      <form class="row" method="POST" action="{{ route('upwork.destroy', ['id' => $upwork->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <a href="{{ route('project.edit', ['id' => $project->id]) }}" class="btn btn-info waves-effect">
+                                            <a href="{{ route('upwork.edit', ['id' => $upwork->id]) }}" class="btn btn-info waves-effect">
                                             Update
                                             </a>
                                             {{--@if ($user->username != Auth::user()->username)--}}

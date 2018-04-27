@@ -35,6 +35,7 @@ Route::post('user-management/search', 'UserManagementController@search')->name('
 Route::resource('user-management', 'UserManagementController');
 Route::resource('resource-management', 'ResourceManagementController');
 Route::resource('forum-master', 'ForumMasterController');
+Route::post('forum-master/add-forum-answer', 'ForumMasterController@addForumAnswer');
 Route::resource('aws-master', 'AwsMasterController');
 Route::resource('project' , 'ProjectController');
 Route::resource('upwork' , 'UpworkController');

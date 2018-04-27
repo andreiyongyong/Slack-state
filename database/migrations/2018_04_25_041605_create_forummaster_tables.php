@@ -15,7 +15,8 @@ class CreateForummasterTables extends Migration
     {
         Schema::create('forummaster', function (Blueprint $table) {
             $table->increments('id' , true);
-            $table->integer('task_id');
+            $table->string('project' , 100);
+            $table->string('task' );
             $table->string('question');
             $table->date('posted_date'); 
             $table->timestamps();

@@ -8074,7 +8074,7 @@ html.ie11 .bs-searchbox .form-control {
   width: 100px;
   position: relative;
 }
-.forum-block .info-div{
+.forum-block .info-div, .info-div-answer{
   background-color: #fff;
   padding: 25px 20px;
   position: relative;
@@ -8103,4 +8103,45 @@ html.ie11 .bs-searchbox .form-control {
 .forum-block .info-txt {
   color: #afa5ae;
   margin: 20px 0 0;
+}
+
+.send-block {
+  margin: 20px;
+
+}
+.textarea-div {
+  position: relative;
+}
+
+.textarea-div .table-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+.textarea-div .table-div {
+  display: table;
+  position: absolute;
+  top: 50px;
+  left: 20px;
+}
+.textarea-div .write {
+  display: inline-block;
+  margin-left: 20px;
+  color: #c2c0c2;
+}
+.textarea-div textarea {
+  width: 100%;
+  padding-left: 220px;
+  resize: none;
+
+}
+.send-block .btn-send {
+  border-radius: 15px !important;
+  background-color: #fff;
+  border: 1px solid #8ca1ec !important;
+  color: #8ca1ec;
+}
+textarea.forum_answer_textarea{
+  resize: none;
+  border-color:transparent;
+  width:100%;
 }

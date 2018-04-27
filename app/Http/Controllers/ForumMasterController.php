@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\ForumMaster;
-use App\Task;
 use App\ForumInstance;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ForumMasterController extends Controller
 {
@@ -28,15 +28,8 @@ class ForumMasterController extends Controller
      */
     public function create()
     {
-        $tasks = Task::with('project')->get();
 
-        $projects = [];
-
-        foreach($tasks as $task){
-            $projects[$task->project['id']] = $task->project['p_name'];
-        }
-
-        return view('forummaster/create',['projects'=>$projects,'tasks'=>$tasks]);
+        return view('forummaster/create');
     }
 
     /**
@@ -66,9 +59,9 @@ class ForumMasterController extends Controller
      */
     public function show(Request $request, $id)
     {
-        $forums = ForumInstance::with('user')->where('forum_mid',2)->get();
+        $forums = ForumInstance::with('user')->where('forum_mid',$id)->get();
 
-        return view('forummaster/show', ['forums' => $forums]);
+        return view('forummaster/show', ['forums' => $forums,'forum_mid'=>$id]);
 
     }
 
@@ -129,4 +122,15 @@ class ForumMasterController extends Controller
         ForumMaster::where('id', $id)->delete();
         return redirect()->intended('/forum-master');
     }
+
+    public function addForumAnswer(Request $request){
+        ForumInstance::create([
+            'forum_mid' => $request['forum_mid'],
+            'userid' => $request['userid'],
+            'reply_time' => Carbon::now()->toDateTimeString(),
+            'answer' => $request['answer']
+        ]);
+        return redirect()->intended('/forum-master/'.$request['forum_mid']);
+    }
 }
+

@@ -2402,7 +2402,7 @@ a {
   animation: none !important; }
 
 section.content {
-  margin: 100px 15px 0 315px;
+  margin: 10px 15px 0 315px;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
   -webkit-transition: 0.5s;
@@ -7480,7 +7480,7 @@ fieldset[disabled] .form-control {
   display: inline-block;
   height: calc(100vh - 70px);
   position: fixed;
-  top: 70px;
+  /*top: 70px;*/
   left: 0;
   -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -8103,6 +8103,7 @@ html.ie11 .bs-searchbox .form-control {
 .forum-block .info-txt {
   color: #afa5ae;
   margin: 20px 0 0;
+  word-break: break-all;
 }
 
 .send-block {
@@ -8145,3 +8146,4 @@ textarea.forum_answer_textarea{
   border-color:transparent;
   width:100%;
 }
+.card .table-responsive{overflow-x:visible}

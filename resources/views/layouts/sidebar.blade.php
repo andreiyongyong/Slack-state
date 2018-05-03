@@ -14,16 +14,16 @@
     <div class="menu">
         <ul class="list">
             <li class="header">NAVIGATION</li>
-            <li class="active" >
-                <a href="{{ url('member-log') }}">
-                    <i class="material-icons">assignment</i>
-                    <span>Tracks</span>
-                </a>
-            </li> 
+                <li>
+                    <a href="{{ url('member-log') }}">
+                        <i class="material-icons">access_time</i>
+                        <span>Tracks</span>
+                    </a>
+                </li>
             </li>  
             <li class="{{ Request::segment(1) == "resource-management" ? "active" : "" }}" >
                 <a href="{{ url('resource-management') }}">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">filter_tilt_shift</i>
                     <span>Resources</span>
                 </a>
             </li>  
@@ -31,43 +31,43 @@
             </li> 
             <li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >
                 <a href="{{ route('user-management.index') }}">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">group</i>
                     <span>Users</span>
                 </a>
             </li>  
             <li class="{{ Request::segment(1) == "applicant" ? "active" : "" }}" >
                 <a href="{{ route('user-management.index') }}">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">touch_app</i>
                     <span>Applicants</span>
                 </a>
             </li>  
             <li class="{{ Request::segment(1) == "project" ? "active" : "" }}" >
                 <a href="{{ route('project.index') }}">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">filter_b_and_w</i>
                     <span>Projects</span>
                 </a>
             </li>  
             <li class="{{ Request::segment(1) == "upwork" ? "active" : "" }}" >
                 <a href="{{ route('upwork.index') }}">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">play_for_work</i>
                     <span>Upwork</span>
                 </a>
             </li>  
-            <li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >
+            <li class="" >
                 <a href="{{ route('user-management.index') }}">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">dashboard</i>
                     <span>QA View</span>
                 </a>
-            </li> 
-            <li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >
+            </li>
+            <li class="" >
                 <a href="{{ route('user-management.index') }}">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">cloud</i>
                     <span>AWS</span>
                 </a>
-            </li> 
+            </li>
             <li class="{{ Request::segment(1) == "forum-master" ? "active" : "" }}" >
                 <a href="{{ route('forum-master.index') }}">
-                    <i class="material-icons">assignment</i>
+                    <i class="material-icons">forum</i>
                     <span>Forum</span>
                 </a>
             </li>   

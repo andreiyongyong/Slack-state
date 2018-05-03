@@ -5,8 +5,8 @@
   <div class="col-sm-6"></div>
 </div>
 
-    <div class="row" style="background-color: #f1f3fa;">
-        <div class="forum-block">
+    <div class="row " style="background-color: #f1f3fa;">
+        <div class="forum-block wrapper">
             @foreach($forums as $forum)
                 <div class="table-div">
                     <div class="table-cell w-100-px"><img width="80" height="80" class="img-circle" src="{{ URL::to('/') }}/image/{{!empty($forum->user['image'])?$forum->user['image']:'user_temp.jpg'}}"></div>

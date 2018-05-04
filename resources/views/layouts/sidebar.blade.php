@@ -35,8 +35,8 @@
                     <span>Users</span>
                 </a>
             </li>  
-            <li class="{{ Request::segment(1) == "applicant" ? "active" : "" }}" >
-                <a href="{{ route('user-management.index') }}">
+            <li class="{{ Request::segment(1) == "applicants" ? "active" : "" }}" >
+                <a href="{{ route('applicants.index') }}">
                     <i class="material-icons">touch_app</i>
                     <span>Applicants</span>
                 </a>
@@ -59,8 +59,8 @@
                     <span>QA View</span>
                 </a>
             </li>
-            <li class="" >
-                <a href="{{ route('user-management.index') }}">
+            <li class="{{ Request::segment(1) == "aws-master" ? "active" : "" }}" >
+                <a href="{{ route('aws-master.index') }}">
                     <i class="material-icons">cloud</i>
                     <span>AWS</span>
                 </a>

@@ -24,4 +24,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    function userinfo(){
+        return $this->hasOne('App\UserInfo','user_id','id');
+    }
+
 }

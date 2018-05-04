@@ -129,10 +129,10 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" name="age" id="age" value="{{ old('age') }}"  min="1" max="100" required>
+                                            <input type="number" class="form-control" name="age" id="age" value="{{ old('age') }}"  min="1" max="3" required>
                                             <label class="form-label">Age</label>
                                         </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
+                                        <div class="help-info"> Max. 3 characters</div>
                                     </div>
                                 </div>
                             </div>
@@ -168,20 +168,18 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="called" id="called" value="{{  old('called')   }}"  min="1" max="200" required>
+                                        <div class="form-line ">
+                                            <input type="checkbox" class="form-control" name="called" id="called" value="1" >
                                             <label class="form-label">Called</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" name="approved" id="approved" value="{{  old('approved') }}"  min="1" max="200" required>
-                                            <label class="form-label">Approve</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
+                                            <input type="checkbox" class="form-control" name="approved" checked id="approved" value="1" >
+                                            <label class="form-label">Approved</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>  

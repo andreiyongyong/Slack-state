@@ -33,6 +33,7 @@ Route::get('/profile', 'ProfileController@index');
 Route::post('user-management/search', 'UserManagementController@search')->name('user-management.search');
 
 Route::resource('user-management', 'UserManagementController');
+Route::resource('applicants', 'ApplicantsController');
 Route::resource('resource-management', 'ResourceManagementController');
 Route::resource('forum-master', 'ForumMasterController');
 Route::post('forum-master/add-forum-answer', 'ForumMasterController@addForumAnswer');

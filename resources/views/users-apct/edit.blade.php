@@ -1,4 +1,4 @@
-@extends('users-mgmt.base') 
+@extends('users-apct.base')
 
 @section('action-content')
 <div class="row clearfix">
@@ -8,7 +8,7 @@
                 <h2>Edit user</h2>
             </div>
             <div class="body">
-                <form class="form-horizontal" role="form" method="POST" action="{{ route('user-management.update', ['id' => $user->id]) }}">
+                <form class="form-horizontal" role="form" method="POST" action="{{ route('applicants.update', ['id' => $user->id]) }}">
                     <input type="hidden" name="_method" value="PATCH">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         {{ csrf_field() }} 

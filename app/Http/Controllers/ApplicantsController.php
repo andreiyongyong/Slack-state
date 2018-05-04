@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\UserInfo;
 
-class UserManagementController extends Controller
+class ApplicantsController extends Controller
 {
-       /**
+    /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/user-management';
+    protected $redirectTo = '/applicants';
 
-         /**
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -34,64 +34,10 @@ class UserManagementController extends Controller
     public function index()
     {
         $users = User::with(['userinfo' => function($query){
-            $query->where('approved', 1);
+            $query->where('approved', 0);
         }])->paginate(5);
 
-        return view('users-mgmt/index', ['users' => $users]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('users-mgmt/create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        $image = $request->file('image');
-        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-        $destinationPath = public_path('/image');
-
-        $image->move($destinationPath, $input['imagename']);
-
-        $last_inserted_id = User::create([
-            'username' => $request['username'],
-            'email' => $request['email'],
-            'password' => bcrypt($request['password']),
-            'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
-            'type' => $request['type'],
-            'level' => $request['level'],
-            'image' => $input['imagename']
-        ])->id;
-UserInfo::create([
-    'user_id' => $last_inserted_id,
-    'stack' => $request['stack'] ,
-    'skypeid'=>$request['skypeid'] ,
-    'room' => $request['room'] ,
-    'country'=>$request['country'] ,
-    'age' => $request['age'] ,
-    'notes' => $request['notes'] ,
-    'called'=>$request['called'] ,
-    'approved' => $request['approved'] ,
-    'time_doctor_email' => $request['time_doctor_email'] ,
-    'time_doctor_password' => $request['time_doctor_password']
-]);
-        return redirect()->intended('/user-management');
+        return view('users-apct/index', ['users' => $users]);
     }
 
     /**
@@ -116,10 +62,10 @@ UserInfo::create([
         $user = User::with('userinfo')->find($id);
         // Redirect to user list if updating user wasn't existed
         if ($user == null || $user->count() == 0) {
-            return redirect()->intended('/user-management');
+            return redirect()->intended('/applicants');
         }
 
-        return view('users-mgmt/edit', ['user' => $user]);
+        return view('users-apct/edit', ['user' => $user]);
     }
 
     /**
@@ -135,7 +81,7 @@ UserInfo::create([
             'username' => 'required|max:20',
             'firstname'=> 'required|max:60',
             'lastname' => 'required|max:60'
-            ];
+        ];
         if($request->file('image')){
             $image = $request->file('image');
             $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
@@ -169,13 +115,13 @@ UserInfo::create([
             $input['password'] =  bcrypt($request['password']);
         }
         //$this->validate($request, $constraints);
-         User::where('id', $id)
+        User::where('id', $id)
             ->update($input);
         UserInfo::where('user_id', $id)
             ->update($input_info);
-        
-        
-        return redirect()->intended('/user-management');
+
+
+        return redirect()->intended('/applicants');
     }
 
     /**
@@ -187,7 +133,7 @@ UserInfo::create([
     public function destroy($id)
     {
         User::where('id', $id)->delete();
-         return redirect()->intended('/user-management');
+        return redirect()->intended('/applicants');
     }
 
     /**
@@ -202,10 +148,10 @@ UserInfo::create([
             'firstname' => $request['firstname'],
             'lastname' => $request['lastname'],
             'department' => $request['department']
-            ];
+        ];
 
-       $users = $this->doSearchingQuery($constraints);
-       return view('users-mgmt/index', ['users' => $users, 'searchingVals' => $constraints]);
+        $users = $this->doSearchingQuery($constraints);
+        return view('users-apct/index', ['users' => $users, 'searchingVals' => $constraints]);
     }
 
     private function doSearchingQuery($constraints) {
@@ -221,14 +167,14 @@ UserInfo::create([
         }
         return $query->paginate(5);
     }
-    
+
     private function validateInput($request) {
         $this->validate($request, [
-        'username' => 'required|max:20',
-        'email' => 'required|email|max:255|unique:users',
-        'password' => 'required|min:6|confirmed',
-        'firstname' => 'required|max:60',
-        'lastname' => 'required|max:60'
-    ]);
+            'username' => 'required|max:20',
+            'email' => 'required|email|max:255|unique:users',
+            'password' => 'required|min:6|confirmed',
+            'firstname' => 'required|max:60',
+            'lastname' => 'required|max:60'
+        ]);
     }
 }

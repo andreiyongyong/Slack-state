@@ -6,7 +6,7 @@
 </div>
 
     <div class="row " style="background-color: #f1f3fa;">
-        <div class="forum-block wrapper">
+        <div class="forum-block forum-massages wrapper">
             @foreach($forums as $forum)
                 <div class="table-div">
                     <div class="table-cell w-100-px"><img width="80" height="80" class="img-circle" src="{{ URL::to('/') }}/image/{{!empty($forum->user['image'])?$forum->user['image']:'user_temp.jpg'}}"></div>
@@ -21,7 +21,7 @@
 
         <form id="forumreply" class="form-horizontal" role="form" method="POST" action="/forum-master/add-forum-answer">
             {{ csrf_field() }}
-            <div class="forum-block">
+            <div class="forum-block forum-reply">
             <div class="table-div">
                 <div class="table-cell w-100-px"><img width="80" height="80" class="img-circle" src="{{ URL::to('/') }}/image/{{!empty(Auth::user()->image)?Auth::user()->image:'user_temp.jpg'}}"></div>
                 <input type="hidden" name="userid" value="{{Auth::user()->id}}">

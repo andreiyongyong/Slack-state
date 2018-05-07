@@ -1,14 +1,14 @@
-@extends('users-mgmt.base') 
+@extends('users-apct.base')
 
 @section('action-content')
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 body-container">
         <div class="card">
             <div class="header">
-                <h2>Add new user</h2> 
+                <h2>Add new applicant</h2>
             </div>
             <div class="body">
-                <form id="" class="form-horizontal" role="form" method="POST" action="{{ route('user-management.store') }}" enctype="multipart/form-data">
+                <form id="" class="form-horizontal" role="form" method="POST" action="{{ route('applicants.store') }}" enctype="multipart/form-data">
                     {{ csrf_field() }} 
                     <div class="row offset">
                         <div class="col-md-12">

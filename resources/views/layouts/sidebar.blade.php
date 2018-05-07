@@ -14,7 +14,7 @@
     <div class="menu">
         <ul class="list">
             <li class="header">NAVIGATION</li>
-                <li>
+                <li class="{{ Request::segment(1) == "member-log" ? "active" : "" }}">
                     <a href="{{ url('member-log') }}">
                         <i class="material-icons">access_time</i>
                         <span>Tracks</span>

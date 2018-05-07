@@ -41,6 +41,60 @@ class ApplicantsController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('users-apct/create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        $image = $request->file('image');
+        $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/image');
+
+        $image->move($destinationPath, $input['imagename']);
+
+        $last_inserted_id = User::create([
+            'username' => $request['username'],
+            'email' => $request['email'],
+            'password' => bcrypt($request['password']),
+            'firstname' => $request['firstname'],
+            'lastname' => $request['lastname'],
+            'type' => $request['type'],
+            'level' => $request['level'],
+            'image' => $input['imagename']
+        ])->id;
+        UserInfo::create([
+            'user_id' => $last_inserted_id,
+            'stack' => $request['stack'] ,
+            'skypeid'=>$request['skypeid'] ,
+            'room' => $request['room'] ,
+            'country'=>$request['country'] ,
+            'age' => $request['age'] ,
+            'notes' => $request['notes'] ,
+            'called'=>$request['called'] ,
+            'approved' => $request['approved'] ,
+            'time_doctor_email' => $request['time_doctor_email'] ,
+            'time_doctor_password' => $request['time_doctor_password']
+        ]);
+        return redirect()->intended('/applicants');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

@@ -9,11 +9,11 @@
           <div class="card">
               <div class="header">
                   <h2>
-                      List of aws users
+                      List of aws
                   </h2>
                   <ul class="header-dropdown m-r--5">
                       <li class="dropdown">
-                          <a class="btn btn-primary" href="{{ route('user-management.create') }}">Add new user</a>
+                          <a class="btn btn-primary" href="{{ route('aws-master.create') }}">Add new aws</a>
                       </li>
                   </ul>
               </div> 

@@ -2,10 +2,10 @@
 
 @section('action-content')
 <div class="row clearfix">
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 body-container">
         <div class="card">
             <div class="header">
-                <h2>Edit Aws user</h2>
+                <h2>Edit Aws</h2>
             </div>
             <div class="body">
                 <form class="form-horizontal" role="form" method="POST" action="{{ route('aws-master.update', ['id' => $aws->id]) }}">
@@ -13,8 +13,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         {{ csrf_field() }} 
                     <div class="row">
-                        <div class="col-md-1"></div>
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">

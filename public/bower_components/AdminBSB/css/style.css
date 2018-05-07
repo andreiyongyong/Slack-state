@@ -8062,7 +8062,6 @@ html.ie11 .bs-searchbox .form-control {
 }
 .forum-block .table-div {
   width: 100%;
-  height: 100%;
   display: table;
   padding: 20px;
 }
@@ -8147,3 +8146,13 @@ textarea.forum_answer_textarea{
   width:100%;
 }
 .card .table-responsive{overflow-x:visible}
+
+.forum-massages{
+  height: 600px;
+  overflow-x: auto;
+}
+
+.body-container .form-group{
+  margin-left: 0;
+  margin-right: 0;
+}

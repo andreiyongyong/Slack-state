@@ -63,16 +63,6 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
     }
 
-//    public function login(Request $request){
-//        $user = User::where('email','defaulkt@gm.com')->first();
-//        $user->password = Hash::make('password');
-//        $user->save();
-//        dd (Hash::check('password', $user->password));
-//        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-//            return redirect('/');
-//        }
-//    }
-
     // public function username(){
     //     return 'username';
     // }

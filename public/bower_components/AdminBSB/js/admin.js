@@ -40,7 +40,7 @@ $.AdminBSB.options = {
         effectIn: 'fadeIn',
         effectOut: 'fadeOut'
     }
-}
+};
 
 /* Left Sidebar - Function =================================================================================================
 *  You can manage the left sidebar menu options
@@ -124,7 +124,7 @@ $.AdminBSB.leftSideBar = {
 
             //Scroll active menu item when page load, if option set = true
             if ($.AdminBSB.options.leftSideBar.scrollActiveItemWhenPageLoad) {
-                var activeItemOffsetTop = $('.menu .list li.active')[0].offsetTop;
+                var activeItemOffsetTop =  $('.menu .list li.active').length != 0 ? $('.menu .list li.active')[0].offsetTop : 0;
                 if (activeItemOffsetTop > 150) $el.slimscroll({ scrollTo: activeItemOffsetTop + 'px' });
             }
         }
@@ -455,4 +455,13 @@ $(function () {
     $.AdminBSB.search.activate();
 
     setTimeout(function () { $('.page-loader-wrapper').fadeOut(); }, 50);
+});
+
+$(document).ready(function () {
+
+    $('.forum-massages').css({'height' : ($(window).height() - $('.forum-reply').height() - 102) + 'px'}).scrollTop($('.forum-massages')[0].scrollHeight);
+
+    $(window).resize(function () {
+        $('.forum-massages').css({'height' : ($(window).height() - $('.forum-reply').height() - 102) + 'px'});
+    });
 });

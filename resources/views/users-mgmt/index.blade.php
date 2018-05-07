@@ -11,11 +11,6 @@
                   <h2>
                       List of users
                   </h2>
-                  <ul class="header-dropdown m-r--5">
-                      <li class="dropdown">
-                          <a class="btn btn-primary" href="{{ route('user-management.create') }}">Add new user</a>
-                      </li>
-                  </ul>
               </div> 
               <div class="body">
                   <div class="table-responsive">

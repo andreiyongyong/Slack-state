@@ -1,4 +1,4 @@
-@extends('users-mgmt.base')
+@extends('resources-mgmt.base')
 @section('action-content') 
 <div class="row clearfix">
   <div class="col-sm-6"></div>
@@ -9,7 +9,7 @@
           <div class="card">
               <div class="header">
                   <h2>
-                      List of users
+                      List of resources
                   </h2>
                   <ul class="header-dropdown m-r--5">
                       <li class="dropdown">

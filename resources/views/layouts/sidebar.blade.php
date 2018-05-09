@@ -83,6 +83,12 @@
                     <span>Slack</span>
                 </a>
             </li>
+            <li class="{{ Request::segment(1) == "workspaces" ? "active" : "" }}" >
+                <a href="{{ route('workspaces.index') }}">
+                    <i class="material-icons">forum</i>
+                    <span>Slack Workspaces</span>
+                </a>
+            </li>
         </ul>
     </div> 
     <!-- #Menu -->

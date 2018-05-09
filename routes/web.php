@@ -33,6 +33,7 @@ Route::get('/profile', 'ProfileController@index');
 Route::post('user-management/search', 'UserManagementController@search')->name('user-management.search');
 
 Route::resource('user-management', 'UserManagementController');
+Route::resource('workspaces', 'SlackWorkSpaceController');
 Route::resource('applicants', 'ApplicantsController');
 Route::resource('resource-management', 'ResourceManagementController');
 Route::resource('forum-master', 'ForumMasterController');
@@ -50,6 +51,9 @@ Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');
 Route::get('slack', 'SlackController@index')->name('slack.index');
 
 Route::get('messaging', 'SlackChatController@index')->name('messaging.index');
+
+Route::get('/connection/{id}', 'SlackWorkSpaceController@connection')->name('workspaces.connection');
+Route::post('/invite', 'SlackWorkSpaceController@invite')->name('workspaces.invite');
 
 
 

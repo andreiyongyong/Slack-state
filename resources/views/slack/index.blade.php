@@ -45,41 +45,24 @@
                       </div>
                   </form>
                   <div class="row">
-                      <?php
-                      $headers = [];
-                      $maxRow = 0;
-                      foreach($data['response'] as $key => $channel){
-                          $headers [] = array('id' => $key, 'name' => $channel['name']);
-                          if(count($channel['members']) > $maxRow){
-                              $maxRow = count($channel['members']);
-                          }
-                      }
-                      ?>
+
                           <div class="table-responsive">
                               <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                   <thead>
                                   <tr>
-                                      @foreach($headers as $header)
-                                            <th>{{$header['name']}}</th>
-                                      @endforeach
+                                     <th>STATUS</th>
+                                     <th>NAME</th>
+                                     <th>AVATAR</th>
                                   </tr>
                                   </thead>
                                   <tbody>
-                                  @for ($i = 0; $i < $maxRow; $i++)
-                                      <tr>
-                                      @foreach($headers as $header)
-                                          @if(isset($data['response'][$header['id']]['members'][$i]['name']))
-                                                <td>
-                                                    <span class="{{($data['response'][$header['id']]['members'][$i]['status'] == 'active' ? 'st-active' : 'st-away')}}"></span>
-                                                    {{$data['response'][$header['id']]['members'][$i]['name']}}
-                                                    <img width="30" height="30" src="{{$data['response'][$header['id']]['members'][$i]['avatar']}}">
-                                                </td>
-                                          @else
-                                                <td></td>
-                                          @endif
+                                      @foreach($data['response'] as $user)
+                                          <tr>
+                                              <td><span class="{{($user['presence'] == 'active' ? 'st-active' : 'st-away')}}"></span></td>
+                                              <td>{{$user['profile']['display_name']}}</td>
+                                              <td><img width="30" height="30" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}"></td>
+                                          </tr>
                                       @endforeach
-                                      </tr>
-                                  @endfor
                                   </tbody>
                               </table>
                           </div>

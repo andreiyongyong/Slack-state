@@ -59,6 +59,9 @@
                                           <form class="row" method="POST" action="{{ route('applicants.destroy', ['id' => $user->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <a href="{{ route('workspaces.connection', ['id' => $user->id]) }}" class="btn btn-info waves-effect">
+                                                    Slack
+                                                </a>
                                                 @if(Auth::user()->type == '0' || $user->id == Auth::user()->id)
                                                     <a href="{{ route('applicants.edit', ['id' => $user->id]) }}" class="btn btn-info waves-effect">
                                                     Update

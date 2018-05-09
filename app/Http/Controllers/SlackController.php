@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\SlackWorkspace;
 use Illuminate\Http\Request;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
+use App\User;
 
 class SlackController extends Controller
 {
@@ -13,8 +15,13 @@ class SlackController extends Controller
      *
      * @return void
      */
+
+    private $slackApi;
+
     public function __construct()
     {
+        $this->slackApi = new SlackApi(env('SLACK_API_TOKEN'));
+
         $this->middleware('auth');
     }
 
@@ -32,10 +39,21 @@ class SlackController extends Controller
         );
         try {
 
-            $data['response'] = $this->getCannelList();
-//echo "<pre>";
-//print_r($data);
-//die;
+            $users = User::get();
+            
+            foreach ($users as $user){
+                if($user->workspace_id != '' && $user->slack_user_id != ''){
+                    $token = SlackWorkspace::find($user->workspace_id)->token;
+                   
+                    $api = new SlackApi($token);
+
+                    $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
+                    $result = $api->execute('users.getPresence', ['user' => $responce['user']['id']]);
+                    
+                    $data['response'][] = array_merge($responce['user'], array('presence' => $result['presence'], 'avatar'=>isset($responce['user']['profile']['image_original']) ? $responce['user']['profile']['image_original'] : ''));
+                }
+            }
+
         } catch (SlackApiException $e) {
             $data = array(
                 'error' => true,
@@ -108,6 +126,32 @@ class SlackController extends Controller
 
                 }
             }
+        }
+
+        return $data;
+    }
+
+    private function slackRequest($method, $params = [], $successMsg = ''){
+        $data = array(
+            'status'   => true,
+            'message'  => $successMsg,
+            'response' => []
+        );
+
+        try {
+            $response       = $this->slackApi->execute($method, $params);
+            $data['status'] = $response['ok'];
+
+            if ($response['ok']) {
+                unset($response['ok']);
+                $data['response'] = $response;
+            } else {
+                $data['message'] = $response['error'];
+            }
+
+        } catch (SlackApiException $e) {
+            $data['status'] = false;
+            $data['message'] = $e->getMessage();
         }
 
         return $data;

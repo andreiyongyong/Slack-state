@@ -20,4 +20,8 @@ class Project extends Model
     protected $fillable = [
         'p_name' , 'p_client' , 'task' , 'price' , 'developer' , 'meet_time' , 'mode'
    ];
+
+    function tasks(){
+        return $this->hasMany('App\Task','project_id','id');
+    }
 }

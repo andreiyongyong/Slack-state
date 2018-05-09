@@ -459,9 +459,11 @@ $(function () {
 
 $(document).ready(function () {
 
-    $('.forum-massages').css({'height' : ($(window).height() - $('.forum-reply').height() - 102) + 'px'}).scrollTop($('.forum-massages')[0].scrollHeight);
+    if($('.forum-massages').length > 0) {
+        $('.forum-massages').css({'height': ($(window).height() - $('.forum-reply').height() - 102) + 'px'}).scrollTop($('.forum-massages')[0].scrollHeight);
 
-    $(window).resize(function () {
-        $('.forum-massages').css({'height' : ($(window).height() - $('.forum-reply').height() - 102) + 'px'});
-    });
+        $(window).resize(function () {
+            $('.forum-massages').css({'height': ($(window).height() - $('.forum-reply').height() - 102) + 'px'});
+        });
+    }
 });

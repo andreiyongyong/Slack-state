@@ -46,7 +46,13 @@
                     <i class="material-icons">filter_b_and_w</i>
                     <span>Projects</span>
                 </a>
-            </li>  
+            </li>
+            <li class="{{ Request::segment(1) == "messaging" ? "active" : "" }}" >
+                <a href="{{ route('messaging.index') }}">
+                    <i class="material-icons">forum</i>
+                    <span>Messaging</span>
+                </a>
+            </li>
             <li class="{{ Request::segment(1) == "upwork" ? "active" : "" }}" >
                 <a href="{{ route('upwork.index') }}">
                     <i class="material-icons">play_for_work</i>
@@ -70,7 +76,13 @@
                     <i class="material-icons">forum</i>
                     <span>Forum</span>
                 </a>
-            </li>   
+            </li>
+            <li class="{{ Request::segment(1) == "slack" ? "active" : "" }}" >
+                <a href="{{ route('slack.index') }}">
+                    <i class="material-icons">forum</i>
+                    <span>Slack</span>
+                </a>
+            </li>
         </ul>
     </div> 
     <!-- #Menu -->

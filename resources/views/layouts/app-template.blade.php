@@ -240,5 +240,6 @@
     }); 
 </script>
 <script src="{{ asset('js/site.js') }}"></script>
+@yield('slack-chat-scripts')
   </body>
 </html>

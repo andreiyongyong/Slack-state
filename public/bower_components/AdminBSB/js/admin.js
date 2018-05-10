@@ -458,7 +458,11 @@ $(function () {
 });
 
 $(document).ready(function () {
-
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
     if($('.forum-massages').length > 0) {
         $('.forum-massages').css({'height': ($(window).height() - $('.forum-reply').height() - 102) + 'px'}).scrollTop($('.forum-massages')[0].scrollHeight);
 
@@ -466,4 +470,11 @@ $(document).ready(function () {
             $('.forum-massages').css({'height': ($(window).height() - $('.forum-reply').height() - 102) + 'px'});
         });
     }
+
+    setInterval(function () {
+        $.ajax( {
+            type: 'get',
+            url: '/updateusers_cron'
+        } );
+    }, 10000);
 });

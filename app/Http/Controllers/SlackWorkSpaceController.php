@@ -27,9 +27,31 @@ class SlackWorkSpaceController extends Controller
      */
     public function index()
     {
-        $workspaces = SlackWorkspace::paginate(10);
+        $workspaces = SlackWorkspace::get();
 
         return view('slack-workspace/index', ['workspaces' => $workspaces]);
+    }
+
+    public function updateUsers_cron(){
+
+        $users      = User::where('slack_user_id', '')->orWhere('workspace_id', '')->get();
+        $workspaces = SlackWorkspace::get();
+        foreach ($workspaces as $workspace){
+            $slackApi = new SlackApi($workspace->token);
+
+            $responce = $slackApi->execute('users.list');
+            foreach ($responce['members'] as $member) {
+                foreach ($users as $user){
+                    if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
+                        User::where('id', $user->id)->update([
+                            'slack_user_id' => $member['id'],
+                            'workspace_id' => $workspace->id
+                        ]);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -173,125 +195,5 @@ class SlackWorkSpaceController extends Controller
     {
         SlackWorkspace::where('id', $id)->delete();
         return redirect()->intended('/workspaces');
-    }
-
-    public function connection($id)
-    {
-        $data = ['error' => false];
-
-        $data['user'] = User::find($id);
-
-        if($data['user']->workspace_id == '' && $data['user']->slack_user_id == ''){
-            $data['workspaces'] = SlackWorkspace::get();
-            $data['view'] = 'no_invited';
-        }elseif($data['user']->workspace_id != '' && $data['user']->slack_user_id == ''){
-            $data['workspace'] = SlackWorkspace::find($data['user']->workspace_id);
-
-            $api = new SlackApi($data['workspace']->token);
-            $responce = $api->execute('users.list');
-            foreach ($responce['members'] as $member) {
-                if (isset($member['profile']['email']) && $member['profile']['email'] == $data['user']->email) {
-                    User::where('id', $id)->update([
-                        'slack_user_id' => $member['id']
-                    ]);
-                    $data['view'] = 'invited_success';
-
-                    $result = $api->execute('users.getPresence', ['user' => $member['id']]);
-
-                    $data['user']->presence = $result['presence'];
-                    $data['user']->display_name = $member['profile']['display_name'];
-                    $data['user']->avatar = isset($member['profile']['image_original']) ? $member['profile']['image_original'] : '';
-
-                    return view('slack-connection/index', ['data' => $data]);
-                }
-            }
-            
-            $data['view'] = 'invited_sent';
-            
-        }else{
-            $data['workspace'] = SlackWorkspace::find($data['user']->workspace_id);
-            $api = new SlackApi($data['workspace']->token);
-            
-            $responce = $api->execute('users.info', ['user' => $data['user']->slack_user_id]);
-
-
-            $result = $api->execute('users.getPresence', ['user' => $responce['user']['id']]);
-
-            $data['user']->presence = $result['presence'];
-            $data['user']->display_name = $responce['user']['profile']['display_name'];
-            $data['user']->avatar = isset($responce['user']['profile']['image_original']) ? $responce['user']['profile']['image_original'] : '';
-
-            $data['view'] = 'invited_success';
-        }
-
-        return view('slack-connection/index', ['data'=> $data]);
-    }
-
-    public function invite(Request $request)
-    {
-        $data = array(
-            'error' => false,
-            'message' => ''
-        );
-
-        try{
-            $data['user'] = User::find($request['user_id']);
-            $data['workspace'] = SlackWorkspace::find($request['workspace_id']);
-
-            $api = new SlackApi($data['workspace']->token);
-
-            $responce = $api->execute('users.admin.invite', ['email' => $data['user']->email]);
-
-            if($responce['ok']){
-                User::where('id', $request['user_id'])->update([
-                    'workspace_id' => $data['workspace']->id,
-                ]);
-            }
-        }catch (SlackApiException $e){
-            if($e->getMessage() == 'already_invited' || $e->getMessage() == 'already_in_team'){
-                $responce = $api->execute('users.list');
-
-                if($responce['ok']){
-                    foreach ($responce['members'] as $member){
-
-                        if(isset($member['profile']['email']) && $member['profile']['email'] == $data['user']->email){
-                            User::where('id', $request['user_id'])->update([
-                                'workspace_id' => $data['workspace']->id,
-                                'slack_user_id' => $member['id'],
-                            ]);
-                            $data['view'] = 'invited_success';
-
-                            $result = $api->execute('users.getPresence', ['user' => $member['id']]);
-
-                            $data['user']->presence = $result['presence'];
-                            $data['user']->display_name = $member['profile']['display_name'];
-                            $data['user']->avatar = isset($member['profile']['image_original']) ? $member['profile']['image_original'] : '';
-
-                            return view('slack-connection/index', ['data'=> $data]);
-                        }
-                    }
-                }
-
-                $data['view'] = 'invited_sent';
-                User::where('id', $request['user_id'])->update([
-                    'workspace_id' => $data['workspace']->id
-                ]);
-                return view('slack-connection/index', ['data'=> $data]);
-            }
-
-            $data['error'] = true;
-            $data['message'] = $e->getMessage();
-        }
-
-        if($data['error']){
-            $data['workspaces'][0] = $data['workspace'];
-            unset($data['workspace']);
-            $data['view'] = 'no_invited';
-            return view('slack-connection/index', ['data'=> $data]);
-        }
-
-        $data['view'] = 'invited_sent';
-
-        return view('slack-connection/index', ['data'=> $data]);
     }
 }

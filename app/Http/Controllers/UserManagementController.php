@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use App\UserInfo;
+use App\SlackWorkspace;
 
 class UserManagementController extends Controller
 {
@@ -60,12 +61,13 @@ class UserManagementController extends Controller
     public function edit($id)
     {
         $user = User::with('userinfo')->find($id);
+        $workspaces = SlackWorkspace::get();
         // Redirect to user list if updating user wasn't existed
         if ($user == null || $user->count() == 0) {
             return redirect()->intended('/user-management');
         }
 
-        return view('users-mgmt/edit', ['user' => $user]);
+        return view('users-mgmt/edit', ['user' => $user, 'workspaces' => $workspaces]);
     }
 
     /**
@@ -108,7 +110,8 @@ class UserManagementController extends Controller
             'called'=> isset($request['called']) ? 1 : 0 ,
             'approved' => isset($request['approved']) ? 1 : 0 ,
             'time_doctor_email' => $request['time_doctor_email'] ,
-            'time_doctor_password' => $request['time_doctor_password']
+            'time_doctor_password' => $request['time_doctor_password'],
+            'channel_id' => $request['channel_id']
         ];
         if ($request['password'] != null && strlen($request['password']) > 0) {
             $constraints['password'] = 'required|min:6|confirmed';

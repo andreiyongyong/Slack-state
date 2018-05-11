@@ -54,7 +54,10 @@ Route::get('messaging', 'SlackChatController@index')->name('messaging.index');
 
 Route::get('/updateusers_cron', 'SlackWorkSpaceController@updateUsers_cron')->name('workspaces.updateusers');
 Route::post('/invite', 'SlackWorkSpaceController@invite')->name('workspaces.invite');
-Route::post('/update-statuses', 'SlackWorkSpaceController@updateUserStatuses')->name('workspaces.updateUserStatuses');
+
+Route::post('/update-statuses', 'SlackChatController@updateUserStatuses_ajax')->name('workspaces.updateUserStatuses');
+Route::post('/get-channel-chat', 'SlackChatController@getChannelChat_ajax')->name('workspaces.getChannelChat');
+Route::post('/send-slack-message', 'SlackChatController@sendSlackMessage_ajax')->name('workspaces.sendSlackMessage');
 
 
 

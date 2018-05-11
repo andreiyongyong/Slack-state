@@ -33,24 +33,27 @@ class SlackWorkSpaceController extends Controller
     }
 
     public function updateUsers_cron(){
+        try {
+            $users = User::where('slack_user_id', '')->orWhere('workspace_id', '')->get();
+            $workspaces = SlackWorkspace::get();
+            foreach ($workspaces as $workspace) {
+                $slackApi = new SlackApi($workspace->token);
 
-        $users      = User::where('slack_user_id', '')->orWhere('workspace_id', '')->get();
-        $workspaces = SlackWorkspace::get();
-        foreach ($workspaces as $workspace){
-            $slackApi = new SlackApi($workspace->token);
-
-            $responce = $slackApi->execute('users.list');
-            foreach ($responce['members'] as $member) {
-                foreach ($users as $user){
-                    if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
-                        User::where('id', $user->id)->update([
-                            'slack_user_id' => $member['id'],
-                            'workspace_id' => $workspace->id
-                        ]);
-                        break;
+                $responce = $slackApi->execute('users.list');
+                foreach ($responce['members'] as $member) {
+                    foreach ($users as $user) {
+                        if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
+                            User::where('id', $user->id)->update([
+                                'slack_user_id' => $member['id'],
+                                'workspace_id' => $workspace->id
+                            ]);
+                            break;
+                        }
                     }
                 }
             }
+        }catch (SlackApiException $e){
+
         }
     }
 

@@ -476,5 +476,5 @@ $(document).ready(function () {
             type: 'get',
             url: '/updateusers_cron'
         } );
-    }, 10000);
+    }, 30000);
 });

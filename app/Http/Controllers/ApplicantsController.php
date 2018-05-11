@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
 use App\UserInfo;
+use App\SlackWorkspace;
 
 class ApplicantsController extends Controller
 {
@@ -47,7 +48,8 @@ class ApplicantsController extends Controller
      */
     public function create()
     {
-        return view('users-apct/create');
+        $workspaces = SlackWorkspace::get();
+        return view('users-apct/create', ['workspaces' => $workspaces]);
     }
 
     /**
@@ -76,7 +78,9 @@ class ApplicantsController extends Controller
             'lastname' => $request['lastname'],
             'type' => $request['type'],
             'level' => $request['level'],
-            'image' => $input['imagename']
+            'image' => $input['imagename'],
+            'slack_user_id'=> '',
+            'workspace_id'=> ''
         ])->id;
         UserInfo::create([
             'user_id' => $last_inserted_id,
@@ -89,7 +93,8 @@ class ApplicantsController extends Controller
             'called'=>$request['called'] ,
             'approved' => $request['approved'] ,
             'time_doctor_email' => $request['time_doctor_email'] ,
-            'time_doctor_password' => $request['time_doctor_password']
+            'time_doctor_password' => $request['time_doctor_password'],
+            'channel_id' => $request['channel_id']
         ]);
         return redirect()->intended('/applicants');
     }
@@ -114,12 +119,13 @@ class ApplicantsController extends Controller
     public function edit($id)
     {
         $user = User::with('userinfo')->find($id);
+        $workspaces = SlackWorkspace::get();
         // Redirect to user list if updating user wasn't existed
         if ($user == null || $user->count() == 0) {
             return redirect()->intended('/applicants');
         }
 
-        return view('users-apct/edit', ['user' => $user]);
+        return view('users-apct/edit', ['user' => $user, 'workspaces' => $workspaces]);
     }
 
     /**
@@ -162,7 +168,8 @@ class ApplicantsController extends Controller
             'called'=> isset($request['called']) ? 1 : 0 ,
             'approved' => isset($request['approved']) ? 1 : 0 ,
             'time_doctor_email' => $request['time_doctor_email'] ,
-            'time_doctor_password' => $request['time_doctor_password']
+            'time_doctor_password' => $request['time_doctor_password'],
+            'channel_id' => $request['channel_id']
         ];
         if ($request['password'] != null && strlen($request['password']) > 0) {
             $constraints['password'] = 'required|min:6|confirmed';

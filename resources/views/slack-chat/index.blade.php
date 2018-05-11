@@ -12,75 +12,57 @@
                       Slack
                   </h2>
               </div>
-              <div class="body">
+              <div class="body" style="position: relative">
                   <div class="row clearfix">
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 messaging-section">
+                      <div class="col-xs-12">
                           <div class="col-xs-12">
                               <div class="form-group form-float">
-                                  <select name="project">
-                                      @foreach($data['projects'] as $project)
-                                        <option value="{{$project['id']}}">{{$project['p_name']}}</option>
-                                      @endforeach
-                                  </select>
-                              </div>
-                          </div>
-
-                          <div class="col-xs-12">
-                              <div class="form-group form-float">
-                                  <h2>
-                                      Tasks
-                                  </h2>
-                                      @foreach($data['projects'] as $project)
-                                          @foreach($project->tasks as $task)
-                                              <button style="width: 100%;margin-bottom: 5px;" >{{$task['task_name']}}</button>
-                                          @endforeach
-                                      @endforeach
-                              </div>
-                          </div>
-
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 messaging-section">
-                          <div class="col-xs-12">
-                              <div class="form-group form-float">
-                                  <select name="developer">
                                       @foreach($data['developers'] as $developer)
-                                          <option value="{{$developer['id']}}">{{$developer['username']}}</option>
+                                      @if($developer->userinfo !== null)
+                                          <?php
+                                              $data = array(
+                                                  'id' => $developer->id,
+                                                  'slack_id' => $developer->slack_user_id,
+                                                  'channel_id' => $developer->userinfo['channel_id'],
+                                                  'workspace_id' => $developer->workspace_id
+                                              );
+                                          ?>
+                                          <div class="col-md-2">
+                                              <button class="btn btn-default select-developer" data-creds="{{json_encode($data)}}" value="{{$developer['username']}}">{{$developer['username']}}</button>
+                                              <span class="slack-status {{(($developer->status == 'active') ? 'active' : '')}}" data-slack_id="{{$developer->slack_user_id}}"></span>
+                                          </div>
+                                      @endif
                                       @endforeach
-                                  </select>
                               </div>
                           </div>
                           <div class="col-xs-12">
-                                  <div class="forum-block forum-massages wrapper">
-                                      <div class="table-div">
-                                          <div class="table-cell w-100-px"><img width="80" height="80" class="img-circle" src="{{ URL::to('/') }}/image/user_temp.jpg"></div>
-                                          <div class="table-cell info-div">
-                                              <span class="first-name">test</span>
-                                              <span class="reply-time">test</span>
-                                              <p class="info-txt">test</p>
+                              <h2 id="current_developer"></h2>
+                          </div>
+                          <div class="col-xs-12 messaging-block" data-photo="{{ URL::to('/') }}/image/user_temp.jpg">
+                                  <div class="forum-block slack-massages wrapper">
+
+                                  </div>
+                          </div>
+                          <div class="col-md-12" style="margin-top: 15px">
+                              <div class="row clearfix">
+                                  <div class="col-xs-10">
+                                      <div class="form-group form-float">
+                                          <div class="form-line">
+                                              <input type="text" class="form-control" name="message" id="slack-message" value="">
+                                              <label class="form-label">Message</label>
                                           </div>
                                       </div>
                                   </div>
-
-                                  <form id="forumreply" class="form-horizontal" role="form" method="POST" action="/forum-master/add-forum-answer">
-                                      {{ csrf_field() }}
-                                      <div class="forum-block forum-reply">
-                                          <div class="table-div">
-                                              <div class="table-cell w-100-px"><img width="80" height="80" class="img-circle" src="{{ URL::to('/') }}/image/user_temp.jpg"></div>
-                                              <input type="hidden" name="userid" value="{{Auth::user()->id}}">
-                                              <input type="hidden" name="forum_mid" value="">
-                                              <div class="table-cell info-div-answer">
-                                                  <textarea rows="6" cols="80" class="forum_answer_textarea" form="forumreply" name="answer" placeholder="Write a Reply..." required></textarea>
-                                                  <button type="submit" class="btn btn-send pull-right">Send <i class="glyphicon glyphicon-send"></i> </button>
-                                              </div>
-
-                                          </div>
-
-                                      </div>
-                                  </form>
+                                  <div class="col-xs-2">
+                                      <button class="btn btn-primary waves-effect" id="send-message">Send</button>
+                                  </div>
+                              </div>
                           </div>
                       </div>
                   </div>
               </div>
+          <div class="loading-block display-none">
+          </div>
           </div>
       </div>
   </div> 

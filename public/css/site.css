@@ -110,3 +110,51 @@
 .form-group .form-line .form-label.posted_date{
     top: -5px;
 }
+
+.select-developer.active{
+    background-color: #2196F3 !important;
+}
+
+.slack-status.active{
+    background-color: #4dac86 !important;
+}
+
+.slack-status{
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid #4dac86;
+    display: inline-block;
+}
+
+.messaging-block {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    padding: 5px;
+}
+.slack-massages{
+    height: 400px;
+    overflow-x: auto;
+}
+
+.loading-block{
+    background-color: #f1f3fa;
+    height: 100%;
+    width: 100%;
+    opacity: 0.7;
+    position: absolute;
+    left: 0;
+    top:0;
+}
+
+.display-none{
+    display: none;
+}
+
+.loading-block .fa-spinner{
+   width: 100px;
+    height: 100px;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+}

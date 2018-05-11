@@ -87,7 +87,8 @@ class SlackWorkSpaceController extends Controller
                     'token' => $request['token'],
                     'workspace_id' => $responce['team']['id'],
                     'name' => $responce['team']['name'],
-                    'domain' => $responce['team']['domain']
+                    'domain' => $responce['team']['domain'],
+                    'id_' => $request['id_']
                 ]);
             }else{
                 $data = array(
@@ -162,7 +163,8 @@ class SlackWorkSpaceController extends Controller
                     'token' => $request['token'],
                     'workspace_id' => $responce['team']['id'],
                     'name' => $responce['team']['name'],
-                    'domain' => $responce['team']['domain']
+                    'domain' => $responce['team']['domain'],
+                    'id_' => $request['id_']
                 ]);
             }else{
                 $data = array(

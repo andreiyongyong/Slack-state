@@ -26,6 +26,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="id_" id="id_" value="{{ $workspace->id_ }}" required>
+                                            <label class="form-label">ID</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <button class="btn btn-primary waves-effect" type="submit">Update</button>
                         </div>

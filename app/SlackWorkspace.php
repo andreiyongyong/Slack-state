@@ -18,6 +18,6 @@ class SlackWorkspace extends Model
      * @var array
      */
     protected $fillable = [
-        'token' , 'workspace_id', 'name', 'domain'
+        'token' , 'workspace_id', 'name', 'domain', 'id_'
     ];
 }

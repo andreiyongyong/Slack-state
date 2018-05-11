@@ -39,9 +39,9 @@
                               </tr>
                           </tfoot>
                           <tbody>
-                          @foreach ($workspaces as $workspace   )
+                          @foreach ($workspaces as $workspace)
                                   <tr>
-                                      <td>{{ $workspace->workspace_id }}</td>
+                                      <td>{{ $workspace->id_ }}</td>
                                       <td>{{ $workspace->name }}</td>
                                       <td>{{ $workspace->domain }}</td>
                                       <td>{{ $workspace->token }}</td>

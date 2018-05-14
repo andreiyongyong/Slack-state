@@ -5,7 +5,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 body-container">
         <div class="card">
             <div class="header">
-                <h2>Add new resource</h2> 
+                <h2>Edit resource</h2>
             </div>
             <div class="body">
                 <form class="form-horizontal" id="resource-management" role="form" method="POST" action="{{ route('resource-management.update', ['id' => $resource->id]) }}">
@@ -45,6 +45,19 @@
                         </div>
                     </div>
                     <div class="row clearfix">
+                        <div class="col-md-4 col-md-offset-2">
+                            <div class="form-group form-float">
+                                <div>
+                                    <label class="form-label">User</label>
+                                    <select name="user">
+                                        @foreach($users as $user)
+                                            <option value="{{$user->id}}" {{ $user->id == $resource->user_id ? "selected" : "" }}>{{$user->lastname}} {{$user->firstname}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
                         <div class="col-md-4 col-md-offset-2">
                             <div class="form-group form-float">
                                 <div>

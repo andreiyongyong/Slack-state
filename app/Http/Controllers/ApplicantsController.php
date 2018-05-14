@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\UserInfo;
 use App\SlackWorkspace;
+use \Lisennk\Laravel\SlackWebApi\SlackApi;
+use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 
 class ApplicantsController extends Controller
 {
@@ -70,6 +72,24 @@ class ApplicantsController extends Controller
 
         $image->move($destinationPath, $input['imagename']);
 
+        $slack_user_id = '';
+        if($request['workspace'] != ''){
+            try {
+                $api = new SlackApi(SlackWorkspace::find($request['workspace'])->token);
+
+                $response = $api->execute('users.list');
+                foreach ($response['members'] as $member) {
+                    if (isset($member['profile']['email']) && $member['profile']['email'] == $request['email']) {
+                        $slack_user_id = $member['id'];
+                        break;
+                    }
+                }
+            } catch (SlackApiException $e) {
+                $slack_user_id = '';
+            }
+        }
+
+
         $last_inserted_id = User::create([
             'username' => $request['username'],
             'email' => $request['email'],
@@ -79,8 +99,8 @@ class ApplicantsController extends Controller
             'type' => $request['type'],
             'level' => $request['level'],
             'image' => $input['imagename'],
-            'slack_user_id'=> '',
-            'workspace_id'=> ''
+            'slack_user_id'=> $slack_user_id,
+            'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace']
         ])->id;
         UserInfo::create([
             'user_id' => $last_inserted_id,
@@ -94,7 +114,7 @@ class ApplicantsController extends Controller
             'approved' => $request['approved'] ,
             'time_doctor_email' => $request['time_doctor_email'] ,
             'time_doctor_password' => $request['time_doctor_password'],
-            'channel_id' => $request['channel_id']
+            'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id']
         ]);
         return redirect()->intended('/applicants');
     }
@@ -150,13 +170,32 @@ class ApplicantsController extends Controller
             $image->move($destinationPath, $input['imagename']);
         }
 
+        $slack_user_id = '';
+        if($request['workspace'] != ''){
+            try {
+                $api = new SlackApi(SlackWorkspace::find($request['workspace'])->token);
+                $user = User::find($id);
+                $response = $api->execute('users.list');
+                foreach ($response['members'] as $member) {
+                    if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
+                        $slack_user_id = $member['id'];
+                        break;
+                    }
+                }
+            } catch (SlackApiException $e) {
+                $slack_user_id = '';
+            }
+        }
+
         $input = [
             'username' => $request['username'],
             'firstname' => $request['firstname'],
             'lastname' => $request['lastname'],
             'type' => $request['type'],
             'level' => $request['level'],
-            'image' => ''
+            'image' => '',
+            'workspace_id' => $request['workspace'] === null ? '' : $request['workspace'],
+            'slack_user_id' => $slack_user_id
         ];
         $input_info = [
             'stack' => $request['stack'] ,

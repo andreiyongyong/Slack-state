@@ -46,6 +46,19 @@
                         <div class="col-md-4 col-md-offset-2">
                             <div class="form-group form-float">
                                 <div>
+                                    <label class="form-label">User</label>
+                                    <select name="user">
+                                        @foreach($users as $user)
+                                            <option value="{{$user->id}}" >{{$user->lastname}} {{$user->firstname}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-md-offset-2">
+                            <div class="form-group form-float">
+                                <div>
                                     <label class="form-label">Type</label>
                                     <select name="type">
                                         <option value="2">Developer</option>

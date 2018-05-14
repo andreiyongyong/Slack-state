@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ResourceManagement;
+use App\User;
 use Illuminate\Http\Request;
 
 class ResourceManagementController extends Controller
@@ -15,8 +16,9 @@ class ResourceManagementController extends Controller
     public function index()
     {
         $resources = ResourceManagement::paginate(5);
+        $users = User::get();
 
-        return view('resources-mgmt/index', ['resources' => $resources]);
+        return view('resources-mgmt/index', ['resources' => $resources, 'users' => $users]);
     }
 
     /**
@@ -26,7 +28,8 @@ class ResourceManagementController extends Controller
      */
     public function create()
     {
-        return view('resources-mgmt/create');
+        $users = User::get();
+        return view('resources-mgmt/create', ['users' => $users]);
     }
 
     /**
@@ -43,7 +46,8 @@ class ResourceManagementController extends Controller
             'url' => $request['url'],
             'content' => $request['content'],
             'type' => $request['type'],
-            'level' => $request['level']
+            'level' => $request['level'],
+            'user_id' => $request['user']
         ]);
 
         return redirect()->intended('/resource-management');
@@ -69,12 +73,14 @@ class ResourceManagementController extends Controller
     public function edit($id)
     {
         $resource = ResourceManagement::find($id);
+
+        $users = User::get();
         // Redirect to user list if updating user wasn't existed
         if ($resource == null || $resource->count() == 0) {
             return redirect()->intended('/resource-management');
         }
 
-        return view('resources-mgmt/edit', ['resource' => $resource]);
+        return view('resources-mgmt/edit', ['resource' => $resource, 'users' => $users]);
     }
 
     /**
@@ -99,7 +105,8 @@ class ResourceManagementController extends Controller
             'url' => $request['url'],
             'content' => $request['content'],
             'type' => $request['type'],
-            'level' => $request['level']
+            'level' => $request['level'],
+            'user_id' => $request['user']
         ];
 //        $this->validate($input, $constraints);
         ResourceManagement::where('id', $id)

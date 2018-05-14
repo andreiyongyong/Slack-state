@@ -49,8 +49,13 @@ class SlackController extends Controller
 
                     $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
                     $result = $api->execute('users.getPresence', ['user' => $responce['user']['id']]);
-                    
-                    $data['response'][] = array_merge($responce['user'], array('presence' => $result['presence'], 'avatar'=>isset($responce['user']['profile']['image_original']) ? $responce['user']['profile']['image_original'] : ''));
+                    $data['response'][] = array_merge($responce['user'], array(
+                        'presence' => $result['presence'], 
+                        'avatar'=>isset($responce['user']['profile']['image_original']) ? $responce['user']['profile']['image_original'] : '',
+                        'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
+                            ? $responce['user']['profile']['display_name'] : $responce['user']['real_name']
+                        )
+                    );
                 }
             }
 

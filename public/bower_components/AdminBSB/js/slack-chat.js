@@ -83,7 +83,7 @@ var slackChat = function () {
                   success: function (response) {
                       instance.renderMessaging();
                       $('#slack-message').val('');
-                      instance.toggleLoader(false);
+                      $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
                   }
               });
           });

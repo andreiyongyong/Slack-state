@@ -36,6 +36,7 @@ class SlackChatController extends Controller
         }])->where('slack_user_id','<>' ,'')
             ->where('workspace_id', '<>','')
             ->where('type', '=',2)
+            ->where('level', '=',11)
             ->get();
 
         foreach ($data['developers'] as $key => $developer){

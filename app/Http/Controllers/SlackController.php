@@ -28,11 +28,7 @@ class SlackController extends Controller
      */
     public function index()
     {
-        $data = array(
-            'error' => false,
-            'message' => '',
-            'response' => []
-        );
+        $data = [];
         try {
 
             $users = User::with(['userinfo' => function($query){
@@ -41,7 +37,7 @@ class SlackController extends Controller
                 ->where('workspace_id', '<>','')
                 ->where('type', '=',2)
                 ->where('level', '=',11)
-                ->get();;
+                ->paginate(100);
             
             foreach ($users as $user){
                 $token = SlackWorkspace::find($user->workspace_id)->token;
@@ -49,7 +45,7 @@ class SlackController extends Controller
                 $api = new SlackApi($token);
 
                 $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
-                $data['response'][] = array_merge($responce['user'], array(
+                $data[] = array_merge($responce['user'], array(
                         'avatar'=>$responce['user']['profile']['image_512'],
                         'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
                             ? $responce['user']['profile']['display_name'] : $responce['user']['real_name']
@@ -58,11 +54,7 @@ class SlackController extends Controller
             }
 
         } catch (SlackApiException $e) {
-            $data = array(
-                'error' => true,
-                'message' => $e->getMessage(),
-                'response' => []
-            );
+
         }
         return view('slack/index', ['data' => $data]);
     }

@@ -85,13 +85,26 @@
                                 <div class="col-md-2"><input type="file" name="image"/></div>
                             </div>
                             <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="">
                                             <label class="form-label">Stack</label>
                                             <select name="stack" id="stack">
                                                 @foreach($workspaces as $workspace)
                                                     <option value="{{$workspace->id_}}" {{(($user->userinfo['stack'] == $workspace->id_) ? 'selected' : '')}}>{{$workspace->id_}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="">
+                                            <label class="form-label">Project</label>
+                                            <select name="project" id="project">
+                                                <option value=" "></option>
+                                                @foreach($projects as $project)
+                                                    <option value="{{$project->id}}" {{(($user->userinfo['project_id'] == $project->id) ? 'selected' : '')}}>{{$project->p_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

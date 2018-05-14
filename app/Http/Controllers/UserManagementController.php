@@ -9,6 +9,7 @@ use App\UserInfo;
 use App\SlackWorkspace;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
+use App\Project;
 
 class UserManagementController extends Controller
 {
@@ -64,12 +65,13 @@ class UserManagementController extends Controller
     {
         $user = User::with('userinfo')->find($id);
         $workspaces = SlackWorkspace::get();
+        $projects = Project::get();
         // Redirect to user list if updating user wasn't existed
         if ($user == null || $user->count() == 0) {
             return redirect()->intended('/user-management');
         }
 
-        return view('users-mgmt/edit', ['user' => $user, 'workspaces' => $workspaces]);
+        return view('users-mgmt/edit', ['user' => $user, 'workspaces' => $workspaces, 'projects' => $projects]);
     }
 
     /**
@@ -132,7 +134,8 @@ class UserManagementController extends Controller
             'approved' => isset($request['approved']) ? 1 : 0 ,
             'time_doctor_email' => $request['time_doctor_email'] ,
             'time_doctor_password' => $request['time_doctor_password'],
-            'channel_id' => $request['channel_id']
+            'channel_id' => $request['channel_id'],
+            'project_id'=> $request['project'] === null ? '' : $request['project']
         ];
         if ($request['password'] != null && strlen($request['password']) > 0) {
             $constraints['password'] = 'required|min:6|confirmed';

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSlackChannelFieldToUserinfoTable extends Migration
+class AddProjectIdFieldToUserInfosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddSlackChannelFieldToUserinfoTable extends Migration
     public function up()
     {
         Schema::table('user_infos', function (Blueprint $table) {
-            $table->string('channel_id', 255);
+            $table->string('project_id', 255);
         });
     }
 
@@ -26,7 +26,7 @@ class AddSlackChannelFieldToUserinfoTable extends Migration
     public function down()
     {
         Schema::table('user_infos', function (Blueprint $table) {
-            $table->dropColumn('channel_id');
+            $table->dropColumn('project_id');
         });
     }
 }

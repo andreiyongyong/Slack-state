@@ -97,6 +97,19 @@
                                         </div> 
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="">
+                                            <label class="form-label">Project</label>
+                                            <select name="project" id="project">
+                                                <option value=" "></option>
+                                                @foreach($projects as $project)
+                                                    <option value="{{$project->id}}">{{$project->p_name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>  
                             <div class="row clearfix">
                                 <div class="col-md-6">

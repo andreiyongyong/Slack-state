@@ -18,17 +18,19 @@
                           <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-statuses dataTable">
                               <thead>
                               <tr>
+                                  <th>Workspace Id</th>
+                                  <th>Project</th>
                                   <th>STATUS</th>
                                   <th>NAME</th>
-                                  <th>AVATAR</th>
                               </tr>
                               </thead>
                               <tbody>
                               @foreach($data as $user)
                                   <tr>
+                                      <td>{{$user['workspace_id']}}</td>
+                                      <th>{{$user['project']}}</th>
                                       <td><span data-slack_id="{{$user['id']}}" class="slack-status"></span></td>
-                                      <td>{{$user['display_name']}}</td>
-                                      <td><img width="30" height="30" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}"></td>
+                                      <td><img width="60" height="60" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}"> {{$user['display_name']}}</td>
                                   </tr>
                               @endforeach
                               </tbody>

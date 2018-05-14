@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 use App\User;
+use App\Project;
 
 class SlackController extends Controller
 {
@@ -43,12 +44,14 @@ class SlackController extends Controller
                 $token = SlackWorkspace::find($user->workspace_id)->token;
 
                 $api = new SlackApi($token);
-
+                $project = Project::find($user->userinfo['project_id']);
                 $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
                 $data[] = array_merge($responce['user'], array(
                         'avatar'=>$responce['user']['profile']['image_512'],
                         'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
-                            ? $responce['user']['profile']['display_name'] : $responce['user']['real_name']
+                            ? $responce['user']['profile']['display_name'] : $responce['user']['real_name'],
+                        'workspace_id' => $user->workspace_id,
+                        'project' => $project !== null ? $project->p_name : ''
                     )
                 );
             }

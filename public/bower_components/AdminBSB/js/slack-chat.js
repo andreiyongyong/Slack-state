@@ -106,7 +106,7 @@ var slackChat = function () {
 
                 $.each(response.data, function (index, message) {
 
-                    var avatar = ('user' in message && 'image_original' in message.user.profile) ? message.user.profile.image_original : $('.messaging-block').attr('data-photo');
+                    var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
                     var display_name = ('user' in message) ? message.user.profile.real_name : '';
 
                     $('.messaging-block .slack-massages').append(''+

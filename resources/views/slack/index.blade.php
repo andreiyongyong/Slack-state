@@ -58,7 +58,7 @@
                                   <tbody>
                                       @foreach($data['response'] as $user)
                                           <tr>
-                                              <td><span class="{{($user['presence'] == 'active' ? 'st-active' : 'st-away')}}"></span></td>
+                                              <td><span data-slack_id="{{$user['id']}}" class="slack-status"></span></td>
                                               <td>{{$user['display_name']}}</td>
                                               <td><img width="30" height="30" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}"></td>
                                           </tr>

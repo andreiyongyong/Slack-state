@@ -85,7 +85,7 @@
                                 <div class="col-md-2"><input type="file" name="image"/></div>
                             </div>
                             <div class="row clearfix">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group form-float">
                                         <div class="">
                                             <label class="form-label">Stack</label>
@@ -97,15 +97,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="channel_id" id="channel_id" value="{{ $user->userinfo['channel_id']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Channel Id</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  
+                            </div>
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
@@ -212,8 +204,33 @@
                                         <div class="help-info"> Max. 200 characters</div>
                                     </div>
                                 </div>
-                            </div>     
-                                
+                            </div>
+                            <div class="row clearfix">
+                                <div class="cal-xs-12">
+                                    <h4 style="margin-left: 20px;">Slack Options</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="">
+                                            <label class="form-label">Workspace</label>
+                                            <select name="workspace" id="workspace">
+                                                <option value=" "></option>
+                                                @foreach($workspaces as $workspace)
+                                                    <option value="{{$workspace->id}}" {{(($user->workspace_id == $workspace->id) ? 'selected' : '')}}>{{$workspace->name}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="channel_id" id="channel_id" value="{{ $user->userinfo['channel_id']  }}"  min="1" max="100" required>
+                                            <label class="form-label">Channel Id</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <button class="btn btn-primary waves-effect" type="submit">Update</button>
                         </div> 
                     </div>  

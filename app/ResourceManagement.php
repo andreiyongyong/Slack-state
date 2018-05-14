@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ResourceManagement extends Model
 {
-    protected $table = 'resources-management';
-    protected $fillable = ['title', 'url', 'content','type','level'];
+    protected $table = 'resources';
+    protected $fillable = ['title', 'url', 'content','type','level','user_id'];
 }

@@ -471,6 +471,30 @@ $(document).ready(function () {
         });
     }
 
+    $.ajax({
+        type: 'post',
+        url: '/update-status-slack',
+        success: function (response) {
+            $.each(response.data, function (key, status) {
+                var active = (status == 'active') ? true : false;
+                $('.slack-status[data-slack_id="' + key + '"]').toggleClass('active', active);
+            });
+        }
+    });
+
+    setInterval(function () {
+        $.ajax({
+            type: 'post',
+            url: '/update-status-slack',
+            success: function (response) {
+                $.each(response.data, function (key, status) {
+                    var active = (status == 'active') ? true : false;
+                    $('.slack-status[data-slack_id="' + key + '"]').toggleClass('active', active);
+                });
+            }
+        });
+    }, 20000);
+
     setInterval(function () {
         $.ajax( {
             type: 'get',

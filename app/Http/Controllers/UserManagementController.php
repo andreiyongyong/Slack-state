@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\UserInfo;
 use App\SlackWorkspace;
+use \Lisennk\Laravel\SlackWebApi\SlackApi;
+use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 
 class UserManagementController extends Controller
 {
@@ -92,13 +94,32 @@ class UserManagementController extends Controller
             $image->move($destinationPath, $input['imagename']);
         }
 
+        $slack_user_id = '';
+        if($request['workspace'] != ''){
+            try {
+                $api = new SlackApi(SlackWorkspace::find($request['workspace'])->token);
+                $user = User::find($id);
+                $response = $api->execute('users.list');
+                foreach ($response['members'] as $member) {
+                        if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
+                            $slack_user_id = $member['id'];
+                            break;
+                        }
+                }
+            } catch (SlackApiException $e) {
+                $slack_user_id = '';
+            }
+        }
+
         $input = [
             'username' => $request['username'],
             'firstname' => $request['firstname'],
             'lastname' => $request['lastname'],
             'type' => $request['type'],
             'level' => $request['level'],
-            'image' => ''
+            'image' => '',
+            'workspace_id' => $request['workspace'] === null ? '' : $request['workspace'],
+            'slack_user_id' => $slack_user_id
         ];
         $input_info = [
             'stack' => $request['stack'] ,

@@ -16,12 +16,8 @@ class SlackController extends Controller
      * @return void
      */
 
-    private $slackApi;
-
     public function __construct()
     {
-        $this->slackApi = new SlackApi(env('SLACK_API_TOKEN'));
-
         $this->middleware('auth');
     }
 
@@ -39,24 +35,26 @@ class SlackController extends Controller
         );
         try {
 
-            $users = User::get();
+            $users = User::with(['userinfo' => function($query){
+                $query->where('channel_id','<>', '');
+            }])->where('slack_user_id','<>' ,'')
+                ->where('workspace_id', '<>','')
+                ->where('type', '=',2)
+                ->where('level', '=',11)
+                ->get();;
             
             foreach ($users as $user){
-                if($user->workspace_id != '' && $user->slack_user_id != ''){
-                    $token = SlackWorkspace::find($user->workspace_id)->token;
-                   
-                    $api = new SlackApi($token);
+                $token = SlackWorkspace::find($user->workspace_id)->token;
 
-                    $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
-                    $result = $api->execute('users.getPresence', ['user' => $responce['user']['id']]);
-                    $data['response'][] = array_merge($responce['user'], array(
-                        'presence' => $result['presence'], 
-                        'avatar'=>isset($responce['user']['profile']['image_original']) ? $responce['user']['profile']['image_original'] : '',
+                $api = new SlackApi($token);
+
+                $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
+                $data['response'][] = array_merge($responce['user'], array(
+                        'avatar'=>$responce['user']['profile']['image_512'],
                         'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
                             ? $responce['user']['profile']['display_name'] : $responce['user']['real_name']
-                        )
-                    );
-                }
+                    )
+                );
             }
 
         } catch (SlackApiException $e) {
@@ -67,6 +65,33 @@ class SlackController extends Controller
             );
         }
         return view('slack/index', ['data' => $data]);
+    }
+
+    public function updateUserStatuses_ajax(){
+
+        $developers = User::with(['userinfo' => function($query){
+            $query->where('channel_id','<>', '');
+        }])->where('slack_user_id','<>' ,'')
+            ->where('workspace_id', '<>','')
+            ->where('type', '=',2)
+            ->where('level', '=',11)
+            ->get();
+
+        $data = [];
+        foreach ($developers as $developer){
+            try {
+                $api = new SlackApi(SlackWorkspace::find($developer->workspace_id)->token);
+
+                $response = $api->execute('users.getPresence', ['user' => $developer->slack_user_id]);
+
+                if ($response['ok']) {
+                    $data[$developer->slack_user_id] = $response['presence'];
+                }
+            } catch (SlackApiException $e) {
+                return response()->json(['data' => $data]);
+            }
+        }
+        return response()->json(['data' => $data]);
     }
 
     public function sendMessage(Request $request){
@@ -125,7 +150,7 @@ class SlackController extends Controller
                     $presence = $api->execute('users.getPresence',['user' => $member]);
                     $data[$channel['id']]['members'][] = array(
                         'name' => $user['user']['profile']['real_name'],
-                        'avatar' => isset($user['user']['profile']['image_original']) ? $user['user']['profile']['image_original'] : '',
+                        'avatar' => $user['user']['profile']['image_512'],
                         'status' => isset($presence['presence']) ? $presence['presence'] : 'away'
                     );
 
@@ -135,31 +160,4 @@ class SlackController extends Controller
 
         return $data;
     }
-
-    private function slackRequest($method, $params = [], $successMsg = ''){
-        $data = array(
-            'status'   => true,
-            'message'  => $successMsg,
-            'response' => []
-        );
-
-        try {
-            $response       = $this->slackApi->execute($method, $params);
-            $data['status'] = $response['ok'];
-
-            if ($response['ok']) {
-                unset($response['ok']);
-                $data['response'] = $response;
-            } else {
-                $data['message'] = $response['error'];
-            }
-
-        } catch (SlackApiException $e) {
-            $data['status'] = false;
-            $data['message'] = $e->getMessage();
-        }
-
-        return $data;
-    }
-
 }

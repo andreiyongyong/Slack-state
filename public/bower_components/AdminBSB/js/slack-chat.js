@@ -110,7 +110,7 @@ var slackChat = function () {
                     var display_name = ('user' in message) ? message.user.profile.real_name : '';
 
                     $('.messaging-block .slack-massages').append(''+
-                        '<div class="table-div"><div class="table-cell w-100-px"><img width="80" height="80" class="img-circle" src="'+ avatar +'"></div>'+
+                        '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="'+ avatar +'"></div>'+
                         '<div class="table-cell info-div"><span class="first-name">'+ display_name +'</span><span class="reply-time">'+message.ts+'</span><p class="info-txt">'+ message.text +'</p></div></div></div>');
                 });
 

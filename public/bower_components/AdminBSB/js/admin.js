@@ -502,23 +502,22 @@ $(document).ready(function () {
         } );
     }, 30000);
 
-    $('body').on('click', '.update-detail', function () {
-        var value = $(this).parent().parent().find('input[name="value"]').val();
-        var type   = $(this).parent().parent().find('input[name="type"]').val();
+    $('body').on('change', '.detial-type-change[name="type"]', function () {
+        var type = $(this).val();
+        if(type == 'file'){
+            $(this).closest('tr').find('.type-input').html('<input form="'+ $(this).attr('form') +'" type="file" name="value" required>');
+        }else{
+            $(this).closest('tr').find('.type-input').html('<input form="'+ $(this).attr('form') +'" type="text" name="value" value="" required>');
+        }
+    });
 
-        $.ajax({
-            type: 'post',
-            url: '/edit-detail',
-            data: {
-              id : $(this).attr('data-resource_id'),
-              key : $(this).attr('data-key'),
-              value : value,
-              type : type
-            },
-            success: function (data) {
-               window.location.href = "";
-            }
-        });
+    $('body').on('change', '.detial-type-change-add[name="type"]', function () {
+        var type = $(this).val();
+        if(type == 'file'){
+            $('.type-input-add').html('<input type="file" name="value" required>');
+        }else{
+            $('.type-input-add').html('<input type="text" name="value" value="" required>');
+        }
     });
 
 });

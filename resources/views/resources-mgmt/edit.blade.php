@@ -94,7 +94,6 @@
                     <div class="col-xs-12">
                         <form id="resource-management" class="form-horizontal" role="form" method="POST" action="{{ route('resource-management.addDetail') }}" enctype="multipart/form-data">
                             <input type="hidden" name="_id" value="{{$resource->id}}">
-                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             {{ csrf_field() }}
                             <div class="row clearfix">
                                 <div class="col-xs-12">
@@ -110,18 +109,23 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="value" id="url" value="{{ old('value') }}">
+                                        <div class="form-line type-input-add">
+                                            <input type="text" class="form-control" name="value" id="url" value="{{ old('value') }}" required>
                                             <label class="form-label">Value</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="type" id="url" value="{{ old('type') }}">
+                                        <div>
                                             <label class="form-label">Type</label>
+                                            <select name="type" class="detial-type-change-add" >
+                                                <option value="url">Url</option>
+                                                <option value="file">File</option>
+                                                <option value="text">Text</option>
+                                            </select>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -150,10 +154,29 @@
                                 @foreach ($details as $detail)
                                     <tr>
                                         <td>{{ $detail['key'] }}</td>
-                                        <td><input type="text" name="value" value="{{ $detail['value'] }}"></td>
-                                        <td><input type="text" name="type" value="{{ $detail['type'] }}"></td>
+                                        <td class="type-input">
+                                            @if($detail['type'] == 'file')
+                                                <input type="file" form="edit-form-{{$detail['id']}}" name="value" value="{{ $detail['value'] }}" required>
+                                            @else
+                                                <input type="text" form="edit-form-{{$detail['id']}}" name="value" value="{{ $detail['value'] }}" required>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="form-group form-float">
+                                                <select name="type" form="edit-form-{{$detail['id']}}" class="detial-type-change">
+                                                    <option value="url" {{ $detail['type'] == 'url' ? "selected" : "" }}>Url</option>
+                                                    <option value="file" {{ $detail['type'] == 'file' ? "selected" : "" }}>File</option>
+                                                    <option value="text" {{ $detail['type'] == 'text' ? "selected" : "" }}>Text</option>
+                                                </select>
+                                            </div>
+                                        </td>
                                         <td align = "center">
-                                            <a href="javascript:" class="btn btn-info update-detail waves-effect" data-key="{{$detail['key']}}" data-resource_id="{{$resource->id}}">Update</a>
+                                            <form id="edit-form-{{$detail['id']}}" method="post" action="{{route('resource-management.editDetail')}}"  enctype="multipart/form-data">
+                                                <input type="hidden" name="id" value="{{$resource->id}}">
+                                                <input type="hidden" name="key" value="{{$detail['key']}}">
+                                                {{ csrf_field() }}
+                                                <button type="submit" class="btn btn-info waves-effect" >Update</button>
+                                            </form>
 
                                             <a href="{{ url('/delete-detail/'.$detail['id']) }}" class="btn btn-danger waves-effect" onclick = "return confirm('Are you sure?')">Delete</a>
                                         </td>

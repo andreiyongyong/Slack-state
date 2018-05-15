@@ -120,7 +120,18 @@ class ResourceManagementController extends Controller
     {
         $id = $request['_id'];
 
-        ResourceDetails::update_resource_meta($id, $request['key'], $request['value'], $request['type']);
+        if($request['type'] == 'file'){
+            $image = $request->file('value');
+
+            $value = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/resources/files');
+
+            $image->move($destinationPath, $value);
+        } else {
+            $value = $request['value'];
+        }
+
+        ResourceDetails::update_resource_meta($id, $request['key'], $value, $request['type']);
 
         return redirect()->intended('/resource-management/'.$id.'/edit');
     }
@@ -135,7 +146,21 @@ class ResourceManagementController extends Controller
 
     public function editResourceDetail(Request $request)
     {
-        ResourceDetails::update_resource_meta($request['id'], $request['key'], $request['value'], $request['type']);
+
+        if($request['type'] == 'file'){
+            $image = $request->file('value');
+
+            $value = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/resources/files');
+
+            $image->move($destinationPath, $value);
+        } else {
+            $value = $request['value'];
+        }
+
+        ResourceDetails::update_resource_meta($request['id'], $request['key'], $value, $request['type']);
+
+        return redirect()->intended('/resource-management/'.$request['id'].'/edit');
     }
 
     /**

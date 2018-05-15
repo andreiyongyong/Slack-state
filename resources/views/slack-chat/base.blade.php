@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="block-header">
             <h2>
-              Messaging
+              Slack Messaging
             </h2>
         </div> 
         @yield('action-content') 

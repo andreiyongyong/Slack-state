@@ -7,15 +7,10 @@
   <div class="row clearfix">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 body-container">
           <div class="card">
-              <div class="header">
-                  <h2>
-                      Slack
-                  </h2>
-              </div>
               <div class="body" style="position: relative">
                   <div class="row clearfix">
-                      <div class="col-xs-12">
-                          <div class="col-xs-12">
+                      <div class="col-xs-12 m-b-2-px">
+                          <div class="col-xs-12 m-b-2-px">
                               <div class="form-group form-float">
                                       @foreach($data['developers'] as $developer)
                                       @if($developer->userinfo !== null)
@@ -35,17 +30,17 @@
                                       @endforeach
                               </div>
                           </div>
-                          <div class="col-xs-12">
-                              <h2 id="current_developer"></h2>
+                          <div class="col-xs-12 m-b-2-px">
+                              <h4 id="current_developer"></h4>
                           </div>
                           <div class="col-xs-12 messaging-block" data-photo="{{ URL::to('/') }}/image/user_temp.jpg">
                                   <div class="forum-block slack-massages wrapper">
 
                                   </div>
                           </div>
-                          <div class="col-md-12" style="margin-top: 15px">
+                          <div class="col-md-12 m-b-2-px" style="margin-top: 15px;">
                               <div class="row clearfix">
-                                  <div class="col-xs-10">
+                                  <div class="col-xs-11 m-b-2-px">
                                       <div class="form-group form-float">
                                           <div class="form-line">
                                               <input type="text" class="form-control" name="message" id="slack-message" value="">
@@ -53,7 +48,7 @@
                                           </div>
                                       </div>
                                   </div>
-                                  <div class="col-xs-2">
+                                  <div class="col-xs-1 m-b-2-px">
                                       <button class="btn btn-primary waves-effect" id="send-message">Send</button>
                                   </div>
                               </div>

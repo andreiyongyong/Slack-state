@@ -133,7 +133,7 @@
     padding: 5px;
 }
 .slack-massages{
-    height: 400px;
+    height: 600px;
     overflow-x: auto;
 }
 
@@ -157,4 +157,44 @@
     left: 50%;
     top:50%;
     transform: translate(-50%,-50%);
+}
+
+.w-60-px {
+    width: 60px;
+    position: relative;
+}
+
+.slack-massages.forum-block .info-div, .slack-massages .info-div-answer{
+    padding: 10px 15px !important;
+}
+
+.slack-massages.forum-block .first-name {
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.slack-massages.forum-block .reply-time {
+    font-size: 12px;
+}
+
+.slack-massages.forum-block .info-txt {
+    margin: 10px 0 0;
+    font-size: 12px;
+}
+
+.slack-massages.forum-block .table-div {
+    padding: 10px;
+}
+
+.m-b-2-px{
+    margin-bottom: 2px !important;
+}
+
+.slack-massages.forum-block:before {
+    display: none;
+}
+
+.slack-massages.forum-block .info-div:before {
+    left: -13px;
+    top: 7px;
 }

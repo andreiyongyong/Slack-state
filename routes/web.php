@@ -62,3 +62,8 @@ Route::post('/send-slack-message', 'SlackChatController@sendSlackMessage_ajax')-
 Route::post('/update-status-slack', 'SlackController@updateUserStatuses_ajax')->name('slack.updateUserStatuses');
 
 
+Route::post('/edit-detail', 'ResourceManagementController@editResourceDetail')->name('resource-management.editDetail');
+Route::post('/add-detail', 'ResourceManagementController@addResourceDetail')->name('resource-management.addDetail');
+Route::get('/delete-detail/{id}', 'ResourceManagementController@deleteResourceDetail')->name('resource-management.deleteDetail');
+
+

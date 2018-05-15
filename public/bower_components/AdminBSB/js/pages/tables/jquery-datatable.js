@@ -5,7 +5,15 @@ $(function () {
 
     $('.js-basic-statuses').DataTable({
         responsive: true,
-        "bLengthChange" : false
+        bLengthChange : false
+    });
+
+    $('.js-resources-metas').DataTable({
+        responsive: true,
+        bLengthChange : false,
+        searching: false,
+        paging: false,
+        "bInfo": false
     });
 
     //Exportable table

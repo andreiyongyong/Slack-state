@@ -501,4 +501,24 @@ $(document).ready(function () {
             url: '/updateusers_cron'
         } );
     }, 30000);
+
+    $('body').on('click', '.update-detail', function () {
+        var value = $(this).parent().parent().find('input[name="value"]').val();
+        var type   = $(this).parent().parent().find('input[name="type"]').val();
+
+        $.ajax({
+            type: 'post',
+            url: '/edit-detail',
+            data: {
+              id : $(this).attr('data-resource_id'),
+              key : $(this).attr('data-key'),
+              value : value,
+              type : type
+            },
+            success: function (data) {
+               window.location.href = "";
+            }
+        });
+    });
+
 });

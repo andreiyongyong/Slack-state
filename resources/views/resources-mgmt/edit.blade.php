@@ -87,6 +87,83 @@
                     </div>
                     <button class="btn btn-primary waves-effect" type="submit">Update</button>
                 </form>
+                <div class="row clearfix" style="margin-top: 20px">
+                    <div class="col-xs-12">
+                        <h3> Resource Details </h3>
+                    </div>
+                    <div class="col-xs-12">
+                        <form id="resource-management" class="form-horizontal" role="form" method="POST" action="{{ route('resource-management.addDetail') }}" enctype="multipart/form-data">
+                            <input type="hidden" name="_id" value="{{$resource->id}}">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            {{ csrf_field() }}
+                            <div class="row clearfix">
+                                <div class="col-xs-12">
+                                    <h5> Add Details </h5>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="key" id="title" value="{{ old('key') }}" required>
+                                            <label class="form-label">Key</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="value" id="url" value="{{ old('value') }}">
+                                            <label class="form-label">Value</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="type" id="url" value="{{ old('type') }}">
+                                            <label class="form-label">Type</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-primary " type="submit">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="row clearfix">
+                            <div class="col-xs-12">
+                                <h5> Details List </h5>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-resources-metas dataTable">
+                                <thead>
+                                <tr>
+                                    <th>KEY</th>
+                                    <th>VALUE</th>
+                                    <th>TYPE</th>
+                                    <th>ACTION</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($details as $detail)
+                                    <tr>
+                                        <td>{{ $detail['key'] }}</td>
+                                        <td><input type="text" name="value" value="{{ $detail['value'] }}"></td>
+                                        <td><input type="text" name="type" value="{{ $detail['type'] }}"></td>
+                                        <td align = "center">
+                                            <a href="javascript:" class="btn btn-info update-detail waves-effect" data-key="{{$detail['key']}}" data-resource_id="{{$resource->id}}">Update</a>
+
+                                            <a href="{{ url('/delete-detail/'.$detail['id']) }}" class="btn btn-danger waves-effect" onclick = "return confirm('Are you sure?')">Delete</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

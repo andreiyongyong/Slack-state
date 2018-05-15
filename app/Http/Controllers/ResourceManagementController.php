@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ResourceManagement;
 use App\User;
 use Illuminate\Http\Request;
+use App\ResourceDetails;
 
 class ResourceManagementController extends Controller
 {
@@ -73,14 +74,14 @@ class ResourceManagementController extends Controller
     public function edit($id)
     {
         $resource = ResourceManagement::find($id);
-
+        $resource_details = ResourceDetails::get_metas_by_resource_id($id);
         $users = User::get();
         // Redirect to user list if updating user wasn't existed
         if ($resource == null || $resource->count() == 0) {
             return redirect()->intended('/resource-management');
         }
 
-        return view('resources-mgmt/edit', ['resource' => $resource, 'users' => $users]);
+        return view('resources-mgmt/edit', ['resource' => $resource, 'users' => $users, 'details' => $resource_details === null ? [] : $resource_details]);
     }
 
     /**
@@ -113,6 +114,28 @@ class ResourceManagementController extends Controller
             ->update($input);
 
         return redirect()->intended('/resource-management');
+    }
+
+    public function addResourceDetail(Request $request)
+    {
+        $id = $request['_id'];
+
+        ResourceDetails::update_resource_meta($id, $request['key'], $request['value'], $request['type']);
+
+        return redirect()->intended('/resource-management/'.$id.'/edit');
+    }
+
+    public function deleteResourceDetail($id)
+    {
+        $detail = ResourceDetails::find($id);
+        ResourceDetails::where('id', $id)->delete();
+
+        return redirect()->intended('/resource-management/'.$detail->resource_id.'/edit');
+    }
+
+    public function editResourceDetail(Request $request)
+    {
+        ResourceDetails::update_resource_meta($request['id'], $request['key'], $request['value'], $request['type']);
     }
 
     /**

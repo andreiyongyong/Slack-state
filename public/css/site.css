@@ -198,3 +198,37 @@
     left: -13px;
     top: 7px;
 }
+
+#origin
+{
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 700px;
+    width: 100%;
+}
+
+#origin img, #drop img {
+    margin-top: 3px;
+    margin-left: 5px;
+}
+
+#drop
+{
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+    padding: 5px;
+    min-height: 700px;
+    width: 100%;
+}
+.draggable
+{
+    border: solid 2px gray;
+}
+
+.resource-block{
+    width: 150px;
+    padding: 5px;
+    height: 100px;
+    display: inline-block;
+}

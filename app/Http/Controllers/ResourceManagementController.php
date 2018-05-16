@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Project;
 use App\ResourceManagement;
 use App\User;
 use Illuminate\Http\Request;
@@ -17,9 +18,7 @@ class ResourceManagementController extends Controller
     public function index()
     {
         $resources = ResourceManagement::paginate(5);
-        $users = User::get();
-
-        return view('resources-mgmt/index', ['resources' => $resources, 'users' => $users]);
+        return view('resources-mgmt/index', ['resources' => $resources]);
     }
 
     /**
@@ -29,8 +28,8 @@ class ResourceManagementController extends Controller
      */
     public function create()
     {
-        $users = User::get();
-        return view('resources-mgmt/create', ['users' => $users]);
+        $projects = Project::get();
+        return view('resources-mgmt/create', ['projects' => $projects]);
     }
 
     /**
@@ -48,7 +47,8 @@ class ResourceManagementController extends Controller
             'content' => $request['content'],
             'type' => $request['type'],
             'level' => $request['level'],
-            'user_id' => $request['user']
+            'project_id' => $request['project'],
+            'user_id' => -1
         ]);
 
         return redirect()->intended('/resource-management');
@@ -75,13 +75,13 @@ class ResourceManagementController extends Controller
     {
         $resource = ResourceManagement::find($id);
         $resource_details = ResourceDetails::get_metas_by_resource_id($id);
-        $users = User::get();
-        // Redirect to user list if updating user wasn't existed
+        $projects = Project::get();
+
         if ($resource == null || $resource->count() == 0) {
             return redirect()->intended('/resource-management');
         }
 
-        return view('resources-mgmt/edit', ['resource' => $resource, 'users' => $users, 'details' => $resource_details === null ? [] : $resource_details]);
+        return view('resources-mgmt/edit', ['resource' => $resource, 'projects' => $projects, 'details' => $resource_details === null ? [] : $resource_details]);
     }
 
     /**
@@ -107,7 +107,7 @@ class ResourceManagementController extends Controller
             'content' => $request['content'],
             'type' => $request['type'],
             'level' => $request['level'],
-            'user_id' => $request['user']
+            'project_id' => $request['project']
         ];
 //        $this->validate($input, $constraints);
         ResourceManagement::where('id', $id)

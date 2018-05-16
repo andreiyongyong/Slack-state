@@ -203,9 +203,9 @@
     <script src="{{ asset ("/bower_components/AdminBSB/js/demo.js") }}"></script>  
 
 
-    <script src="{{ asset ("/js/jquery.form.js") }}"></script>  
+    <script src="{{ asset ("/js/jquery.form.js") }}"></script>
 
-
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
@@ -241,5 +241,6 @@
 </script>
 <script src="{{ asset('js/site.js') }}"></script>
 @yield('slack-chat-scripts')
+@yield('allocation-scripts')
   </body>
 </html>

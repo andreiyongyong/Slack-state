@@ -67,3 +67,13 @@ Route::post('/add-detail', 'ResourceManagementController@addResourceDetail')->na
 Route::get('/delete-detail/{id}', 'ResourceManagementController@deleteResourceDetail')->name('resource-management.deleteDetail');
 
 
+Route::get('/allocation', 'AllocationController@index')->name('allocation.index');
+
+
+Route::get('/get-resources-by-user/{id}', 'AllocationController@getResourcesByUser_ajax');
+Route::get('/get-resources-by-project/{id}', 'AllocationController@getResourcesByProject_ajax');
+
+Route::post('/update-user-resources', 'AllocationController@updateUserResources_ajax');
+Route::post('/update-project-resources', 'AllocationController@updateProjectResources_ajax');
+
+

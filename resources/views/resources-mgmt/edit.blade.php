@@ -48,10 +48,10 @@
                         <div class="col-md-4 col-md-offset-2">
                             <div class="form-group form-float">
                                 <div>
-                                    <label class="form-label">User</label>
-                                    <select name="user">
-                                        @foreach($users as $user)
-                                            <option value="{{$user->id}}" {{ $user->id == $resource->user_id ? "selected" : "" }}>{{$user->lastname}} {{$user->firstname}}</option>
+                                    <label class="form-label">Project</label>
+                                    <select name="project">
+                                        @foreach($projects as $project)
+                                            <option value="{{$project->id}}" {{ $project->id == $resource->project_id ? "selected" : "" }}>{{$project->p_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>

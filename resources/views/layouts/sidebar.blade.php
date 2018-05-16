@@ -40,7 +40,13 @@
                     <i class="material-icons">touch_app</i>
                     <span>Applicants</span>
                 </a>
-            </li>  
+            </li>
+            <li class="{{ Request::segment(1) == "allocation" ? "active" : "" }}" >
+                <a href="{{ route('allocation.index') }}">
+                    <i class="material-icons">touch_app</i>
+                    <span>Allocation</span>
+                </a>
+            </li>
             <li class="{{ Request::segment(1) == "project" ? "active" : "" }}" >
                 <a href="{{ route('project.index') }}">
                     <i class="material-icons">filter_b_and_w</i>

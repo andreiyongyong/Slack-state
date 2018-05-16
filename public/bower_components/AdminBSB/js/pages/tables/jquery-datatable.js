@@ -5,7 +5,8 @@ $(function () {
 
     $('.js-basic-statuses').DataTable({
         responsive: true,
-        bLengthChange : false
+        bLengthChange : false,
+        "pageLength": 100
     });
 
     $('.js-resources-metas').DataTable({

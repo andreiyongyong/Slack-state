@@ -9,6 +9,7 @@ class User extends Authenticatable
 {
     use Notifiable;
     
+    protected $table = 'users';
     /**
     * The attributes that aren't mass assignable.
     *
@@ -24,6 +25,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $fillable = [
+        'username' , 'email' , 'lastname' , 'firstname' , 'room' , 'country' , 'age'
+   ];
     function userinfo(){
         return $this->hasOne('App\UserInfo','user_id','id');
     }

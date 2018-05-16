@@ -95,6 +95,12 @@
                     <span>Slack Workspaces</span>
                 </a>
             </li>
+            <li class="{{ Request::segment(1) == "allocate-projects" ? "active" : "" }}" >
+                <a href="{{ route('allocate-projects.index') }}">
+                    <i class="material-icons">filter_b_and_w</i>
+                    <span>Projects Allocation</span>
+                </a>
+            </li>
         </ul>
     </div> 
     <!-- #Menu -->

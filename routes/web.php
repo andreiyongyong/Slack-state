@@ -66,6 +66,8 @@ Route::post('/edit-detail', 'ResourceManagementController@editResourceDetail')->
 Route::post('/add-detail', 'ResourceManagementController@addResourceDetail')->name('resource-management.addDetail');
 Route::get('/delete-detail/{id}', 'ResourceManagementController@deleteResourceDetail')->name('resource-management.deleteDetail');
 
+Route::get('allocateprodects', 'AllocateProjectsController@index')->name('allocate-projects.index');
+Route::post('/allocateprojects/ajaxprofromuser', 'AllocateProjectsController@ajaxprofromuser');
 
 Route::get('/allocation', 'AllocationController@index')->name('allocation.index');
 

@@ -114,7 +114,7 @@ $.AdminBSB.leftSideBar = {
             var $el = $('.list');
 
             $el.slimscroll({
-                height: height + "px",
+                // height: height + "px",
                 color: configs.scrollColor,
                 size: configs.scrollWidth,
                 alwaysVisible: configs.scrollAlwaysVisible,

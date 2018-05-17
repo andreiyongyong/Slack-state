@@ -26,11 +26,16 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+
     protected $fillable = [
         'username' , 'email' , 'lastname' , 'firstname' , 'room' , 'country' , 'age'
    ];
+
     function userinfo(){
         return $this->hasOne('App\UserInfo','user_id','id');
     }
 
+    public function resources(){
+        return $this->belongsToMany('App\ResourceManagement','user_resource_rel','user_id','resource_id');
+    }
 }

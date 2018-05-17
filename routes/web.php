@@ -76,6 +76,6 @@ Route::get('/get-resources-by-user/{id}', 'AllocationController@getResourcesByUs
 Route::get('/get-resources-by-project/{id}', 'AllocationController@getResourcesByProject_ajax');
 
 Route::post('/update-user-resources', 'AllocationController@updateUserResources_ajax');
-Route::post('/update-project-resources', 'AllocationController@updateProjectResources_ajax');
+Route::post('/delete-user-resource', 'AllocationController@deleteUserResource_ajax');
 
 

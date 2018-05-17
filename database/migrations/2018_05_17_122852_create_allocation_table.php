@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class 20180517addallocationtable extends Migration
+class CreateAllocationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -28,6 +28,6 @@ class 20180517addallocationtable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('allocation');    
+        Schema::dropIfExists('allocation');
     }
 }

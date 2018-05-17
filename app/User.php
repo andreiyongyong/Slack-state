@@ -24,8 +24,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
     function userinfo(){
         return $this->hasOne('App\UserInfo','user_id','id');
     }
 
+    public function resources(){
+        return $this->belongsToMany('App\ResourceManagement','user_resource_rel','user_id','resource_id');
+    }
 }

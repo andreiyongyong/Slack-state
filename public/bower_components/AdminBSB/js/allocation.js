@@ -8,7 +8,7 @@ var Allocation = function () {
           getResourcesByUser : '/get-resources-by-user',
           getResourcesByProject : '/get-resources-by-project',
           updateUserResources : '/update-user-resources',
-          updateProjectResources : '/update-project-resources'
+          deleteUserResource : '/delete-user-resource'
       }
   };
 
@@ -31,19 +31,14 @@ var Allocation = function () {
               drop: function(event, ui) {
                   console.log("drop");
                   var dropped = ui.draggable;
-                  var droppedOn = $(this);
-                  console.log(dropped.attr('data-pr_id')+'-'+$('#select-project').val());
-                  if(dropped.attr('data-pr_id') == $('#select-project').val()){
-                      $(dropped).detach().css({top: 0,left: 0}).appendTo(droppedOn);
-                  } else{
-                      $(dropped).remove();
-                  }
+                  $(dropped).remove();
 
                   $.ajax({
                       type : 'post',
-                      url : instance.urls.updateProjectResources,
+                      url : instance.urls.deleteUserResource,
                       data : {
-                          id : dropped.attr('data-id')
+                          id : dropped.attr('data-id'),
+                          user_id : $('#select-user').val()
                       }
                   });
               }
@@ -54,7 +49,8 @@ var Allocation = function () {
               console.log("origin drop");
               var dropped = ui.draggable;
               var droppedOn = $(this);
-              $(dropped).detach().css({top: 0,left: 0}).appendTo(droppedOn);
+              var clone = $(dropped).clone();
+              $(dropped).css({top: 0,left: 0});
 
               $.ajax({
                   type : 'post',
@@ -62,6 +58,12 @@ var Allocation = function () {
                   data : {
                       id : dropped.attr('data-id'),
                       user_id : $('#select-user').val()
+                  },
+                  success : function (allow) {
+                      if(allow){
+                          clone.detach().css({top: 0,left: 0}).appendTo(droppedOn);
+                          $(".draggable").draggable({ cursor: "crosshair", revert: "invalid"});
+                      }
                   }
               });
 

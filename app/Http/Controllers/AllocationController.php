@@ -46,12 +46,14 @@ class AllocationController extends Controller
     }
 
     public function getResourcesByUser($user_id){
-        $resources = ResourceManagement::where('user_id', $user_id)->get();
-        
-        if(!$resources){
+        $user = User::where('id',$user_id)->with('resources')->get();
+
+        if(isset($user[0])){
+            $resources = $user[0]->resources;
+        }else{
             return [];
         }
-        
+
         foreach ($resources as $key => $resource){
             $project = Project::find($resource->project_id);
             if($project){
@@ -65,7 +67,7 @@ class AllocationController extends Controller
     }
 
     public function getResourcesByProject($project_id){
-        $resources = ResourceManagement::where('project_id', $project_id)->where('user_id', -1)->get();
+        $resources = ResourceManagement::where('project_id', $project_id)->get();
         if(!$resources){
             return [];
         }
@@ -96,17 +98,26 @@ class AllocationController extends Controller
     }
 
     public function updateUserResources_ajax(Request $request){
+
         $id = $request['id'];
-        $user_id = $request['user_id'];
-        $resource = ResourceManagement::find($id);
-        $resource->user_id = $user_id;
-        $resource->save();
+        $allow = true;
+
+        $user = User::find($request['user_id']);
+        $relatedIds = $user->resources()->allRelatedIds()->toArray();
+
+        if (in_array($id, $relatedIds)) {
+            $allow = false;
+        } else {
+            $newIds = array_unique(array_merge($relatedIds, [$request['id']]));
+            $user->resources()->sync($newIds);
+        }
+
+        return response()->json($allow);
     }
 
-    public function updateProjectResources_ajax(Request $request){
-        $id = $request['id'];
-        $resource = ResourceManagement::find($id);
-        $resource->user_id = -1;
-        $resource->save();
+    public function deleteUserResource_ajax(Request $request){
+
+        $user = User::find($request['user_id']);
+        $user->resources()->detach($request['id']);
     }
 }

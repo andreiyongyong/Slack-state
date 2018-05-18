@@ -13,11 +13,15 @@
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}"  min="1" max="100" required>
-                                    <label class="form-label">Title</label>
-                                </div> 
-                                <div class="help-info"> Max. 100 characters</div>
+                                    <div>
+                                    <label class="form-label">Project</label>
+                                    <select name="project">
+                                        @foreach($projects as $project)
+                                            <option value="{{$project->id}}" >{{$project->p_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -25,8 +29,8 @@
                         <div class="col-md-12">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="url" id="url" value="{{ old('url') }}"  min="5" max="191" required>
-                                    <label class="form-label">Url</label>
+                                    <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}"  min="5" max="191" required>
+                                    <label class="form-label">Name</label>
                                 </div> 
                                 <div class="help-info"> Max. 191 characters</div>
                             </div>
@@ -43,19 +47,7 @@
                         </div>
                     </div>
                     <div class="row clearfix">
-                        <div class="col-md-4 col-md-offset-2">
-                            <div class="form-group form-float">
-                                <div>
-                                    <label class="form-label">Project</label>
-                                    <select name="project">
-                                        @foreach($projects as $project)
-                                            <option value="{{$project->id}}" >{{$project->p_name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-                        </div>
+                        
                         <div class="col-md-4 col-md-offset-2">
                             <div class="form-group form-float">
                                 <div>

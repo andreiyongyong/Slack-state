@@ -25,7 +25,7 @@
                                         </div> 
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">Admin</label>
@@ -37,14 +37,14 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="id_" id="id_" value="{{ old('id_') }}" required>
-                                            <label class="form-label">ID</label>
-                                        </div>
-                                    </div>
-                                </div>
+                                {{--<div class="col-xs-6">--}}
+                                    {{--<div class="form-group form-float">--}}
+                                        {{--<div class="form-line">--}}
+                                            {{--<input type="text" class="form-control" name="id_" id="id_" value="{{ old('id_') }}" required>--}}
+                                            {{--<label class="form-label">ID</label>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
                             </div>
                             <button class="btn btn-primary waves-effect" type="submit">Create</button>
                         </div>

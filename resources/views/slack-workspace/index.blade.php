@@ -22,7 +22,6 @@
                       <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                               <tr>
-                                  <th>ID</th>
                                   <th>NAME</th>
                                   <th>DOMAIN</th>
                                   <th>ACTIONS</th>
@@ -30,7 +29,6 @@
                           </thead>
                           <tfoot>
                               <tr>
-                                  <th>ID</th>
                                   <th>NAME</th>
                                   <th>DOMAIN</th>
                                   <th>ACTIONS</th>
@@ -39,7 +37,6 @@
                           <tbody>
                           @foreach ($workspaces as $workspace)
                                   <tr>
-                                      <td>{{ $workspace->id_ }}</td>
                                       <td>{{ $workspace->name }}</td>
                                       <td>{{ $workspace->domain }}</td>
                                       <td align = 'center'>

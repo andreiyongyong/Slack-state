@@ -38,7 +38,7 @@ class SlackWorkSpaceController extends Controller
             $users = User::where('slack_user_id', '')->orWhere('workspace_id', '')->get();
             $workspaces = SlackWorkspace::get();
             foreach ($workspaces as $workspace) {
-                $slackApi = new SlackApi($workspace->token);
+                $slackApi = new SlackApi('');
 
                 $responce = $slackApi->execute('users.list');
                 foreach ($responce['members'] as $member) {
@@ -91,10 +91,8 @@ class SlackWorkSpaceController extends Controller
                 if(SlackWorkspace::where('workspace_id',$responce['team']['id'] )->get()->first() === null){
                     $workspace = SlackWorkspace::create([
                         'workspace_id' => $responce['team']['id'],
-                        'token' => '',
                         'name' => $responce['team']['name'],
                         'domain' => $responce['team']['domain'],
-                        'id_' => $request['id_']
                     ]);
 
                     SlackToken::create([
@@ -197,10 +195,6 @@ class SlackWorkSpaceController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        SlackWorkspace::where('id', $id)->update([
-            'id_' => $request['id_']
-        ]);
 
         return redirect()->intended('/workspaces');
     }

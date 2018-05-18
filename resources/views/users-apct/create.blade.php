@@ -86,15 +86,22 @@
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6">
+                                    {{--<div class="form-group form-float">--}}
+                                        {{--<div class="">--}}
+                                            {{--<label class="form-label">Stack</label>--}}
+                                            {{--<select name="stack" id="stack">--}}
+                                                {{--@foreach($workspaces as $workspace)--}}
+                                                    {{--<option value="{{$workspace->id_}}">{{$workspace->id_}}</option>--}}
+                                                {{--@endforeach--}}
+                                            {{--</select>--}}
+                                        {{--</div> --}}
+                                    {{--</div>--}}
                                     <div class="form-group form-float">
-                                        <div class="">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="stack" id="stack" value="{{ old('stack')  }}"  min="1" max="100" required>
                                             <label class="form-label">Stack</label>
-                                            <select name="stack" id="stack">
-                                                @foreach($workspaces as $workspace)
-                                                    <option value="{{$workspace->id_}}">{{$workspace->id_}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div> 
+                                        </div>
+                                        <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

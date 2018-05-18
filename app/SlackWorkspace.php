@@ -18,6 +18,11 @@ class SlackWorkspace extends Model
      * @var array
      */
     protected $fillable = [
-        'token' , 'workspace_id', 'name', 'domain', 'id_'
+        'workspace_id', 'name', 'domain'
     ];
+
+    function tokens(){
+        return $this->hasMany('App\SlackToken','workspace_id','id');
+    }
+
 }

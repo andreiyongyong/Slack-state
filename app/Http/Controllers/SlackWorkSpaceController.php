@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SlackToken;
 use Illuminate\Http\Request;
 use App\SlackWorkspace;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
@@ -37,17 +38,21 @@ class SlackWorkSpaceController extends Controller
             $users = User::where('slack_user_id', '')->orWhere('workspace_id', '')->get();
             $workspaces = SlackWorkspace::get();
             foreach ($workspaces as $workspace) {
-                $slackApi = new SlackApi($workspace->token);
 
-                $responce = $slackApi->execute('users.list');
-                foreach ($responce['members'] as $member) {
-                    foreach ($users as $user) {
-                        if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
-                            User::where('id', $user->id)->update([
-                                'slack_user_id' => $member['id'],
-                                'workspace_id' => $workspace->id
-                            ]);
-                            break;
+                $token = SlackToken::where('workspace_id', $workspace->id)->get()->first();
+
+                if($token) {
+                    $slackApi = new SlackApi($token->token);
+                    $responce = $slackApi->execute('users.list');
+                    foreach ($responce['members'] as $member) {
+                        foreach ($users as $user) {
+                            if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
+                                User::where('id', $user->id)->update([
+                                    'slack_user_id' => $member['id'],
+                                    'workspace_id' => $workspace->id
+                                ]);
+                                break;
+                            }
                         }
                     }
                 }
@@ -64,7 +69,8 @@ class SlackWorkSpaceController extends Controller
      */
     public function create()
     {
-        return view('slack-workspace/create');
+        $users = User::where('type', '=', 0)->get();
+        return view('slack-workspace/create',['users' => $users]);
     }
 
     /**
@@ -86,13 +92,25 @@ class SlackWorkSpaceController extends Controller
             $responce = $api->execute('team.info');
 
             if($responce['ok']){
-                SlackWorkspace::create([
-                    'token' => $request['token'],
-                    'workspace_id' => $responce['team']['id'],
-                    'name' => $responce['team']['name'],
-                    'domain' => $responce['team']['domain'],
-                    'id_' => $request['id_']
-                ]);
+                if(SlackWorkspace::where('workspace_id',$responce['team']['id'] )->get()->first() === null){
+                    $workspace = SlackWorkspace::create([
+                        'workspace_id' => $responce['team']['id'],
+                        'name' => $responce['team']['name'],
+                        'domain' => $responce['team']['domain'],
+                    ]);
+
+                    SlackToken::create([
+                        'user_id' => $request['user'],
+                        'workspace_id' => $workspace->id,
+                        'token' => $request['token']
+                    ]);
+
+                }else{
+                    $data = array(
+                        'error' => true,
+                        'message' => 'Workspace with this token already exist',
+                    );
+                }
             }else{
                 $data = array(
                     'error' => true,
@@ -107,7 +125,8 @@ class SlackWorkSpaceController extends Controller
         }
 
         if($data['error']){
-            return view('slack-workspace/create', ['message'=> $data['message']]);
+            $users = User::where('type', '=', 0)->get();
+            return view('slack-workspace/create', ['message'=> $data['message'], 'users' => $users]);
         }
 
         return redirect()->intended('/workspaces');
@@ -132,13 +151,43 @@ class SlackWorkSpaceController extends Controller
      */
     public function edit($id)
     {
-        $workspace = SlackWorkspace::find($id);
+        $workspace = SlackWorkspace::with(['tokens'])->find($id);
+        $userIds = [];
+
+        if($workspace->tokens){
+            foreach ($workspace->tokens as $token){
+                $userIds[] = $token['user_id'];
+            }
+        }
+
+        $users = User::where('type', '=', 0)->whereNotIn('id', $userIds)->get();
 
         if ($workspace == null || $workspace->count() == 0) {
             return redirect()->intended('/workspaces');
         }
 
-        return view('slack-workspace/edit', ['workspace' => $workspace]);
+        return view('slack-workspace/edit', ['users' => $users, 'workspace' => $workspace]);
+    }
+
+    public function addToken(Request $request){
+
+        $workspace_id = $request['_id'];
+
+        SlackToken::create([
+            'user_id' => $request['user_id'],
+            'workspace_id' => $workspace_id,
+            'token' => $request['token']
+        ]);
+
+        return redirect()->intended('/workspaces/'.$workspace_id.'/edit');
+    }
+
+    public function deleteToken($id){
+
+        $token = SlackToken::find($id);
+        SlackToken::where('id', $id)->delete();
+
+        return redirect()->intended('/workspaces/'.$token->workspace_id.'/edit');
     }
 
     /**
@@ -150,42 +199,6 @@ class SlackWorkSpaceController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        $data = array(
-            'error' => false,
-            'message' => '',
-        );
-
-        try{
-            $api = new SlackApi($request['token']);
-
-            $responce = $api->execute('team.info');
-
-            if($responce['ok']){
-                SlackWorkspace::where('id', $id)->update([
-                    'token' => $request['token'],
-                    'workspace_id' => $responce['team']['id'],
-                    'name' => $responce['team']['name'],
-                    'domain' => $responce['team']['domain'],
-                    'id_' => $request['id_']
-                ]);
-            }else{
-                $data = array(
-                    'error' => true,
-                    'message' => $request['error'],
-                );
-            }
-        }catch (SlackApiException $e){
-            $data = array(
-                'error' => true,
-                'message' => $e->getMessage(),
-            );
-        }
-
-        if($data['error']){
-            $workspace = SlackWorkspace::find($id);
-            return view('slack-workspace/edit', ['message'=> $data['message'], 'workspace' => $workspace]);
-        }
 
         return redirect()->intended('/workspaces');
     }
@@ -199,6 +212,8 @@ class SlackWorkSpaceController extends Controller
     public function destroy($id)
     {
         SlackWorkspace::where('id', $id)->delete();
+        SlackToken::where('workspace_id', $id)->delete();
+
         return redirect()->intended('/workspaces');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\SlackToken;
 use App\SlackWorkspace;
 use Illuminate\Http\Request;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
@@ -41,19 +42,21 @@ class SlackController extends Controller
                 ->paginate(100);
             
             foreach ($users as $user){
-                $token = SlackWorkspace::find($user->workspace_id)->token;
+                $token = SlackToken::where('workspace_id', $user->workspace_id)->get()->first();
 
-                $api = new SlackApi($token);
-                $project = Project::find($user->userinfo['project_id']);
-                $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
-                $data[] = array_merge($responce['user'], array(
-                        'avatar'=>$responce['user']['profile']['image_512'],
-                        'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
-                            ? $responce['user']['profile']['display_name'] : $responce['user']['real_name'],
-                        'workspace_id' => $user->workspace_id,
-                        'project' => $project !== null ? $project->p_name : ''
-                    )
-                );
+                if($token) {
+                    $api = new SlackApi($token->token);
+                    $project = Project::find($user->userinfo['project_id']);
+                    $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
+                    $data[] = array_merge($responce['user'], array(
+                            'avatar' => $responce['user']['profile']['image_512'],
+                            'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
+                                ? $responce['user']['profile']['display_name'] : $responce['user']['real_name'],
+                            'workspace_id' => $user->workspace_id,
+                            'project' => $project !== null ? $project->p_name : ''
+                        )
+                    );
+                }
             }
 
         } catch (SlackApiException $e) {
@@ -75,12 +78,16 @@ class SlackController extends Controller
         $data = [];
         foreach ($developers as $developer){
             try {
-                $api = new SlackApi(SlackWorkspace::find($developer->workspace_id)->token);
+                $token = SlackToken::where('workspace_id', $developer->workspace_id)->get()->first();
 
-                $response = $api->execute('users.getPresence', ['user' => $developer->slack_user_id]);
+                if($token) {
+                    $api = new SlackApi($token->token);
 
-                if ($response['ok']) {
-                    $data[$developer->slack_user_id] = $response['presence'];
+                    $response = $api->execute('users.getPresence', ['user' => $developer->slack_user_id]);
+
+                    if ($response['ok']) {
+                        $data[$developer->slack_user_id] = $response['presence'];
+                    }
                 }
             } catch (SlackApiException $e) {
                 return response()->json(['data' => $data]);
@@ -113,21 +120,6 @@ class SlackController extends Controller
             );
         }
         return view('slack/index', ['data' => $data]);
-    }
-
-    private function getUsers(){
-        $api = new SlackApi(env('SLACK_API_TOKEN'));
-
-        $members = $api->execute('users.list');
-        $data = [];
-        if($members['ok']){
-            foreach ($members['members'] as $member){
-                $result = $api->execute('users.getPresence');
-                $data[] = array_merge($member, array('presence' => $result['presence']));
-            }
-        }
-
-        return $data;
     }
 
     private function getCannelList(){

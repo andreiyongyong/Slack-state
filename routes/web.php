@@ -83,4 +83,7 @@ Route::get('/get-resources-by-project/{id}', 'AllocationController@getResourcesB
 Route::post('/update-user-resources', 'AllocationController@updateUserResources_ajax');
 Route::post('/delete-user-resource', 'AllocationController@deleteUserResource_ajax');
 
+// tokens
+Route::post('/add-token', 'SlackWorkspaceController@addToken')->name('workspace-tokens.addToken');
+Route::get('/delete-token/{id}', 'SlackWorkspaceController@deleteToken')->name('workspace-tokens.deleteToken');
 

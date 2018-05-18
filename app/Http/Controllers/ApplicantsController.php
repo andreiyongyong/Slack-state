@@ -10,6 +10,7 @@ use App\SlackWorkspace;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 use App\Project;
+use App\SlackToken;
 
 class ApplicantsController extends Controller
 {
@@ -77,13 +78,16 @@ class ApplicantsController extends Controller
         $slack_user_id = '';
         if($request['workspace'] != ''){
             try {
-                $api = new SlackApi(SlackWorkspace::find($request['workspace'])->token);
+                $token = SlackToken::where('workspace_id', $request['workspace'])->get()->first();
+                if($token) {
+                    $api = new SlackApi($token->token);
 
-                $response = $api->execute('users.list');
-                foreach ($response['members'] as $member) {
-                    if (isset($member['profile']['email']) && $member['profile']['email'] == $request['email']) {
-                        $slack_user_id = $member['id'];
-                        break;
+                    $response = $api->execute('users.list');
+                    foreach ($response['members'] as $member) {
+                        if (isset($member['profile']['email']) && $member['profile']['email'] == $request['email']) {
+                            $slack_user_id = $member['id'];
+                            break;
+                        }
                     }
                 }
             } catch (SlackApiException $e) {
@@ -177,13 +181,16 @@ class ApplicantsController extends Controller
         $slack_user_id = '';
         if($request['workspace'] != ''){
             try {
-                $api = new SlackApi(SlackWorkspace::find($request['workspace'])->token);
-                $user = User::find($id);
-                $response = $api->execute('users.list');
-                foreach ($response['members'] as $member) {
-                    if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
-                        $slack_user_id = $member['id'];
-                        break;
+                $token = SlackToken::where('workspace_id', $request['workspace'])->get()->first();
+                if($token) {
+                    $api = new SlackApi($token->token);
+                    $user = User::find($id);
+                    $response = $api->execute('users.list');
+                    foreach ($response['members'] as $member) {
+                        if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
+                            $slack_user_id = $member['id'];
+                            break;
+                        }
                     }
                 }
             } catch (SlackApiException $e) {

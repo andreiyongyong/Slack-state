@@ -38,17 +38,21 @@ class SlackWorkSpaceController extends Controller
             $users = User::where('slack_user_id', '')->orWhere('workspace_id', '')->get();
             $workspaces = SlackWorkspace::get();
             foreach ($workspaces as $workspace) {
-                $slackApi = new SlackApi('');
 
-                $responce = $slackApi->execute('users.list');
-                foreach ($responce['members'] as $member) {
-                    foreach ($users as $user) {
-                        if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
-                            User::where('id', $user->id)->update([
-                                'slack_user_id' => $member['id'],
-                                'workspace_id' => $workspace->id
-                            ]);
-                            break;
+                $token = SlackToken::where('workspace_id', $workspace->id)->get()->first();
+
+                if($token) {
+                    $slackApi = new SlackApi($token->token);
+                    $responce = $slackApi->execute('users.list');
+                    foreach ($responce['members'] as $member) {
+                        foreach ($users as $user) {
+                            if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
+                                User::where('id', $user->id)->update([
+                                    'slack_user_id' => $member['id'],
+                                    'workspace_id' => $workspace->id
+                                ]);
+                                break;
+                            }
                         }
                     }
                 }

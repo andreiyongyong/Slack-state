@@ -11,26 +11,26 @@
                 @endif
             </div>
             <div class="body">
-                {{--<form class="form-horizontal" role="form" method="POST" action="{{ route('workspaces.update', ['id' => $workspace->id]) }}">--}}
-                    {{--<input type="hidden" name="_method" value="PATCH">--}}
-                    {{--<input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
-                        {{--{{ csrf_field() }} --}}
-                    {{--<div class="row">--}}
-                        {{--<div class="col-md-12">--}}
-                            {{--<div class="row clearfix">--}}
-                                {{--<div class="col-xs-12">--}}
-                                    {{--<div class="form-group form-float">--}}
-                                        {{--<div class="form-line">--}}
-                                            {{--<input type="text" class="form-control" name="id_" id="id_" value="{{ $workspace->id_ }}" required>--}}
-                                            {{--<label class="form-label">ID</label>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                            {{--<button class="btn btn-primary waves-effect" type="submit">Update</button>--}}
-                        {{--</div>--}}
-                    {{--</div>--}}
-                {{--</form>--}}
+                <form class="form-horizontal" role="form" method="POST" action="{{ route('workspaces.update', ['id' => $workspace->id]) }}">
+                    <input type="hidden" name="_method" value="PATCH">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row clearfix">
+                                <div class="col-xs-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="id_" id="id_" value="{{ $workspace->id_ }}" required>
+                                            <label class="form-label">Workspace ID</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary waves-effect" type="submit">Update</button>
+                        </div>
+                    </div>
+                </form>
                 <div class="row clearfix">
                     <div class="col-xs-12">
                         <h3> Workspace Tokens </h3>

@@ -68,7 +68,7 @@ Route::get('/delete-detail/{id}', 'ResourceManagementController@deleteResourceDe
 
 Route::get('allocateprodects', 'AllocateProjectsController@index')->name('allocate-projects.index');
 Route::post('/allocateprojects/ajaxprofromuser', 'AllocateProjectsController@ajaxprofromuser');
-
+Route::post('/allocateprojects/updateproj', 'AllocateProjectsController@updateproj');
 Route::get('/allocation', 'AllocationController@index')->name('allocation.index');
 
 

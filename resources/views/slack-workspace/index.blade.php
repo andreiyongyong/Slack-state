@@ -22,14 +22,14 @@
                       <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                               <tr>
-                                  <th>NAME</th>
+                                  <th>WORKSPACE ID</th>
                                   <th>DOMAIN</th>
                                   <th>ACTIONS</th>
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
-                                  <th>NAME</th>
+                                  <th>WORKSPACE ID</th>
                                   <th>DOMAIN</th>
                                   <th>ACTIONS</th>
                               </tr>
@@ -37,7 +37,7 @@
                           <tbody>
                           @foreach ($workspaces as $workspace)
                                   <tr>
-                                      <td>{{ $workspace->name }}</td>
+                                      <td>{{ $workspace->id_ }}</td>
                                       <td>{{ $workspace->domain }}</td>
                                       <td align = 'center'>
                                           <form class="row" method="POST" action="{{ route('workspaces.destroy', ['id' => $workspace->id]) }}" onsubmit = "return confirm('Are you sure?')">

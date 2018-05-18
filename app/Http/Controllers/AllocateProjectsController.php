@@ -6,9 +6,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Project;
 use App\User;
-use APP\Allocation;
+
 class AllocateProjectsController extends Controller
 {
+    private $client;
+
+    private $username;
     public function __construct()
     {
         $this->middleware('auth');
@@ -18,7 +21,7 @@ class AllocateProjectsController extends Controller
     {
         $users = User::paginate(10);
         $projects = Project::paginate(10);
-
+       
         return view('allocateprojects/index', ['projects' => $projects, 'users' => $users]);
     }
 

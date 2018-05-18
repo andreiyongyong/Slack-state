@@ -25,7 +25,6 @@
                                   <th>ID</th>
                                   <th>NAME</th>
                                   <th>DOMAIN</th>
-                                  <th>TOKEN</th>
                                   <th>ACTIONS</th>
                               </tr>
                           </thead>
@@ -34,7 +33,6 @@
                                   <th>ID</th>
                                   <th>NAME</th>
                                   <th>DOMAIN</th>
-                                  <th>TOKEN</th>
                                   <th>ACTIONS</th>
                               </tr>
                           </tfoot>
@@ -44,7 +42,6 @@
                                       <td>{{ $workspace->id_ }}</td>
                                       <td>{{ $workspace->name }}</td>
                                       <td>{{ $workspace->domain }}</td>
-                                      <td>{{ $workspace->token }}</td>
                                       <td align = 'center'>
                                           <form class="row" method="POST" action="{{ route('workspaces.destroy', ['id' => $workspace->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                                 <input type="hidden" name="_method" value="DELETE">

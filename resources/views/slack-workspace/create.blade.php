@@ -25,7 +25,19 @@
                                         </div> 
                                     </div>
                                 </div>
-                                <div class="col-xs-12">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div>
+                                            <label class="form-label">Admin</label>
+                                            <select name="user">
+                                                @foreach($users as $user)
+                                                    <option value="{{$user->id}}">{{$user->username}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="id_" id="id_" value="{{ old('id_') }}" required>

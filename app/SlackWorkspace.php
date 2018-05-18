@@ -20,4 +20,9 @@ class SlackWorkspace extends Model
     protected $fillable = [
         'token' , 'workspace_id', 'name', 'domain', 'id_'
     ];
+
+    function tokens(){
+        return $this->hasMany('App\SlackToken','workspace_id','id');
+    }
+
 }

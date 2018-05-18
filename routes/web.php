@@ -44,9 +44,11 @@ Route::resource('upwork' , 'UpworkController');
 Route::resource('slack-chat-pair' , 'SlackChatPairController');
 
 Route::resource('/member-log', 'MemberLogController');
+Route::resource('/git-manage', 'GitManageController');
 Route::post('member-log/search', 'MemberLogController@search')->name('member-log.search');   
 Route::post('member-log/log_detail_add', ['as'=>'ajaxImageUpload','uses'=>'MemberLogController@ajaxImageUpload']);   
 Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_delete');
+
 
 Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');
 Route::get('slack', 'SlackController@index')->name('slack.index');
@@ -70,7 +72,10 @@ Route::get('/delete-detail/{id}', 'ResourceManagementController@deleteResourceDe
 Route::get('allocateprodects', 'AllocateProjectsController@index')->name('allocate-projects.index');
 Route::post('/allocateprojects/ajaxprofromuser', 'AllocateProjectsController@ajaxprofromuser');
 Route::post('/allocateprojects/updateproj', 'AllocateProjectsController@updateproj');
+Route::post('/allocateprojects/del_proj', 'AllocateProjectsController@delproj');
 Route::get('/allocation', 'AllocationController@index')->name('allocation.index');
+
+Route::post('/gitmanage/ajaxrepofromuser', 'GitManageController@ajaxrepofromuser');
 
 
 Route::get('/get-resources-by-user/{id}', 'AllocationController@getResourcesByUser_ajax');

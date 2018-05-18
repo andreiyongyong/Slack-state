@@ -60,6 +60,13 @@
                                     <span>Tracks</span>
                                 </a>
                             </li>
+                            <li class="{{ Request::segment(1) == "git-manage" ? "active" : "" }}">
+                                <a href="{{ route('git-manage.index') }}">
+                                    <i class="material-icons">touch_app</i>
+                                    <span>Github</span>
+                                </a>
+                            </li>     
+
                         </ul>
                     </div>
                 </div>

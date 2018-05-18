@@ -1,4 +1,4 @@
-@extends('allocateprojects.base')
+@extends('gitmanage.base')
 @section('action-content') 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
@@ -14,7 +14,7 @@ $(document).ready(function() {
         
         $.ajax({
             type: "POST",
-            url: '/allocateprojects/ajaxprofromuser',
+            url: '/gitmanage/ajaxrepofromuser',
             data: {userid: id},
             success: function( resp ) {
                 var flag = 0;   
@@ -149,7 +149,7 @@ $(document).ready(function() {
         <div class="card">
             <div class="header">
                 <h2>
-                    Projects
+                    Repositories
                 </h2>
                 <button type="button" class="btn btn-danger waves-effect" id="del_proj" style="position: absolute;right:15px;top:15px">Delete
                 </button>
@@ -169,7 +169,7 @@ $(document).ready(function() {
         <div class="card">
             <div class="header">
                 <h2>
-                    All Projects
+                    All Repositories
                 </h2>
             </div> 
             <div class="body">
@@ -177,22 +177,16 @@ $(document).ready(function() {
                     <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                         <thead> 
                             <tr>
-                                <th>PROJECT</th>
+                                <th>REPOSITORY</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>PROJECT</th>
+                                <th>REPOSITORY</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                        @foreach ($projects as $project)
-                            <tr>
-                                <td class="projects-group" data-prject_id="{{ $project->id }}">
-                                    <div >{{ $project->p_name }}</div>
-                                </td>
-                            </tr>
-                        @endforeach 
+                        
                         </tbody>
                     </table>
                 </div>

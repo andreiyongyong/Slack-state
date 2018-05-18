@@ -11,232 +11,31 @@
                 <form class="form-horizontal" role="form" method="POST" action="{{ route('applicants.update', ['id' => $user->id]) }}">
                     <input type="hidden" name="_method" value="PATCH">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        {{ csrf_field() }} 
-                    <div class="row">
+                        {{ csrf_field() }}
+                    <div class="row offset">
                         <div class="col-md-12">
                             <div class="row clearfix">
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="username" id="username" value="{{ $user->username }}"  min="1" max="50" required>
-                                            <label class="form-label">User Name</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 50 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="email" id="email" value="{{ $user->email }}"  min="1" max="50" required>
-                                            <label class="form-label">Email Address</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 50 characters</div>
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $user->firstname  }}"  min="1" max="50" required>
-                                            <label class="form-label">First Name</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 50 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $user->lastname  }}"  min="1" max="50" required>
-                                            <label class="form-label">Last Name</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 50 characters</div>
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <div class="form-group form-float">
                                         <div>
-                                            <label class="form-label">Type</label>
-                                            <select name="type">
-                                                <option value="2" {{ $user->type == 2 ? "selected" : "" }}>Developer</option>
-                                                <option value="1" {{ $user->type == 1 ? "selected" : "" }}>Member</option>
-                                                <option value="0" {{ $user->type == 0 ? "selected" : "" }}>Admin</option>
-                                            </select>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group form-float">
-                                        <div>
-                                            <label class="form-label">Level </label>
-                                            <select name="level">
-                                                @for($i=11;$i>0;$i--)
-                                                    <option value="{{$i}}" {{ $user->level == $i ? "selected" : "" }}>{{$i}}</option>
-                                                @endfor
-                                            </select>
-                                        </div> 
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">Upload image</label> 
-                                </div>
-                                <div class="col-md-2"><input type="file" name="image"/></div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-md-6">
-                                    {{--<div class="form-group form-float">--}}
-                                        {{--<div class="">--}}
-                                            {{--<label class="form-label">Stack</label>--}}
-                                            {{--<select name="stack" id="stack">--}}
-                                                {{--@foreach($workspaces as $workspace)--}}
-                                                    {{--<option value="{{$workspace->id_}}" {{(($user->userinfo['stack'] == $workspace->id_) ? 'selected' : '')}}>{{$workspace->id_}}</option>--}}
-                                                {{--@endforeach--}}
-                                            {{--</select>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="stack" id="stack" value="{{ $user->userinfo['stack']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Stack</label>
-                                        </div>
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="">
-                                            <label class="form-label">Project</label>
-                                            <select name="project" id="project">
-                                                <option value=" "></option>
+                                            <label class="form-label">Project </label>
+                                            <select name="project_id">
                                                 @foreach($projects as $project)
-                                                    <option value="{{$project->id}}" {{(($user->userinfo['project_id'] == $project->id) ? 'selected' : '')}}>{{$project->p_name}}</option>
+                                                    <option value="{{$project->id}}">{{$project->p_name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="skypeid" id="skypeid" value="{{ $user->userinfo['skypeid']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Skype ID</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="room" id="room" value="{{ $user->userinfo['room']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Room</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="country" id="country" value="{{ $user->userinfo['country']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Country</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="number" class="form-control" name="age" id="age" value="{{ $user->userinfo['age']  }}"  min="1" max="3" required>
-                                            <label class="form-label">Age</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 3 characters</div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="time_doctor_email" id="time_doctor_email" value="{{ $user->userinfo['time_doctor_email']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Time Doctor Email</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="time_doctor_password" id="time_doctor_password" value="{{ $user->userinfo['time_doctor_password']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Time Doctor Password</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row clearfix"> 
-                                <div class="col-md-8">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="notes" id="notes" value="{{ $user->userinfo['notes']  }}"  min="1" max="200" required>
-                                            <label class="form-label">Notes</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="checkbox" class="form-control" name="called" id="called" value="{{$user->userinfo['called']}}" {{ ( $user->userinfo['called'] == 1)? 'checked' : '' }} >
-                                            <label for="called" class="form-label">Called</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="checkbox" class="form-control" name="approved" id="approved" value="{{$user->userinfo['approved']}}" {{ ( $user->userinfo['approved'] == 1 )? 'checked' : '' }} >
-                                            <label for="approved" class="form-label">Approved</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="password" class="form-control" name="password" id="password"  min="1" max="200" required>
-                                            <label class="form-label">Password</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation"    min="1" max="200" required>
-                                            <label class="form-label">Confirm Password</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="cal-xs-12">
-                                    <h4 style="margin-left: 20px;">Slack Options</h4>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="">
-                                            <label class="form-label">Workspace</label>
-                                            <select name="workspace" id="workspace">
-                                                <option value=" "></option>
+                                        <div>
+                                            <label class="form-label">Workspace 1 </label>
+                                            <select name="workspace_id_1">
                                                 @foreach($workspaces as $workspace)
-                                                    <option value="{{$workspace->id}}" {{(($user->workspace_id == $workspace->id) ? 'selected' : '')}}>{{$workspace->name}}</option>
+                                                    <option value="{{$workspace->id}}">{{$workspace->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -244,16 +43,73 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="channel_id" id="channel_id" value="{{ $user->userinfo['channel_id']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Channel Id</label>
+                                        <div>
+                                            <label class="form-label">Workspace 2 </label>
+                                            <select name="workspace_id_2">
+                                                @foreach($workspaces as $workspace)
+                                                    <option value="{{$workspace->id}}">{{$workspace->name}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="btn btn-primary waves-effect" type="submit">Update</button>
-                        </div> 
-                    </div>  
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div>
+                                            <label class="form-label">User 1 </label>
+                                            <select name="user_id_1">
+                                                @foreach($users as $user)
+                                                    <option value="{{$user->id}}">{{$user->username}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div>
+                                            <label class="form-label">User 2 </label>
+                                            <select name="user_id_2">
+                                                @foreach($users as $user)
+                                                    <option value="{{$user->id}}">{{$user->username}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div>
+                                            <label class="form-label">Admin 1 </label>
+                                            <select name="admin_id_1">
+                                                @foreach($admins as $admin)
+                                                    <option value="{{$admin->id}}">{{$admin->username}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div>
+                                            <label class="form-label">Admin 2 </label>
+                                            <select name="admin_id_2">
+                                                @foreach($admins as $admin)
+                                                    <option value="{{$admin->id}}">{{$admin->username}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary waves-effect" type="submit">Create</button>
+                        </div>
+                        <div class="col-md-1"></div>
+                    </div>
                 </form>
             </div>
         </div>

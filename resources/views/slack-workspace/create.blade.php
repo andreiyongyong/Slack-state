@@ -45,14 +45,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xs-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="workspace_number" id="id_" value="{{ old('workspace_number') }}" required>
-                                            <label class="form-label">Workspace Number</label>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <button class="btn btn-primary waves-effect" type="submit">Create</button>
                         </div>

@@ -33,7 +33,7 @@
                                             <label class="form-label">Workspace 1 </label>
                                             <select name="workspace_id_1">
                                                 @foreach($workspaces as $workspace)
-                                                    <option value="{{$workspace->id}}">{{$workspace->name}}</option>
+                                                    <option value="{{$workspace->id}}">{{$workspace->id_}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

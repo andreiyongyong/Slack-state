@@ -96,7 +96,6 @@ class SlackWorkSpaceController extends Controller
                     $workspace = SlackWorkspace::create([
                         'workspace_id' => $responce['team']['id'],
                         'id_' => $request['id_'],
-                        'workspace_number' => $request['workspace_number'],
                         'domain' => $responce['team']['domain'],
                     ]);
 
@@ -201,8 +200,7 @@ class SlackWorkSpaceController extends Controller
     public function update(Request $request, $id)
     {
         SlackWorkspace::where('id',$id)->update([
-            'id_' => $request['id_'],
-            'workspace_number' => $request['workspace_number'],
+            'id_' => $request['id_']
         ]);
         return redirect()->intended('/workspaces');
     }

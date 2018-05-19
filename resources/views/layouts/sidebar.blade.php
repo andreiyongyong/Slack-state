@@ -100,6 +100,12 @@
                                     <span>Slack Chat Pair</span>
                                 </a>
                             </li>
+                            <li class="{{ Request::segment(1) == "slack-admin-state" ? "active" : "" }}" >
+                                <a href="{{ route('slack-admin-state.index') }}">
+                                    <i class="material-icons">forum</i>
+                                    <span>Admin State</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>

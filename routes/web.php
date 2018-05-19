@@ -43,6 +43,9 @@ Route::resource('project' , 'ProjectController');
 Route::resource('upwork' , 'UpworkController');
 Route::resource('slack-chat-pair' , 'SlackChatPairController');
 
+Route::resource('slack-admin-state' , 'SlackAdminStateController');
+Route::post('slack-admin-state/active', 'SlackAdminStateController@activeState');
+
 Route::resource('/member-log', 'MemberLogController');
 Route::resource('/git-manage', 'GitManageController');
 Route::post('member-log/search', 'MemberLogController@search')->name('member-log.search');   

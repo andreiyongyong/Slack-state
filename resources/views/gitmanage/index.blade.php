@@ -3,7 +3,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
-    var id = 0, proj_name = [];
+    var id = 0, repos_name = [];
 
     //if click record of first table...
     $(".user-group").click(function() {
@@ -31,31 +31,34 @@ $(document).ready(function() {
         });
     });
 
+    // if click third table...
     $(".projects-group").click(function() {
         if($(this).hasClass("selected")){
             $(this).css("border", "0");
             $(this).removeClass("selected");
-            var index = proj_name.indexOf($(this).data('prject_id'));
-            proj_name.splice(index, 1);
+            var index = repos_name.indexOf($(this).data('reposname'));
+            repos_name.splice(index, 1);
         }
         else {
-            proj_name.push($(this).data('prject_id'));
+            repos_name.push($(this).data('reposname'));
             $(this).addClass("selected");
             $(this).css("border", "1px solid black");
         }
 
     });
-    
+
+    //if click arrow button...
     $("#shift_proj").click(function(e){
         e.preventDefault();
         if(id == 0) {
             alert("Please select a user!");
             return;
         }
+
         $.ajax({
             type: "POST",
-            url: '/allocateprojects/updateproj',
-            data: {userid: id, proj_id: proj_name},
+            url: '/gitmanage/updaterepos',
+            data: {userid: id, proj_id: repos_name},
             success: function( resp ) {
                 var flag = 0;   
                 $(".uproject").html("");                     
@@ -136,7 +139,7 @@ $(document).ready(function() {
             <div class="body">
                 <div class="list-group">
                 @foreach ($users as $user)
-                    <button type="button" class="list-group-item user-group" data-gitname={{ $user->github_id }}>{{ $user->username }}</button>
+                    <button type="button" class="list-group-item user-group" data-gitname="{{ $user->github_id }}">{{ $user->username }}</button>
                 @endforeach
                 </div>
             </div>
@@ -187,7 +190,7 @@ $(document).ready(function() {
                         <tbody>
                         @foreach ($repos as $repo)
                             <tr>
-                                <td class="projects-group">
+                                <td class="projects-group" data-reposname = "{{ $repo['name'] }}">
                                     <div>{{ $repo['name'] }}</div>
                                 </td>
                             </tr>

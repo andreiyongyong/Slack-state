@@ -14,7 +14,7 @@ class CreateAllocationTable extends Migration
     public function up()
     {
         Schema::create('allocation', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id', true);
             $table->integer('user_id');
             $table->integer('project_id');
             $table->timestamps();

@@ -76,7 +76,7 @@ Route::post('/allocateprojects/del_proj', 'AllocateProjectsController@delproj');
 Route::get('/allocation', 'AllocationController@index')->name('allocation.index');
 
 Route::post('/gitmanage/ajaxrepofromuser', 'GitManageController@ajaxrepofromuser');
-
+Route::post('/gitmanage/updaterepos', 'GitManageController@updaterepos');
 
 Route::get('/get-resources-by-user/{id}', 'AllocationController@getResourcesByUser_ajax');
 Route::get('/get-resources-by-project/{id}', 'AllocationController@getResourcesByProject_ajax');

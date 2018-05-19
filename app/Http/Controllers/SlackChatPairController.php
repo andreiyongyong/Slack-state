@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\User;
 use App\SlackWorkspace;
 use App\Project;
+use App\SlackToken;
+use \Lisennk\Laravel\SlackWebApi\SlackApi;
+use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 
 class SlackChatPairController extends Controller
 {
@@ -67,6 +70,7 @@ class SlackChatPairController extends Controller
     public function store(Request $request)
     {
         SlackChatPair::create([
+            'name' => $request['name'],
             'project_id' => $request['project_id'] ,
             'workspace_id_1'=>$request['workspace_id_1'] ,
             'user_id_1' => $request['user_id_1'] ,
@@ -97,15 +101,20 @@ class SlackChatPairController extends Controller
      */
     public function edit($id)
     {
-        $user = User::with('userinfo')->find($id);
-        $workspaces = SlackWorkspace::get();
         $projects = Project::get();
-        // Redirect to user list if updating user wasn't existed
-        if ($user == null || $user->count() == 0) {
-            return redirect()->intended('/applicants');
+        $workspaces = SlackWorkspace::get();
+        $users = User::where('type', '=',2)
+            ->where('level', '=',11)
+            ->get();
+
+        $admins = User::where('type', '=',0)->get();
+        $pair = SlackChatPair::where('id', $id)->with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
+
+        if ($pair == null || $pair->count() == 0) {
+            return redirect()->intended('/slack-chat-pair');
         }
 
-        return view('slack-chat-pair/edit', ['user' => $user, 'workspaces' => $workspaces, 'projects' => $projects]);
+        return view('slack-chat-pair/edit', ['workspaces' => $workspaces, 'projects' => $projects, 'users' => $users, 'admins' => $admins, 'pair' => $pair]);
     }
 
     /**
@@ -117,74 +126,177 @@ class SlackChatPairController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $constraints = [
-            'username' => 'required|max:20',
-            'firstname'=> 'required|max:60',
-            'lastname' => 'required|max:60'
-        ];
-        if($request->file('image')){
-            $image = $request->file('image');
-            $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/image');
+        SlackChatPair::find($id)->update([
+            'name' => $request['name'],
+            'project_id' => $request['project_id'] ,
+            'workspace_id_1'=>$request['workspace_id_1'] ,
+            'user_id_1' => $request['user_id_1'] ,
+            'admin_id_1'=>$request['admin_id_1'] ,
+            'workspace_id_2' => $request['workspace_id_2'] ,
+            'user_id_2' => $request['user_id_2'] ,
+            'admin_id_2'=>$request['admin_id_2'] ,
+        ]);
+        return redirect()->intended('/slack-chat-pair');
+    }
 
-            $image->move($destinationPath, $input['imagename']);
-        }
+    public function slackChat(){
+        $projects = Project::get();
+        $pairs = SlackChatPair::get();
+        $pair = SlackChatPair::with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
+        return view('slack-chat/pair-chat', ['projects' => $projects, 'pair' => $pair, 'pairs' => $pairs]);
+    }
 
-        $slack_user_id = '';
-        if($request['workspace'] != ''){
+    public function selectPair_ajax(Request $request){
+        $pair = SlackChatPair::where('id', $request['id_'])->with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
+        return response()->json($pair);
+    }
+
+    public function updateUserStatuses_ajax(Request $request){
+        $user_1 = $request['user_1'];
+        $user_2 = $request['user_2'];
+        $data = [];
+
             try {
-                $token = SlackToken::where('workspace_id', $request['workspace'])->get()->first();
+
+                $token = SlackToken::where('workspace_id', $user_1['workspace_id'])->get()->first();
                 if($token) {
                     $api = new SlackApi($token->token);
-                    $user = User::find($id);
-                    $response = $api->execute('users.list');
-                    foreach ($response['members'] as $member) {
-                        if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
-                            $slack_user_id = $member['id'];
-                            break;
-                        }
+
+                    $response = $api->execute('users.getPresence', ['user' => $user_1['slack_id']]);
+
+                    if ($response['ok']) {
+                        $data['user_1'] = $response['presence'];
+                    }
+                }
+
+                $token = SlackToken::where('workspace_id', $user_2['workspace_id'])->get()->first();
+                if($token) {
+                    $api = new SlackApi($token->token);
+
+                    $response = $api->execute('users.getPresence', ['user' => $user_2['slack_id']]);
+
+                    if ($response['ok']) {
+                        $data['user_2'] = $response['presence'];
                     }
                 }
             } catch (SlackApiException $e) {
-                $slack_user_id = '';
+                return response()->json(['data' => $data]);
             }
-        }
 
-        $input = [
-            'username' => $request['username'],
-            'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
-            'type' => $request['type'],
-            'level' => $request['level'],
-            'image' => '',
-            'workspace_id' => $request['workspace'] === null ? '' : $request['workspace'],
-            'slack_user_id' => $slack_user_id
-        ];
-        $input_info = [
-            'stack' => $request['stack'] ,
-            'skypeid'=>$request['skypeid'] ,
-            'room' => $request['room'] ,
-            'country'=>$request['country'] ,
-            'age' => $request['age'] ,
-            'notes' => $request['notes'] ,
-            'called'=> isset($request['called']) ? 1 : 0 ,
-            'approved' => isset($request['approved']) ? 1 : 0 ,
-            'time_doctor_email' => $request['time_doctor_email'] ,
-            'time_doctor_password' => $request['time_doctor_password'],
-            'channel_id' => $request['channel_id'],
-            'project_id'=> $request['project'] === null ? '' : $request['project']
-        ];
-        if ($request['password'] != null && strlen($request['password']) > 0) {
-            $constraints['password'] = 'required|min:6|confirmed';
-            $input['password'] =  bcrypt($request['password']);
-        }
-        //$this->validate($request, $constraints);
-        User::where('id', $id)
-            ->update($input);
-        UserInfo::where('user_id', $id)
-            ->update($input_info);
-
-
-        return redirect()->intended('/applicants');
+        return response()->json(['data' => $data]);
     }
+
+
+
+    public function getChannelChat_ajax(Request $request){
+
+        $user_1 = $request['user_1'];
+        $user_2 = $request['user_2'];
+
+        $channelId_1 = $user_1['channel_id'];
+        $channelId_2 = $user_2['channel_id'];
+        $users = [];
+
+        $data = [
+            'user_1' => [],
+            'user_2' => []
+        ];
+
+        try {
+            $token = SlackToken::where('workspace_id', $user_1['workspace_id'])->get()->first();
+
+            if($token) {
+                $api = new SlackApi($token->token);
+                $response = $api->execute('channels.history', ['channel' => $channelId_1, 'inclusive' => true]);
+
+                if ($response['ok']) {
+                    $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
+                        return $val !== null;
+                    });
+
+                    foreach ($userIds as $userId) {
+                        $result = $api->execute('users.info', ['user' => $userId]);
+                        if ($result['ok']) {
+                            $users[$result['user']['id']] = $result['user'];
+                        }
+                    }
+
+                    foreach ($response['messages'] as $message) {
+                        if (isset($message['user'])) {
+                            $message['user'] = $users[$message['user']];
+                        }
+                        $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
+                        $data['user_1'][] = $message;
+                    }
+                    $data['user_1'] = array_reverse($data['user_1']);
+                }
+            }
+                $token = SlackToken::where('workspace_id', $user_2['workspace_id'])->get()->first();
+            $users = [];
+
+                if($token) {
+                    $api = new SlackApi($token->token);
+                    $response = $api->execute('channels.history', ['channel' => $channelId_2, 'inclusive' => true]);
+
+                    if ($response['ok']) {
+                        $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
+                            return $val !== null;
+                        });
+
+                        foreach ($userIds as $userId) {
+                            $result = $api->execute('users.info', ['user' => $userId]);
+                            if ($result['ok']) {
+                                $users[$result['user']['id']] = $result['user'];
+                            }
+                        }
+
+                        foreach ($response['messages'] as $message) {
+                            if (isset($message['user'])) {
+                                $message['user'] = $users[$message['user']];
+                            }
+                            $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
+                            $data['user_2'][] = $message;
+                        }
+                        $data['user_2'] = array_reverse($data['user_2']);
+                    }
+                }
+        } catch (SlackApiException $e) {
+            return response()->json(['data' => $data]);
+        }
+        return response()->json(['data' => $data]);
+    }
+
+    public function sendSlackMessage_ajax(Request $request){
+
+        $developer = $request['developer'];
+        $channelId = $developer['channel_id'];
+        $message = $request['message'];
+        $error = false;
+
+        try {
+            $token = SlackToken::where('workspace_id', $developer['workspace_id'])->where('user_id', $developer['admin_id'])->get()->first();
+
+            if($token) {
+                $api = new SlackApi($token->token);
+
+                $response = $api->execute('chat.postMessage', [
+                    'channel' => $channelId,
+                    'text' => $message,
+                    'as_user' => true
+                ]);
+
+            }
+
+        } catch (SlackApiException $e) {
+            $error = true;
+        }
+
+        return response()->json(['error' => $error]);
+    }
+
+    public function destroy($id){
+        SlackChatPair::find($id)->delete();
+        return redirect()->intended('/slack-chat-pair');
+    }
+
 }

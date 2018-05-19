@@ -48,18 +48,18 @@
                           @foreach ($pairs as $pair)
                                   <tr>
                                       <td>{{ $pair->project['p_name'] }}</td>
-                                      <td>{{ $pair->workspace_1['name'] }}</td>
+                                      <td>{{ $pair->workspace_1['id_'] }}</td>
                                       <td>{{ $pair->user_1['username'] }}</td>
                                       <td>{{ $pair->admin_1['username'] }}</td>
-                                      <td>{{ $pair->workspace_2['name'] }}</td>
+                                      <td>{{ $pair->workspace_2['id_'] }}</td>
                                       <td>{{ $pair->user_2['username'] }}</td>
                                       <td>{{ $pair->admin_2['username'] }}</td>
                                       <td align = 'center'>
-                                          <form class="row" method="POST" action="{{ route('applicants.destroy', ['id' => $pair->id]) }}" onsubmit = "return confirm('Are you sure?')">
+                                          <form class="row" method="POST" action="{{ route('slack-chat-pair.destroy', ['id' => $pair->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 @if(Auth::user()->type == '0' || $pair->id == Auth::user()->id)
-                                                    <a href="{{ route('applicants.edit', ['id' => $pair->id]) }}" class="btn btn-info waves-effect">
+                                                    <a href="{{ route('slack-chat-pair.edit', ['id' => $pair->id]) }}" class="btn btn-info waves-effect">
                                                     Update
                                                     </a>
                                                     &nbsp;

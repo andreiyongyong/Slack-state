@@ -53,6 +53,9 @@ Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_dele
 Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');
 Route::get('slack', 'SlackController@index')->name('slack.index');
 
+
+Route::get('slack-chat', 'SlackChatPairController@slackChat')->name('slack-chat.slackChat');
+
 Route::get('messaging', 'SlackChatController@index')->name('messaging.index');
 
 Route::get('/updateusers_cron', 'SlackWorkSpaceController@updateUsers_cron')->name('workspaces.updateusers');
@@ -61,6 +64,12 @@ Route::post('/invite', 'SlackWorkSpaceController@invite')->name('workspaces.invi
 Route::post('/update-statuses', 'SlackChatController@updateUserStatuses_ajax')->name('workspaces.updateUserStatuses');
 Route::post('/get-channel-chat', 'SlackChatController@getChannelChat_ajax')->name('workspaces.getChannelChat');
 Route::post('/send-slack-message', 'SlackChatController@sendSlackMessage_ajax')->name('workspaces.sendSlackMessage');
+
+//slack chat pair
+Route::post('/update-statuses-pair', 'SlackChatPairController@updateUserStatuses_ajax');
+Route::post('/get-channel-chat-pair', 'SlackChatPairController@getChannelChat_ajax');
+Route::post('/send-slack-message-pair', 'SlackChatPairController@sendSlackMessage_ajax');
+Route::post('/select-pair', 'SlackChatPairController@selectPair_ajax');
 
 Route::post('/update-status-slack', 'SlackController@updateUserStatuses_ajax')->name('slack.updateUserStatuses');
 

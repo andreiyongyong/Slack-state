@@ -13,7 +13,7 @@
                     <div class="row offset">
                         <div class="col-md-12">
                             <div class="row clearfix">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">Project </label>
@@ -22,6 +22,14 @@
                                                 <option value="{{$project->id}}">{{$project->p_name}}</option>
                                                @endforeach
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="name" id="name" value=""  min="1" max="200" required>
+                                            <label class="form-label">Chat Pair Name</label>
                                         </div>
                                     </div>
                                 </div>
@@ -45,7 +53,7 @@
                                             <label class="form-label">Workspace 2 </label>
                                             <select name="workspace_id_2">
                                                 @foreach($workspaces as $workspace)
-                                                    <option value="{{$workspace->id}}">{{$workspace->name}}</option>
+                                                    <option value="{{$workspace->id}}">{{$workspace->id_}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

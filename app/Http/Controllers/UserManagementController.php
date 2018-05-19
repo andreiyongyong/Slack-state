@@ -121,7 +121,8 @@ class UserManagementController extends Controller
             'level' => $request['level'],
             'image' => '',
             'workspace_id' => $request['workspace'] === null ? '' : $request['workspace'],
-            'slack_user_id' => $slack_user_id
+            'slack_user_id' => $slack_user_id,
+            'channel_id' => $request['channel_id']
         ];
         $input_info = [
             'stack' => $request['stack'] ,

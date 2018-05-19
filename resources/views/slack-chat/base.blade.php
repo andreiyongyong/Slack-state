@@ -11,6 +11,3 @@
     </div>
 </section>
 @endsection
-@section('slack-chat-scripts')
-    <script src="{{ asset ("/bower_components/AdminBSB/js/slack-chat.js") }}"></script>
-@stop

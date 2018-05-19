@@ -79,7 +79,7 @@
                         </a>
                     </p>
                 </div>
-                <div id="collapseTwo" class="panel-collapse collapse {{(in_array(Request::segment(1),['slack', 'workspaces' ]) ? 'in' : '')}}">
+                <div id="collapseTwo" class="panel-collapse collapse {{(in_array(Request::segment(1),['slack', 'workspaces', 'slack-chat-pair', 'slack-chat' ]) ? 'in' : '')}}">
                     <div class="panel-body">
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "slack" ? "active" : "" }}" >

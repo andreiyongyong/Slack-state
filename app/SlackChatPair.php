@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class SlackChatPair extends Model
 {
     protected $table = 'slack_chat_pair';
-    protected $fillable = ['user_id_1', 'workspace_id_1', 'project_id', 'user_id_2', 'workspace_id_2','admin_id_1', 'admin_id_2'];
+    protected $fillable = ['user_id_1', 'workspace_id_1', 'project_id', 'user_id_2', 'workspace_id_2','admin_id_1', 'admin_id_2', 'name'];
 
     function project(){
         return $this->hasOne('App\Project','id','project_id');

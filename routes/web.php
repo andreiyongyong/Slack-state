@@ -56,6 +56,9 @@ Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_dele
 Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');
 Route::get('slack', 'SlackController@index')->name('slack.index');
 
+
+Route::get('slack-chat/{id}', 'SlackChatPairController@slackChat')->name('slack-chat.slackChat');
+
 Route::get('messaging', 'SlackChatController@index')->name('messaging.index');
 
 Route::get('/updateusers_cron', 'SlackWorkSpaceController@updateUsers_cron')->name('workspaces.updateusers');
@@ -65,6 +68,12 @@ Route::post('/update-statuses', 'SlackChatController@updateUserStatuses_ajax')->
 Route::post('/get-channel-chat', 'SlackChatController@getChannelChat_ajax')->name('workspaces.getChannelChat');
 Route::post('/send-slack-message', 'SlackChatController@sendSlackMessage_ajax')->name('workspaces.sendSlackMessage');
 
+//slack chat pair
+Route::post('/update-statuses-pair', 'SlackChatPairController@updateUserStatuses_ajax');
+Route::post('/get-channel-chat-pair', 'SlackChatPairController@getChannelChat_ajax');
+Route::post('/send-slack-message-pair', 'SlackChatPairController@sendSlackMessage_ajax');
+Route::post('/select-pair', 'SlackChatPairController@selectPair_ajax');
+
 Route::post('/update-status-slack', 'SlackController@updateUserStatuses_ajax')->name('slack.updateUserStatuses');
 
 
@@ -72,7 +81,7 @@ Route::post('/edit-detail', 'ResourceManagementController@editResourceDetail')->
 Route::post('/add-detail', 'ResourceManagementController@addResourceDetail')->name('resource-management.addDetail');
 Route::get('/delete-detail/{id}', 'ResourceManagementController@deleteResourceDetail')->name('resource-management.deleteDetail');
 
-Route::get('allocateprodects', 'AllocateProjectsController@index')->name('allocate-projects.index');
+Route::get('allocateprojects', 'AllocateProjectsController@index')->name('allocate-projects.index');
 Route::post('/allocateprojects/ajaxprofromuser', 'AllocateProjectsController@ajaxprofromuser');
 Route::post('/allocateprojects/updateproj', 'AllocateProjectsController@updateproj');
 Route::post('/allocateprojects/del_proj', 'AllocateProjectsController@delproj');

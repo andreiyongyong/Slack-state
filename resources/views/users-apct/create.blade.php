@@ -238,7 +238,7 @@
                                             <select name="workspace" id="workspace">
                                                 <option value=" "></option>
                                                 @foreach($workspaces as $workspace)
-                                                    <option value="{{$workspace->id}}">{{$workspace->name}}</option>
+                                                    <option value="{{$workspace->id}}">{{$workspace->id_}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

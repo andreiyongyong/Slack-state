@@ -7,16 +7,22 @@
     "require": {
         "php": ">=5.6.4",
         "barryvdh/laravel-dompdf": "^0.8.0",
+        "doctrine/dbal": "^2.7",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "lisennk/laravel-slack-web-api": "^0.1.1",
         "maatwebsite/excel": "^2.1",
-        "wgmv/laravel-slack-api": "^0.5.0"
+        "wgmv/laravel-slack-api": "^0.5.0",
+        "knplabs/github-api": "~1.2",
+        "illuminate/html": "5.0.*@dev",
+        "heroku/heroku-buildpack-php": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.7"
+        "phpunit/phpunit": "~5.7",
+        "phpspec/phpspec": "~2.1",
+        "heroku/heroku-buildpack-php": "*"
     },
     "autoload": {
         "classmap": [

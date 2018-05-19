@@ -22,8 +22,8 @@
                       <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                           <thead>
                               <tr>
-                                  <th>TITLE</th>
-                                  <th>URL</th>
+                                  <th>PROJECT</th>
+                                  <th>NAME</th>
                                   <th>CONTENT</th>
                                   <th>TYPE</th>
                                   <th>LEVEL</th>
@@ -32,19 +32,19 @@
                           </thead>
                           <tfoot>
                               <tr>
-                                  <th>TITLE</th>
-                                  <th>URL</th>
-                                  <th>CONTENT</th>
-                                  <th>TYPE</th>
-                                  <th>LEVEL</th>
-                                  <th>ACTION</th>
+                                <th>PROJECT</th>
+                                <th>NAME</th>
+                                <th>CONTENT</th>
+                                <th>TYPE</th>
+                                <th>LEVEL</th>
+                                <th>ACTION</th>
                               </tr>
                           </tfoot>
                           <tbody>
                           @foreach ($resources as $resource)
                               <tr>
-                                  <td>{{ $resource->title }}</td>
-                                  <td>{{ $resource->url }}</td>
+                                  <td>{{ $resource->project }}</td>
+                                  <td>{{ $resource->name }}</td>
                                   <td>{{ $resource->content }}</td>
                                   <td>{{ $resource->type }}</td>
                                   <td>{{ $resource->level }}</td>

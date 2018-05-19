@@ -6,28 +6,28 @@ $(document).ready(function() {
     var id = 0, proj_name = [];
     $(".user-group").click(function() {
         id = $(this).data("userid");
+        
         $(".user-group").each(function( index, element ) {
             $(element).css("border", "1px solid #ddd");
         });
 
-        $(this).css("border", "2px solid black");
-        
-        $.ajax({
-            type: "POST",
-            url: '/allocateprojects/ajaxprofromuser',
-            data: {userid: id},
-            success: function( resp ) {
-                var flag = 0;   
-                if(resp.length < 1 ) $(".uproject").html("");                     
-                for ( i = 0 ; i < resp.length; i++){
-                    if(resp[i].user_id == id){
-                        //old_proj_name.push(resp[i].p_name);
-                        if (flag == 0) $(".uproject").html("<button type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
-                        else $(".uproject").append("<button type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
-                        flag = 1;
+            $(this).css("border", "2px solid black");
+            
+            $.ajax({
+                type: "POST",
+                url: '/allocateprojects/ajaxprofromuser',
+                data: {userid: id},
+                success: function( resp ) {
+                    var flag = 0;                    
+                    for ( i = 0 ; i < resp.length; i++){
+                        if(resp[i].user_id == id){
+                            if (flag == 0) $(".uproject").html("<li class='list-group-item alloc'>"+resp[i].p_name+"</li>");
+                            else $(".uproject").append("<li class='list-group-item alloc'>"+resp[i].p_name+"</li>");
+                            flag = 1;
+                        }
                     }
                 }
-            }
+            
         });
     });
 
@@ -61,7 +61,6 @@ $(document).ready(function() {
                 $(".uproject").html("");                     
                 for ( i = 0 ; i < resp.length; i++){
                     if(resp[i].user_id == id){
-                        //old_proj_name.push(resp[i].p_name);
                         if (flag == 0) $(".uproject").html("<button type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
                         else $(".uproject").append("<button type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
                         flag = 1;
@@ -126,7 +125,7 @@ $(document).ready(function() {
   <div class="col-sm-6"></div>
 </div> 
     
-  <div class="row clearfix">
+<div class="row clearfix">
     <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">
@@ -155,9 +154,9 @@ $(document).ready(function() {
                 </button>
             </div>
             <div class="body">
-                <div class="list-group uproject">
-                    
-                </div>
+                <ul class="list-group uproject">
+                    <li class="list-group-item" style = "background-color: #f9f9f9;">No data available in table</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -199,7 +198,6 @@ $(document).ready(function() {
             </div>
         </div>
     </div> 
-    
-  </div>
+</div>
     
 @endsection

@@ -236,7 +236,7 @@
                                             <select name="workspace" id="workspace">
                                                 <option value=" "></option>
                                                 @foreach($workspaces as $workspace)
-                                                    <option value="{{$workspace->id}}" {{(($user->workspace_id == $workspace->id) ? 'selected' : '')}}>{{$workspace->name}}</option>
+                                                    <option value="{{$workspace->id}}" {{(($user->workspace_id == $workspace->id) ? 'selected' : '')}}>{{$workspace->id_}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

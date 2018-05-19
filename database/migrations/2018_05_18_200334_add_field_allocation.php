@@ -14,9 +14,8 @@ class AddFieldAllocation extends Migration
     public function up()
     {
         Schema::table('allocation', function (Blueprint $table) {
-            $table->integer('is_delete', 4);
-            $table->timestamp('create_at');
-            $table->timestamp('update_at');
+            $table->integer('is_delete');
+//            $table->timestamps();
         });
     }
 

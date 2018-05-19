@@ -18,8 +18,6 @@ class CreateRepositoryallocationTable extends Migration
             $table->integer('user_id');
             $table->string('repository', 100);
             $table->tinyInteger('is_delete');
-            $table->timestamps('create_at');
-            $table->timestamps('update_at');
             $table->timestamps();
         });
     }

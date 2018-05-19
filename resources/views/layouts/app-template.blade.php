@@ -241,6 +241,7 @@
 </script>
 <script src="{{ asset('js/site.js') }}"></script>
 @yield('slack-chat-scripts')
+@yield('slack-chat-pair-scripts')
 @yield('allocation-scripts')
   </body>
 </html>

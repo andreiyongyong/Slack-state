@@ -58,6 +58,9 @@
                                           <form class="row" method="POST" action="{{ route('slack-chat-pair.destroy', ['id' => $pair->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                              <a href="{{ route('slack-chat.slackChat', ['id' => $pair->id]) }}" class="btn btn-info waves-effect">
+                                                  Chat
+                                              </a>
                                                 @if(Auth::user()->type == '0' || $pair->id == Auth::user()->id)
                                                     <a href="{{ route('slack-chat-pair.edit', ['id' => $pair->id]) }}" class="btn btn-info waves-effect">
                                                     Update

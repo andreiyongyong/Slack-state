@@ -12,18 +12,6 @@
           <div class="card">
               <div class="body" style="position: relative">
                   <div class="row clearfix">
-                      <div class="col-xs-12">
-                          <div class="form-group form-float">
-                              <div>
-                                  <label class="form-label">Select Chat Pair </label>
-                                  <select class="select-pair">
-                                      @foreach($pairs as $pairs)
-                                          <option value="{{$pairs->id}}" >{{$pairs->name}}</option>
-                                      @endforeach
-                                  </select>
-                              </div>
-                          </div>
-                      </div>
                       <div class="col-xs-6 m-b-2-px">
                           <?php
                           $data = array(

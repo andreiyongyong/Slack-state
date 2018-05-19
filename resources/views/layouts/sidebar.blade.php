@@ -100,12 +100,6 @@
                                     <span>Slack Chat Pair</span>
                                 </a>
                             </li>
-                            <li class="{{ Request::segment(1) == "slack-chat" ? "active" : "" }}" >
-                                <a href="{{ route('slack-chat.slackChat') }}">
-                                    <i class="material-icons">forum</i>
-                                    <span>Slack Chat</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>

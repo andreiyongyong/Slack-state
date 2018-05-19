@@ -54,7 +54,7 @@ Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');
 Route::get('slack', 'SlackController@index')->name('slack.index');
 
 
-Route::get('slack-chat', 'SlackChatPairController@slackChat')->name('slack-chat.slackChat');
+Route::get('slack-chat/{id}', 'SlackChatPairController@slackChat')->name('slack-chat.slackChat');
 
 Route::get('messaging', 'SlackChatController@index')->name('messaging.index');
 

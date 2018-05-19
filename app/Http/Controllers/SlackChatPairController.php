@@ -139,11 +139,10 @@ class SlackChatPairController extends Controller
         return redirect()->intended('/slack-chat-pair');
     }
 
-    public function slackChat(){
+    public function slackChat($id){
         $projects = Project::get();
-        $pairs = SlackChatPair::get();
-        $pair = SlackChatPair::with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
-        return view('slack-chat/pair-chat', ['projects' => $projects, 'pair' => $pair, 'pairs' => $pairs]);
+        $pair = SlackChatPair::where('id', $id)->with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
+        return view('slack-chat/pair-chat', ['projects' => $projects, 'pair' => $pair]);
     }
 
     public function selectPair_ajax(Request $request){

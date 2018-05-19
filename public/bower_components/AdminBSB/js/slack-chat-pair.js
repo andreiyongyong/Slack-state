@@ -34,51 +34,51 @@ var slackChatPair = function () {
       $('.loading-block').toggleClass('display-none', !show);
   };
 
-  instance.selectPair = function (id) {
-
-      if(id) {
-          $.ajax({
-              type: 'post',
-              url: instance.urls.selectPair,
-              data: {
-                  id_: id
-              },
-              beforeSend: function () {
-                  instance.toggleLoader(true);
-              },
-              success: function (response) {
-                  if ('user_1' in response) {
-                      instance.user_1 = {
-                          "id": response.user_1.id,
-                          "slack_id": response.user_1.slack_user_id,
-                          "channel_id": response.user_1.channel_id,
-                          "workspace_id": response.workspace_1.id,
-                          "admin_id": response.admin_1.id
-                      };
-                      $('.user_1_status').attr('data-slack_id', response.user_1.slack_user_id);
-                      $('.user_1_name').html(response.user_1.username);
-                      $('#admin_1').html(response.admin_1.username);
-
-                      instance.user_2 = {
-                          "id": response.user_2.id,
-                          "slack_id": response.user_2.slack_user_id,
-                          "channel_id": response.user_2.channel_id,
-                          "workspace_id": response.workspace_2.id,
-                          "admin_id": response.admin_2.id
-                      };
-                      $('.user_2_status').attr('data-slack_id', response.user_2.slack_user_id);
-                      $('.user_2_name').html(response.user_2.username);
-                      $('#admin_2').html(response.admin_2.username);
-
-                      instance.renderMessaging();
-                      $('.slack-message').val('');
-                      $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
-                  }
-              }
-          });
-      }
-
-  };
+  // instance.selectPair = function (id) {
+  //
+  //     if(id) {
+  //         $.ajax({
+  //             type: 'post',
+  //             url: instance.urls.selectPair,
+  //             data: {
+  //                 id_: id
+  //             },
+  //             beforeSend: function () {
+  //                 instance.toggleLoader(true);
+  //             },
+  //             success: function (response) {
+  //                 if ('user_1' in response) {
+  //                     instance.user_1 = {
+  //                         "id": response.user_1.id,
+  //                         "slack_id": response.user_1.slack_user_id,
+  //                         "channel_id": response.user_1.channel_id,
+  //                         "workspace_id": response.workspace_1.id,
+  //                         "admin_id": response.admin_1.id
+  //                     };
+  //                     $('.user_1_status').attr('data-slack_id', response.user_1.slack_user_id);
+  //                     $('.user_1_name').html(response.user_1.username);
+  //                     $('#admin_1').html(response.admin_1.username);
+  //
+  //                     instance.user_2 = {
+  //                         "id": response.user_2.id,
+  //                         "slack_id": response.user_2.slack_user_id,
+  //                         "channel_id": response.user_2.channel_id,
+  //                         "workspace_id": response.workspace_2.id,
+  //                         "admin_id": response.admin_2.id
+  //                     };
+  //                     $('.user_2_status').attr('data-slack_id', response.user_2.slack_user_id);
+  //                     $('.user_2_name').html(response.user_2.username);
+  //                     $('#admin_2').html(response.admin_2.username);
+  //
+  //                     instance.renderMessaging();
+  //                     $('.slack-message').val('');
+  //                     $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
+  //                 }
+  //             }
+  //         });
+  //     }
+  //
+  // };
 
   instance.updateStatuses = function () {
           $.ajax({
@@ -103,9 +103,9 @@ var slackChatPair = function () {
       $(document).ready(function () {
           var body = $('body');
 
-          body.on('change', '.select-pair', function () {
-              instance.selectPair($(this).val());
-          });
+          // body.on('change', '.select-pair', function () {
+          //     instance.selectPair($(this).val());
+          // });
 
           body.on('click', '.send-message', function () {
               var user = $(this).attr('data-user');

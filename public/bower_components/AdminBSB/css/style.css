@@ -2402,7 +2402,7 @@ a {
   animation: none !important; }
 
 section.content {
-  margin: 10px 15px 0 315px;
+  margin: 10px 15px 0 165px;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
   -webkit-transition: 0.5s;
@@ -7475,7 +7475,7 @@ fieldset[disabled] .form-control {
   transition: all 0.5s;
   font-family: "Roboto", sans-serif;
   background: #fdfdfd;
-  width: 300px;
+  width: 150px;
   overflow: hidden;
   display: inline-block;
   height: calc(100vh);
@@ -7565,6 +7565,22 @@ fieldset[disabled] .form-control {
     position: relative;
     overflow-y: auto;
     height: 90vh; }
+
+  .list span {
+    font-size: 11px!important;
+  }
+
+  .list i {
+    font-size: 20px!important;
+  }
+
+  .list {
+    margin-left: -30px;
+  }
+
+ .title {
+   font-size: 14px;
+ }
     .sidebar .menu .list {
       list-style: none;
       padding-left: 0; }

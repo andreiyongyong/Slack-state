@@ -8,25 +8,30 @@ $(document).ready(function() {
     //when you select a user, it takes this user's repositories from one owner
     $(".user-group").click(function() {
         git_username = $(this).data("gitname");
+        if(git_username == "" || git_username == null) git_username = "nogitusername";
         $(".user-group").each(function( index, element ) {
             $(element).css("border", "1px solid #ddd");
         });
 
         $(this).css("border", "2px solid black");
-        
         $.ajax({
             type: "POST",
             url: '/gitmanage/ajaxrepofromuser',
             data: { git_username: git_username },
             dataType:"json",
-            success: function( resp ) {
-
-                $(".uproject").html('');   
-                for ( i = 0 ; i < resp.length; i++){
-
-                    if(resp[i].owner.login == "{{ env('GITHUB_USERNAME') }}")
-                        $(".uproject").append("<li class='list-group-item' data-owner=  "+resp[i].owner.login+">"+resp[i].name+"</li>");
-    
+            success: function( response ) {
+                if(response.status == "error"){
+                    alert(response.string); 
+                    return;
+                }else{
+                    $(".uproject").html(""); 
+                    if (response.string == "notfound") return; 
+                    resp = JSON.parse(response.string);
+                    console.log(resp);
+                    for ( i = 0 ; i < resp.length; i++){
+                        if(resp[i].owner.login == "{{ env('GITHUB_USERNAME') }}")
+                            $(".uproject").append("<li class='list-group-item alloc' data-invite_id=  "+resp[i].owner.id+">"+resp[i].name+"</li>");
+                    }
                 }
             }
         });
@@ -55,71 +60,72 @@ $(document).ready(function() {
             alert("Please select a user!");
             return;
         }
+
+        if(repos_name == [] || repos_name == null){
+            alert('Please select repositryies.'); return;
+        }
         $.ajax({
             type: "POST",
             url: '/gitmanage/updaterepos',
             data: {git_username: git_username, repos_name: repos_name},
             dataType : "json",
-            success: function( resp ) {
-                console.log(resp);
-                if(resp.status='error') {
-                    alert(resp.status);
+            success: function( response ) {
+                
+                if(response.status =='error') {
+                    alert(response.string);
                     return;
                 }
                 else {
-                    
-                    for ( i = 0 ; i < resp.length; i++){
-                     
-                            //old_proj_name.push(resp[i].p_name);
-                        $(".uproject").append("<li class='list-group-item' data-owner =  "+resp[i].inviter.login+">"+resp[i].repository.name+"</li>");
+                    data = response.string;
+                    for ( i = 0 ; i < data.length; i++){
+                        resp = JSON.parse(data[i]);
+                        console.log(resp);
+                        $(".uproject").append("<li class='list-group-item alloc' data-invite_id =  "+resp.inviter.id+">"+resp.repository.name+"</li>");
                   
                     }
                 }
             }
         })
     });
-
-    var del_proj_name = [];
+    // when click second table...
+    var del_invite = [];
     $(".uproject").on('click', '.alloc', function(){
         if($(this).hasClass("selected")){
             $(this).css("border", "1px solid #ddd");
             $(this).removeClass("selected");
-            var index = del_proj_name.indexOf($(this).data('project_id'));
-            del_proj_name.splice(index, 1);
+            var index = del_invite.indexOf($(this).data('invite_id'));
+            del_invite.splice(index, 1);
         }
         else {
-            
-            del_proj_name.push($(this).data('project_id'));
-
+            del_invite.push($(this).data('invite_id'));
             $(this).addClass("selected");
             $(this).css("border", "2px solid red");
-
         }
 
     })
 
     $("#del_proj").click(function(){
- 
-        if(id == 0) {
+        if(git_username == '' || git_username == null) {
             alert("Please select a user!");
             return;
         }
-        if(del_proj_name.length==0){
+        if(del_invite.length==0){
             alert("Please select a project to delete");
             return;
         }
+        console.log(del_invite);
         $.ajax({
             type:"POST",
-            url: '/allocateprojects/del_proj',
-            data: {userid : id, del_proj_id: del_proj_name},
+            url: '/gitmanage/del_invite',
+            data: {git_username: git_username, del_invite: del_invite},
+            dataType: "json",
             success: function(resp) {
                 var flag = 0;   
                 $(".uproject").html("");                     
                 for ( i = 0 ; i < resp.length; i++){
-                    if(resp[i].user_id == id){
-                        //old_proj_name.push(resp[i].p_name);
-                        if (flag == 0) $(".uproject").html("<button type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
-                        else $(".uproject").append("<button type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
+                    if(resp[i].git_username == git_username){
+                        if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-invite_id = "+resp[i].invite_id+">"+resp[i].repository+"</li>");
+                        else $(".uproject").append("<li class='list-group-item alloc'  data-invite_id =  "+resp[i].repository+">"+resp[i].repository+"</li>");
                         flag = 1;
                     }
                 }
@@ -144,7 +150,7 @@ $(document).ready(function() {
             <div class="body">
                 <div class="list-group">
                 @foreach ($users as $user)
-                    <button type="button" class="list-group-item user-group" data-gitname="{{ $user->github_username }}">{{ $user->username }}</button>
+                    <button type="button" class="list-group-item user-group" data-gitname="{{ $user->github_id }}">{{ $user->username }}</button>
                 @endforeach
                 </div>
             </div>
@@ -169,7 +175,7 @@ $(document).ready(function() {
         </div>
     </div>
 
-    <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px" id="shift_proj">
+    <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px; cursor: pointer;" id="shift_proj">
         <i class="large material-icons" style="zoom:2">arrow_back</i>
     </a>
     <div class="col-lg-4 col-md-4">

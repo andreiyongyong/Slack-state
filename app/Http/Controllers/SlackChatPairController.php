@@ -200,7 +200,7 @@ class SlackChatPairController extends Controller
         ];
 
         try {
-            $token = SlackToken::where('workspace_id', $user_1['workspace_id'])->get()->first();
+            $token = SlackToken::where('workspace_id', $user_1['workspace_id'])->where('user_id', $user_1['admin_id'])->get()->first();
             if($token) {
                 $api = new SlackApi($token->token);
                 
@@ -241,7 +241,7 @@ class SlackChatPairController extends Controller
         }
         try {
 
-                $token = SlackToken::where('workspace_id', $user_2['workspace_id'])->get()->first();
+                $token = SlackToken::where('workspace_id', $user_2['workspace_id'])->where('user_id', $user_2['admin_id'])->get()->first();
             $users = [];
                 if($token) {
                     $api = new SlackApi($token->token);

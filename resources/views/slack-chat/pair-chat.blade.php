@@ -12,7 +12,7 @@
           <div class="card">
               <div class="body" style="position: relative">
                   <div class="row clearfix">
-                      <div class="col-xs-6 m-b-2-px">
+                      <div class="col-xs-5 m-b-2-px">
                           <?php
                           $data = array(
                               'id' => $pair->user_1['id'],
@@ -48,7 +48,13 @@
                               </div>
                           </div>
                       </div>
-                      <div class="col-xs-6 m-b-2-px">
+                      <div class="col-xs-2 m-b-2-px">
+
+                          <div class="col-xs-12 m-b-2-px text-center">
+                             <a href="javascript:" class="btn btn-info set-auto" data-state="auto">Automatic</a>
+                          </div>
+                      </div>
+                      <div class="col-xs-5 m-b-2-px">
                           <?php
                           $data = array(
                               'id' => $pair->user_2['id'],

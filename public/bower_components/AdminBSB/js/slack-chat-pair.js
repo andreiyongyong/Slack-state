@@ -8,6 +8,7 @@ var slackChatPair = function () {
       messages_1_last : -1,
       messages_2 : [] ,
       messages_2_last : -1,
+      auto: false,
       urls : {
          updateStatuses : '/update-statuses-pair',
          getChannelChat : '/get-channel-chat-pair',
@@ -75,6 +76,12 @@ var slackChatPair = function () {
               }
           });
 
+          body.on('click', '.set-auto',function(e) {
+              var state = $(this).attr('data-state');
+              $(this).toggleClass('btn-info').toggleClass('btn-danger').attr('data-state', state== 'auto' ? 'stop' : 'auto' ).html( state== 'auto' ? 'Stop' : 'Automatic' );
+              instance.auto = state== 'auto' ? false : true;
+          });
+
           body.on('click', '.send-message', function () {
               var user = $(this).attr('data-user');
               $.ajax({
@@ -95,13 +102,13 @@ var slackChatPair = function () {
               });
           });
 
-          body.on('click', '.edit-btn', function () {
-              instance.sendEditMessage('edit', $(this).parent().attr('data-user'), $(this).closest('.info-div').find('.info-txt').html());
+          body.on('click', '.edit-btn', function (e) {
+              instance.sendEditMessage('edit', $(this).parent().attr('data-user'), $(e.target).closest('.info-div').find('.info-txt').html());
               $(this).parent().hide();
           });
 
-          body.on('click', '.send-btn', function () {
-              instance.sendEditMessage('send', $(this).parent().attr('data-user'), $(this).closest('.info-div').find('.info-txt').html());
+          body.on('click', '.send-btn', function (e) {
+              instance.sendEditMessage('send', $(this).parent().attr('data-user'), $(e.target).closest('.info-div').find('.info-txt').html());
               $(this).parent().hide();
           });
 
@@ -137,7 +144,8 @@ var slackChatPair = function () {
                     $.each(response.data.user_1, function (index, message) {
 
                         if(instance.messages_1_last < message.tsi){
-                            instance.messages_1.push({ts : message.tsi, act : true});
+
+                            instance.messages_1.push({ts : message.tsi, act : instance.auto});
 
 
                         var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
@@ -156,7 +164,7 @@ var slackChatPair = function () {
                     $.each(response.data.user_2, function (index, message) {
 
                         if(instance.messages_2_last < message.tsi) {
-                            instance.messages_2.push({ts: message.tsi, act: true});
+                            instance.messages_2.push({ts: message.tsi, act: instance.auto});
 
 
                             var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');

@@ -1,14 +1,14 @@
 <aside id="leftsidebar" class="sidebar">
     <!-- User Info -->
-    <div class="user-info">
-        <div class="image pull-right" style = "padding-top:15px;"> 
-            <img src="{{ asset ("/image/".Auth::user()->image) }}" width="90" height="90" alt="User" />
-        </div>
-        <div class="info-container">
-            <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->username }}</div>
-            <div class="email">{{ Auth::user()->email }}</div> 
-        </div> 
-    </div>
+    {{--<div class="user-info">--}}
+        {{--<div class="image pull-right" style = "padding-top:15px;">--}}
+            {{--<img src="{{ asset ("/image/".Auth::user()->image) }}" width="90" height="90" alt="User" />--}}
+        {{--</div>--}}
+        {{--<div class="info-container">--}}
+            {{--<div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->username }}</div>--}}
+            {{--<div class="email">{{ Auth::user()->email }}</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
     <!-- #User Info -->
     <!-- Menu -->
     <div class="menu">
@@ -16,7 +16,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                        <a class="title" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
                          Project
                         </a>
                     </p>
@@ -74,7 +74,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        <a class="title" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
                             Slack
                         </a>
                     </p>
@@ -113,7 +113,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                        <a class="title" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
                             Users
                         </a>
                     </p>
@@ -140,7 +140,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <p class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                        <a class="title" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
                             Marketing
                         </a>
                     </p>
@@ -178,14 +178,15 @@
                 </div>
             </div>
         </div>
+        <center><img src="image/arrow-left.jpg" style="width: 40px"> </center>
     </div>
     <!-- #Menu -->
     <!-- Footer -->
     <div class="legal">
-        <div class="copyright">
+        <div class="copyright" style="font-size: 12px;">
             &copy; 2018 - 2018 <a href="javascript:void(0);">SQ Tec</a>.
         </div>
-        <div class="version">
+        <div class="version" style="font-size: 12px;">
             <b>Version: </b> 1.0.5
         </div>
     </div>

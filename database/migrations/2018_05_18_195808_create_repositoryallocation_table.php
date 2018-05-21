@@ -14,7 +14,7 @@ class CreateRepositoryallocationTable extends Migration
     public function up()
     {
         Schema::create('repository_allocation', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id' ,true);
             $table->integer('user_id');
             $table->string('repository', 100);
             $table->tinyInteger('is_delete');

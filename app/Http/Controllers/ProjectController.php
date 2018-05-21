@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Task;
 use Illuminate\Http\Request;
 use App\Project;
 
@@ -51,11 +52,7 @@ class ProjectController extends Controller
         Project::create([
             'p_name' => $request['p_name'],
             'p_client' => $request['p_client'],
-            'task' => $request['task'],
-            'price' => $request['price'],
-            'developer' => $request['developer'] , 
-            'meet_time' => $request['meet_time'] , 
-            'mode' => $request['mode'] 
+            'meet_time' => $request['meet_time']
         ]);
 
         return redirect()->intended('/project');
@@ -86,7 +83,8 @@ class ProjectController extends Controller
             return redirect()->intended('/project');
         }
 
-        return view('project/edit', ['project' => $project]);
+        $tasks = Task::where('project_id',$id)->get();
+        return view('project/edit', compact('project', 'tasks'));
     }
 
     /**
@@ -103,11 +101,7 @@ class ProjectController extends Controller
         $input = [
             'p_name' => $request['p_name'],
             'p_client' => $request['p_client'],
-            'task' => $request['task'],
-            'price' => $request['price'],
-            'developer' => $request['developer'] , 
-            'meet_time' => $request['meet_time'] , 
-            'mode' => $request['mode']  
+            'meet_time' => $request['meet_time']
         ]; 
 
         Project::where('id', $id)
@@ -119,13 +113,29 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ResourceManagement  $resourcesManagement
+     * @param $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy($id)
     {
         Project::where('id', $id)->delete();
         return redirect()->intended('/project');
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function addTask(Request $request) {
+
+        Task::create([
+            'task_name' => $request->get('t_name'),
+            'project_id' =>$request->get('id'),
+            'price' => $request->get('t_price')
+        ]);
+        $tasks = Task::get();
+        return redirect()->back()->withTasks($tasks);
     }
 
     

@@ -27,6 +27,10 @@ var slackChatPair = function () {
           instance.updateStatuses()
       }, 30000);
 
+      setInterval(function () {
+          instance.renderMessaging(true);
+      }, 7000);
+
       instance.eventListeners();
   };
 
@@ -98,7 +102,7 @@ var slackChatPair = function () {
   };
 
   instance.eventListeners = function () {
-      instance.renderMessaging();
+      instance.renderMessaging(false);
 
       $(document).ready(function () {
           var body = $('body');
@@ -130,7 +134,7 @@ var slackChatPair = function () {
                       instance.toggleLoader(true);
                   },
                   success: function (response) {
-                      instance.renderMessaging();
+                      instance.renderMessaging(false);
                       $('.slack-message').val('');
                       $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
                   }
@@ -139,7 +143,7 @@ var slackChatPair = function () {
 
       });
   };
-    instance.renderMessaging = function () {
+    instance.renderMessaging = function (cron) {
         $.ajax({
             type: 'post',
             url: instance.urls.getChannelChat,
@@ -148,34 +152,40 @@ var slackChatPair = function () {
                 user_2 : instance.user_2
             },
             beforeSend: function () {
-                instance.toggleLoader(true);
+                if(!cron){
+                    instance.toggleLoader(true);
+                }
             },
             success: function (response) {
-                console.log(response);
                 $('.messaging-block .slack-massages').html('');
 
-                $.each(response.data.user_1, function (index, message) {
+                if(!cron || response.data.user_1.length > 0) {
+                    $.each(response.data.user_1, function (index, message) {
 
-                    var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
-                    var display_name = ('user' in message) ? message.user.profile.real_name : '';
+                        var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
+                        var display_name = ('user' in message) ? message.user.profile.real_name : '';
 
-                    $('.messaging-block .slack-massages.user_1').append(''+
-                        '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="'+ avatar +'"></div>'+
-                        '<div class="table-cell info-div"><span class="first-name">'+ display_name +'</span><span class="reply-time">'+message.ts+'</span><p class="info-txt">'+ message.text +'</p></div></div></div>');
-                });
+                        $('.messaging-block .slack-massages.user_1').append('' +
+                            '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
+                            '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                    });
+                }
 
-                $.each(response.data.user_2, function (index, message) {
+                if(!cron || response.data.user_2.length > 0) {
+                    $.each(response.data.user_2, function (index, message) {
 
-                    var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
-                    var display_name = ('user' in message) ? message.user.profile.real_name : '';
+                        var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
+                        var display_name = ('user' in message) ? message.user.profile.real_name : '';
 
-                    $('.messaging-block .slack-massages.user_2').append(''+
-                        '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="'+ avatar +'"></div>'+
-                        '<div class="table-cell info-div"><span class="first-name">'+ display_name +'</span><span class="reply-time">'+message.ts+'</span><p class="info-txt">'+ message.text +'</p></div></div></div>');
-                });
-
+                        $('.messaging-block .slack-massages.user_2').append('' +
+                            '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
+                            '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                    });
+                }
                 $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
-                instance.toggleLoader(false);
+                if(!cron){
+                    instance.toggleLoader(false);
+                }
             }
         });
     };

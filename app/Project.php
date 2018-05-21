@@ -18,7 +18,7 @@ class Project extends Model
      * @var array
      */ 
     protected $fillable = [
-        'p_name' , 'p_client' , 'task' , 'price' , 'developer' , 'meet_time' , 'mode'
+        'p_name' , 'p_client' , 'price' , 'meet_time'
    ];
 
     function tasks(){

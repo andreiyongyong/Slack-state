@@ -178,7 +178,7 @@
                 </div>
             </div>
         </div>
-        <center><img src="image/arrow-left.jpg" style="width: 40px"> </center>
+        <center><img src="image/left1.png" style="width: 40px"> </center>
     </div>
     <!-- #Menu -->
     <!-- Footer -->

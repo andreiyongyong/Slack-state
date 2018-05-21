@@ -24,24 +24,14 @@
                               <tr>
                                   <th>PROJECT</th>
                                   <th>CLIENT</th>
-                                  <th>CHAT MODE</th>
-                                  <th>TASK</th>
-                                  <th>PIRCE</th>
-                                  <th>DEVELOPER</th>
                                   <th>MEET TIME</th>
-                                  <th>PROCESS MODE</th>
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
                                   <th>PROJECT</th>
                                   <th>CLIENT</th>
-                                  <th>CHAT MODE</th>
-                                  <th>TASK</th>
-                                  <th>PIRCE</th>
-                                  <th>DEVELOPER</th>
                                   <th>MEET TIME</th>
-                                  <th>PROCESS MODE</th>
                               </tr>
                           </tfoot>
                           <tbody>
@@ -49,11 +39,7 @@
                               <tr>
                                   <td>{{ $project->p_name }}</td>
                                   <td>{{ $project->p_client }}</td>
-                                  <td>{{ $project->task }}</td>
-                                  <td>{{ $project->price }}</td>
-                                  <td>{{ $project->developer }}</td>
                                   <td>{{ $project->meet_time }}</td>
-                                  <td>{{ $project->mode }}</td>
                                   <td align = "center">
                                       <form class="row" method="POST" action="{{ route('project.destroy', ['id' => $project->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                             <input type="hidden" name="_method" value="DELETE">

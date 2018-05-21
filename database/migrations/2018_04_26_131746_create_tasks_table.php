@@ -17,6 +17,7 @@ class CreateTasksTable extends Migration
             $table->increments('id' , true);
             $table->string('task_name' );
             $table->integer('project_id');
+            $table->double('price', 10, 2);
             $table->timestamps();
         });
     }

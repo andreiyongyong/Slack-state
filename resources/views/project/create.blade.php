@@ -29,52 +29,14 @@
                                 <div class="help-info"> Max. 200 characters</div>
                             </div>
                         </div>
-                    </div>   
-                    <div class="row clearfix">
-                        <div class="col-md-6">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="task" id="task" value="{{ old('task') }}"  min="1" max="200" required>
-                                    <label class="form-label">Task</label>
-                                </div> 
-                                <div class="help-info"> Max. 200 characters</div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="number" class="form-control" name="price" id="price" value="{{ old('price') }}" required>
-                                    <label class="form-label">Price</label>
-                                </div> 
-                                <div class="help-info"> No Limit . $</div>
-                            </div>
-                        </div>
                     </div>
                     <div class="row clearfix">
-                        <div class="col-md-4">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="developer" id="developer" value="{{ old('developer') }}"  min="1" max="200" required>
-                                    <label class="form-label">Developer</label>
-                                </div> 
-                                <div class="help-info"> Max. 200 characters</div>
-                            </div>
-                        </div>
                         <div class="col-md-4">
                             <div class="form-group form-float">
                                 <div class="form-line focused">
                                     <input type="date" class="form-control focused" name="meet_time" id="meet_time" value="{{ old('meet_time') }}" required>
                                     <label class="form-label">Meet Time</label>
                                 </div>  
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="mode" id="mode" value="{{ old('mode') }}" required>
-                                    <label class="form-label">Mode</label>
-                                </div> 
-                                <div class="help-info"></div>
                             </div>
                         </div>
                     </div> 

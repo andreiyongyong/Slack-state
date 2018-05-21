@@ -230,7 +230,9 @@ class SlackChatPairController extends Controller
                         if (isset($message['user'])) {
                             $message['user'] = $users[$message['user']];
                         }
+                        $message['tsi'] = (float)$message['ts'];
                         $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
+
                         $data['user_1'][] = $message;
                     }
                     $data['user_1'] = array_reverse($data['user_1']);
@@ -271,6 +273,7 @@ class SlackChatPairController extends Controller
                             if (isset($message['user'])) {
                                 $message['user'] = $users[$message['user']];
                             }
+                            $message['tsi'] = (float)$message['ts'];
                             $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
                             $data['user_2'][] = $message;
                         }

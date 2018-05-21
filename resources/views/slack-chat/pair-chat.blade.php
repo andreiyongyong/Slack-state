@@ -34,18 +34,15 @@
                           </div>
                           <div class="col-md-12 m-b-2-px" style="margin-top: 15px;">
                               <div class="row clearfix">
-                                  <div class="col-xs-12">
-                                      <h4 id="admin_2">{{$pair->admin_1['username']}}</h4>
-                                  </div>
-                                  <div class="col-xs-11 m-b-2-px">
+                                  <div class="col-xs-12 m-b-2-px">
                                       <div class="form-group form-float">
                                           <div class="form-line">
                                               <input type="text" class="form-control slack-message user_1" name="message" value="">
-                                              <label class="form-label">Message</label>
+                                              {{--<label class="form-label">Message</label>--}}
                                           </div>
                                       </div>
                                   </div>
-                                  <div class="col-xs-1 m-b-2-px">
+                                  <div class="col-xs-1 m-b-2-px" style="display: none;" >
                                       <button class="btn btn-primary waves-effect send-message" data-user="user_1">Send</button>
                                   </div>
                               </div>
@@ -74,18 +71,14 @@
                           </div>
                           <div class="col-md-12 m-b-2-px" style="margin-top: 15px;">
                               <div class="row clearfix">
-                                  <div class="col-xs-12">
-                                      <h4 id="admin_2">{{$pair->admin_2['username']}}</h4>
-                                  </div>
-                                  <div class="col-xs-11 m-b-2-px">
+                                  <div class="col-xs-12 m-b-2-px">
                                       <div class="form-group form-float">
                                           <div class="form-line">
                                               <input type="text" class="form-control slack-message user_2" name="message" value="">
-                                              <label class="form-label">Message</label>
                                           </div>
                                       </div>
                                   </div>
-                                  <div class="col-xs-1 m-b-2-px">
+                                  <div class="col-xs-1 m-b-2-px" style="display: none;">
                                       <button class="btn btn-primary send-message waves-effect" data-user="user_2" >Send</button>
                                   </div>
                               </div>

@@ -236,3 +236,10 @@
 .sidebar .menu .list a{
     padding: 10px 30px;
 }
+
+.messaging-block .slack-massages .material-icons{
+    font-size: 21px;
+    margin: 5px;
+    float: right;
+    cursor: pointer;
+}

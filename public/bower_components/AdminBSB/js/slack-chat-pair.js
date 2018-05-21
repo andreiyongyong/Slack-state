@@ -4,6 +4,10 @@ var slackChatPair = function () {
   instance = {
       user_1: [],
       user_2: [],
+      messages_1 : [] ,
+      messages_1_last : -1,
+      messages_2 : [] ,
+      messages_2_last : -1,
       urls : {
          updateStatuses : '/update-statuses-pair',
          getChannelChat : '/get-channel-chat-pair',
@@ -38,52 +42,6 @@ var slackChatPair = function () {
       $('.loading-block').toggleClass('display-none', !show);
   };
 
-  // instance.selectPair = function (id) {
-  //
-  //     if(id) {
-  //         $.ajax({
-  //             type: 'post',
-  //             url: instance.urls.selectPair,
-  //             data: {
-  //                 id_: id
-  //             },
-  //             beforeSend: function () {
-  //                 instance.toggleLoader(true);
-  //             },
-  //             success: function (response) {
-  //                 if ('user_1' in response) {
-  //                     instance.user_1 = {
-  //                         "id": response.user_1.id,
-  //                         "slack_id": response.user_1.slack_user_id,
-  //                         "channel_id": response.user_1.channel_id,
-  //                         "workspace_id": response.workspace_1.id,
-  //                         "admin_id": response.admin_1.id
-  //                     };
-  //                     $('.user_1_status').attr('data-slack_id', response.user_1.slack_user_id);
-  //                     $('.user_1_name').html(response.user_1.username);
-  //                     $('#admin_1').html(response.admin_1.username);
-  //
-  //                     instance.user_2 = {
-  //                         "id": response.user_2.id,
-  //                         "slack_id": response.user_2.slack_user_id,
-  //                         "channel_id": response.user_2.channel_id,
-  //                         "workspace_id": response.workspace_2.id,
-  //                         "admin_id": response.admin_2.id
-  //                     };
-  //                     $('.user_2_status').attr('data-slack_id', response.user_2.slack_user_id);
-  //                     $('.user_2_name').html(response.user_2.username);
-  //                     $('#admin_2').html(response.admin_2.username);
-  //
-  //                     instance.renderMessaging();
-  //                     $('.slack-message').val('');
-  //                     $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
-  //                 }
-  //             }
-  //         });
-  //     }
-  //
-  // };
-
   instance.updateStatuses = function () {
           $.ajax({
               type: 'post',
@@ -106,10 +64,6 @@ var slackChatPair = function () {
 
       $(document).ready(function () {
           var body = $('body');
-
-          // body.on('change', '.select-pair', function () {
-          //     instance.selectPair($(this).val());
-          // });
 
           body.on('keypress', '.slack-message',function(e) {
               if(e.which == 13) {
@@ -141,8 +95,28 @@ var slackChatPair = function () {
               });
           });
 
+          body.on('click', '.edit-btn', function () {
+              instance.sendEditMessage('edit', $(this).parent().attr('data-user'), $(this).closest('.info-div').find('.info-txt').html());
+              $(this).parent().hide();
+          });
+
+          body.on('click', '.send-btn', function () {
+              instance.sendEditMessage('send', $(this).parent().attr('data-user'), $(this).closest('.info-div').find('.info-txt').html());
+              $(this).parent().hide();
+          });
+
       });
   };
+
+  instance.sendEditMessage = function (action, user, text) {
+
+          $('body .slack-message.' + user).val(text);
+          if(action == 'send') {
+              $('body .send-message[data-user="'+ user +'"]').click();
+          }
+
+  };
+
     instance.renderMessaging = function (cron) {
         $.ajax({
             type: 'post',
@@ -157,35 +131,49 @@ var slackChatPair = function () {
                 }
             },
             success: function (response) {
-                $('.messaging-block .slack-massages').html('');
+                // $('.messaging-block .slack-massages').html('');
 
                 if(!cron || response.data.user_1.length > 0) {
                     $.each(response.data.user_1, function (index, message) {
+
+                        if(instance.messages_1_last < message.tsi){
+                            instance.messages_1.push({ts : message.tsi, act : true});
+
 
                         var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
                         var display_name = ('user' in message) ? message.user.profile.real_name : '';
 
                         $('.messaging-block .slack-massages.user_1').append('' +
                             '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                            '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                            '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" data-ts="'+message.tsi+'" data-user="user_2"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                        }
                     });
+
+                    instance.messages_1_last = parseFloat($('.messaging-block .slack-massages.user_1 .msg-btns').last().attr('data-ts'));
                 }
 
                 if(!cron || response.data.user_2.length > 0) {
                     $.each(response.data.user_2, function (index, message) {
 
-                        var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
-                        var display_name = ('user' in message) ? message.user.profile.real_name : '';
+                        if(instance.messages_2_last < message.tsi) {
+                            instance.messages_2.push({ts: message.tsi, act: true});
 
-                        $('.messaging-block .slack-massages.user_2').append('' +
-                            '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                            '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><p class="info-txt">' + message.text + '</p></div></div></div>');
+
+                            var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
+                            var display_name = ('user' in message) ? message.user.profile.real_name : '';
+
+                            $('.messaging-block .slack-massages.user_2').append('' +
+                                '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
+                                '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" data-ts="' + message.tsi + '" data-user="user_1"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                        }
                     });
+                    instance.messages_2_last = parseFloat($('.messaging-block .slack-massages.user_2 .msg-btns').last().attr('data-ts'));
                 }
                 $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
                 if(!cron){
                     instance.toggleLoader(false);
                 }
+                console.log(instance);
             }
         });
     };

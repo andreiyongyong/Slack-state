@@ -244,6 +244,7 @@ class SlackChatPairController extends Controller
                 $token = SlackToken::where('workspace_id', $user_2['workspace_id'])->get()->first();
             $users = [];
                 if($token) {
+                    $api = new SlackApi($token->token);
                     $message_sections = $api->execute('im.list');
                     $message_id = '';
                     foreach ($message_sections['ims'] as $section){
@@ -252,7 +253,6 @@ class SlackChatPairController extends Controller
                         }
                     }
 
-                    $api = new SlackApi($token->token);
                     $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true]);
 
                     if ($response['ok']) {

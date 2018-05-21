@@ -107,6 +107,16 @@ var slackChatPair = function () {
           //     instance.selectPair($(this).val());
           // });
 
+          body.on('keypress', '.slack-message',function(e) {
+              if(e.which == 13) {
+                  if($(this).hasClass('user_1')){
+                      $('body .send-message[data-user="user_1"]').click()
+                  }else{
+                      $('body .send-message[data-user="user_2"]').click()
+                  }
+              }
+          });
+
           body.on('click', '.send-message', function () {
               var user = $(this).attr('data-user');
               $.ajax({

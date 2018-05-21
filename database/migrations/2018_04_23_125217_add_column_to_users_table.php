@@ -17,18 +17,18 @@ class AddColumnToUsersTable extends Migration
             $table->tinyInteger('level')->default(11);
             $table->tinyInteger('type')->default(2);
             $table->string('image');
-            $table->boolean('called');
-            $table->string('stack');
-            $table->string('skypeid');
-            $table->string('room');
-            $table->integer('country');
-            $table->integer('age');
-            $table->string('notes');
-            $table->boolean('approved');
-            $table->string('time_doctor_email');
-            $table->string('time_doctor_password'); 
+            $table->boolean('called') -> default(0);
+            $table->string('stack') -> default('');
+            $table->string('skypeid') -> default('');
+            $table->string('room') -> default('');
+            $table->integer('country') -> default(0);
+            $table->integer('age') -> default(0);
+            $table->string('notes') -> default('');
+            $table->boolean('approved') -> default(0);
+            $table->string('time_doctor_email') -> default('');
+            $table->string('time_doctor_password') -> default(''); 
         });
-    }
+    }    
 
     /**
      * Reverse the migrations.

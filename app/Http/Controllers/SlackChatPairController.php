@@ -192,8 +192,6 @@ class SlackChatPairController extends Controller
         $user_1 = $request['user_1'];
         $user_2 = $request['user_2'];
 
-        $channelId_1 = $user_1['channel_id'];
-        $channelId_2 = $user_2['channel_id'];
         $users = [];
 
         $data = [
@@ -203,14 +201,19 @@ class SlackChatPairController extends Controller
 
         try {
             $token = SlackToken::where('workspace_id', $user_1['workspace_id'])->get()->first();
-            
             if($token) {
                 $api = new SlackApi($token->token);
                 
-                //$response = $api->execute('channels.history', ['channel' => $channelId_1, 'inclusive' => true]);
-                $response = $api->execute('im.history', ['channel' => $channelId_1, 'inclusive' => true]);
-                // echo $response;
-                
+                $message_sections = $api->execute('im.list');
+                $message_id = '';
+                foreach ($message_sections['ims'] as $section){
+                    if($user_1['slack_id'] == $section['user']){
+                        $message_id = $section['id'];
+                    }
+                }
+
+                $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true]);
+
                 if ($response['ok']) {
                     $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
                         return $val !== null;
@@ -233,13 +236,24 @@ class SlackChatPairController extends Controller
                     $data['user_1'] = array_reverse($data['user_1']);
                 }
             }
+        } catch (SlackApiException $e) {
+            $data['user_1'] = [];
+        }
+        try {
+
                 $token = SlackToken::where('workspace_id', $user_2['workspace_id'])->get()->first();
             $users = [];
-
                 if($token) {
+                    $message_sections = $api->execute('im.list');
+                    $message_id = '';
+                    foreach ($message_sections['ims'] as $section){
+                        if($user_2['slack_id'] == $section['user']){
+                            $message_id = $section['id'];
+                        }
+                    }
+
                     $api = new SlackApi($token->token);
-                    $response = $api->execute('channels.history', ['channel' => $channelId_2, 'inclusive' => true]);
-                    //$response = $api->execute('im.history', ['channel' => $channelId_2, 'inclusive' => true]);
+                    $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true]);
 
                     if ($response['ok']) {
                         $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
@@ -264,7 +278,7 @@ class SlackChatPairController extends Controller
                     }
                 }
         } catch (SlackApiException $e) {
-            return response()->json(['data' => $data]);
+            $data['user_2'] = [];
         }
         return response()->json(['data' => $data]);
     }
@@ -272,7 +286,6 @@ class SlackChatPairController extends Controller
     public function sendSlackMessage_ajax(Request $request){
 
         $developer = $request['developer'];
-        $channelId = $developer['channel_id'];
         $message = $request['message'];
         $error = false;
 
@@ -283,7 +296,7 @@ class SlackChatPairController extends Controller
                 $api = new SlackApi($token->token);
 
                 $response = $api->execute('chat.postMessage', [
-                    'channel' => $channelId,
+                    'channel' => $developer['slack_id'],
                     'text' => $message,
                     'as_user' => true
                 ]);

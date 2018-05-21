@@ -35,28 +35,23 @@ class SlackWorkSpaceController extends Controller
 
     public function updateUsers_cron(){
         try {
-            $users = User::where('slack_user_id', '')->orWhere('workspace_id', '')->get();
-            $workspaces = SlackWorkspace::get();
-            foreach ($workspaces as $workspace) {
+            $users = User::where('slack_user_id', '')->where('workspace_id','<>', '')->get();
+           foreach ($users as $user) {
+               $token = SlackToken::where('workspace_id', $user->workspace_id)->get()->first();
 
-                $token = SlackToken::where('workspace_id', $workspace->id)->get()->first();
-
-                if($token) {
-                    $slackApi = new SlackApi($token->token);
-                    $responce = $slackApi->execute('users.list');
-                    foreach ($responce['members'] as $member) {
-                        foreach ($users as $user) {
-                            if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
-                                User::where('id', $user->id)->update([
-                                    'slack_user_id' => $member['id'],
-                                    'workspace_id' => $workspace->id
-                                ]);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+               if ($token) {
+                   $slackApi = new SlackApi($token->token);
+                   $responce = $slackApi->execute('users.list');
+                   foreach ($responce['members'] as $member) {
+                       if (isset($member['profile']['email']) && $member['profile']['email'] == $user->email) {
+                           User::where('id', $user->id)->update([
+                               'slack_user_id' => $member['id']
+                           ]);
+                           break;
+                       }
+                   }
+               }
+           }
         }catch (SlackApiException $e){
 
         }

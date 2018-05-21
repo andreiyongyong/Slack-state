@@ -51,7 +51,7 @@ class SlackController extends Controller
                     $data[] = array_merge($responce['user'], array(
                             'avatar' => $responce['user']['profile']['image_512'],
                             'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
-                                ? $responce['user']['profile']['display_name'] : $responce['user']['real_name'],
+                                ? $responce['user']['profile']['display_name'] : ( isset( $responce['user']['real_name'] ) ? $responce['user']['real_name'] : '' ) ,
                             'workspace_id' => $user->workspace_id,
                             'project' => $project !== null ? $project->p_name : ''
                         )

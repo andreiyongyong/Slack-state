@@ -203,11 +203,14 @@ class SlackChatPairController extends Controller
 
         try {
             $token = SlackToken::where('workspace_id', $user_1['workspace_id'])->get()->first();
-
+            
             if($token) {
                 $api = new SlackApi($token->token);
-                $response = $api->execute('channels.history', ['channel' => $channelId_1, 'inclusive' => true]);
-
+                
+                //$response = $api->execute('channels.history', ['channel' => $channelId_1, 'inclusive' => true]);
+                $response = $api->execute('im.history', ['channel' => $channelId_1, 'inclusive' => true]);
+                // echo $response;
+                
                 if ($response['ok']) {
                     $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
                         return $val !== null;
@@ -236,6 +239,7 @@ class SlackChatPairController extends Controller
                 if($token) {
                     $api = new SlackApi($token->token);
                     $response = $api->execute('channels.history', ['channel' => $channelId_2, 'inclusive' => true]);
+                    //$response = $api->execute('im.history', ['channel' => $channelId_2, 'inclusive' => true]);
 
                     if ($response['ok']) {
                         $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {

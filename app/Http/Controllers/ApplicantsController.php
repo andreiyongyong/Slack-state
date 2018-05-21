@@ -95,20 +95,37 @@ class ApplicantsController extends Controller
             }
         }
 
-
-        $last_inserted_id = User::create([
-            'username' => $request['username'],
-            'email' => $request['email'],
-            'password' => bcrypt($request['password']),
-            'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
-            'type' => $request['type'],
-            'level' => $request['level'],
-            'image' => $input['imagename'],
-            'slack_user_id'=> $slack_user_id,
-            'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
-            'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
-        ])->id;
+        $last_inserted_id = '';
+        if ($request['password'] == '') {
+            $last_inserted_id = User::create([
+                'username' => $request['username'],
+                'email' => $request['email'],
+                //'password' => bcrypt($request['password']),
+                //'firstname' => $request['firstname'],
+                //'lastname' => $request['lastname'],
+                'type' => $request['type'],
+                'level' => $request['level'],
+                'image' => $input['imagename'],
+                'slack_user_id'=> $slack_user_id,
+                'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
+                'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
+            ])->id;
+        } else {
+            $last_inserted_id = User::create([
+                'username' => $request['username'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+                //'firstname' => $request['firstname'],
+                //'lastname' => $request['lastname'],
+                'type' => $request['type'],
+                'level' => $request['level'],
+                'image' => $input['imagename'],
+                'slack_user_id'=> $slack_user_id,
+                'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
+                'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
+            ])->id;
+        }
+        
         UserInfo::create([
             'user_id' => $last_inserted_id,
             'stack' => $request['stack'] ,

@@ -33,7 +33,6 @@ class GitManageController extends Controller
 
     	try {
             $repos = $this->client->api('current_user')->repositories();
-            // /user/repos
             
             return view('gitmanage/index' , ['users'=>$users, 'repos' => $repos ]);
           
@@ -48,7 +47,6 @@ class GitManageController extends Controller
     public function ajaxrepofromuser(Request $request){
         
         $gitname = $request->git_username;
-
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_USERAGENT => "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13",
@@ -61,7 +59,7 @@ class GitManageController extends Controller
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
                 "Cache-Control: no-cache",
-                "Postman-Token: b66e9eb9-f5ea-4745-80e4-2a56a651d6a1"
+                "Authorization: Bearer ".env("GITHUB_TOKEN")
             ),
         ));
 
@@ -71,33 +69,54 @@ class GitManageController extends Controller
         curl_close($curl);
 
         if ($err) {
-            echo "cURL Error #:" . $err;
-        } else {
-            echo $response;
+            $resp['status'] = 'error';
+            $resp['string'] = "cURL Error #:" . $err;
+        }elseif(strlen($response) == 117) {
+            $resp['status'] = "success";
+            $resp['string'] = "notfound";
+
         }
+        else {
+            $data = json_decode($response);
+            
+            for( $i = 0; $i < count($data); $i++){
+
+               if($data[$i]->owner->login != env('GITHUB_USERNAME'))  continue;
+                
+                $repo_count = DB::table('repository_allocation')->where([
+                    ['git_username','=', $gitname],
+                    ['repository', '=', $data[$i]->name]
+                ])->count();
+
+                if($repo_count == 0 )
+                    DB::table('repository_allocation')->insert([
+                        ['git_username' => $gitname, 'repository'=> $data[$i]->name, 'is_delete'=> 0, "invite_id", $data[$i]->owner->id]
+                ]);
+            }
+            
+            $resp['status'] = "success";
+            $resp['string'] = $response;
+
+        }
+        echo json_encode($resp);
 
     }
 
     public function updaterepos(Request $request){
-
-        $resp = array();
+        $data = array();
         $reposname = array();
         $reposname = $request->repos_name;
         $gitname = $request->git_username;
-        /*        
+        
         for($i = 0; $i < count($reposname); $i++){
-            $repo_count = DB::table('repository_allocation')->where([
-                ['git_username','=', $gitname],
-                ['repository', '=', $reposname[$i]]
-            ])->count();
-            if($repo_count == 0) DB::table('repository_allocation')->insert([
-                ['git_username' => $gitname, 'repository'=> $reposname[$i]]
-            ]);*/
 
-            // $this->client->api('organizations')->members()->add($reposname[$i], $gitname);
-            // $repos = $this->client->api('repo')->collaborators();
-            // var_dump($repos);exit;
-        for($i = 0; $i < count($reposname); $i++){
+            $repo_count = DB::table('repository_allocation')->where([
+                    ['git_username','=', $gitname],
+                    ['repository', '=', $reposname[$i]]
+                ])->count();
+           
+            if($repo_count != 0) continue; // if gitusername is invited with repos, not send
+
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
@@ -111,7 +130,7 @@ class GitManageController extends Controller
                 CURLOPT_CUSTOMREQUEST => "PUT",
                 CURLOPT_POSTFIELDS => "{\n\t\"permission\": \"admin\"\n}",
                 CURLOPT_HTTPHEADER => array(
-                    "Authorization: Bearer f233bae5d68b1c625e9c065c7eaa0cfa6e17d206",
+                    "Authorization: Bearer ".env("GITHUB_TOKEN"),
                     "Cache-Control: no-cache",
                     "Content-Type: application/json"
                 ),
@@ -123,35 +142,57 @@ class GitManageController extends Controller
             curl_close($curl);
 
             if ($err) {
-               
                 $resp['status'] = "error";
-                
+                $resp['string'] = "cURL Error #:" . $err;
                 echo json_encode($resp);
                 return;
-            } else {
-                $resp['status'] = "success";
-                $resp[$i] = $response;
-            }
+            } 
 
+            array_push($data, $response); 
+        // have to confirm to invite accept status    
+            // DB::table('repository_allocation')->insert([
+            //         ['git_username' => $gitname, 'repository'=> $reposname[$i]]
+            // ]);
+        
         }
-
-        echo json_encode($resp);
-
-    }
-        // $updateData = DB::table('project')
-        //     ->join('allocation', 'project.id', '=', 'allocation.project_id')
-        //     ->select('project.p_name','allocation.user_id','allocation.project_id')
+        
+        // $updateData = DB::table('repository_allocation')
+        //     ->select('repository')
         //     ->where([
         //         ['user_id','=', $userid],
+        //         ['git_username','=', $gitname],
         //         ['is_delete','=', '0']
         //     ])->get();
 
-/*        if($request->ajax())
+        if($request->ajax())
         {
-            //$data['msg'] = 'success';
-            // return response()->json($updateData);
+            $resp['status'] = "success";
+            $resp['string'] = $data;
         }
         else{
-            return "Not found";
-        } */
+            $resp['status'] = "error";
+            $resp['string'] = "cURL Error #:" . $err;
+        } 
+
+        echo json_encode($resp);
+    }
+
+    public function delinvite(Request $request){
+        $delinvite = array();
+        $delinvite = $request->del_invite;
+        $gitname = $request->git_username;
+     
+        for($i = 0; $i<count($delinvite); $i++){
+            DB::table('repository_allocation')->where([
+                ['git_username' ,'=', $gitname],
+                ['invite_id','=', $delinvite[$i]]
+            ])->update(['is_delete' => '1']);
+        }
+
+        $result = DB::table('repository_allocation')->where([
+                ['git_username' ,'=', $gitname],
+                ['is_delete','=', '0']
+            ])->get();
+        echo json_encode($result);
+    }
 }

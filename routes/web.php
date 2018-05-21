@@ -40,7 +40,6 @@ Route::resource('forum-master', 'ForumMasterController');
 Route::post('forum-master/add-forum-answer', 'ForumMasterController@addForumAnswer');
 Route::resource('aws-master', 'AwsMasterController');
 Route::resource('project' , 'ProjectController');
-Route::post('project/addTask', 'ProjectController@addTask');
 Route::resource('upwork' , 'UpworkController');
 Route::resource('slack-chat-pair' , 'SlackChatPairController');
 
@@ -90,6 +89,7 @@ Route::get('/allocation', 'AllocationController@index')->name('allocation.index'
 
 Route::post('/gitmanage/ajaxrepofromuser', 'GitManageController@ajaxrepofromuser');
 Route::post('/gitmanage/updaterepos', 'GitManageController@updaterepos');
+Route::post('/gitmanage/del_invite', 'GitManageController@delinvite');
 
 Route::get('/get-resources-by-user/{id}', 'AllocationController@getResourcesByUser_ajax');
 Route::get('/get-resources-by-project/{id}', 'AllocationController@getResourcesByProject_ajax');

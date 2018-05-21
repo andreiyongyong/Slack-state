@@ -61,8 +61,8 @@ $(document).ready(function() {
                 $(".uproject").html("");                     
                 for ( i = 0 ; i < resp.length; i++){
                     if(resp[i].user_id == id){
-                        if (flag == 0) $(".uproject").html("<button type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
-                        else $(".uproject").append("<button type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
+                        if (flag == 0) $(".uproject").html("<li type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
+                        else $(".uproject").append("<li type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
                         flag = 1;
                     }
                 }
@@ -110,8 +110,8 @@ $(document).ready(function() {
                 for ( i = 0 ; i < resp.length; i++){
                     if(resp[i].user_id == id){
                         //old_proj_name.push(resp[i].p_name);
-                        if (flag == 0) $(".uproject").html("<button type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
-                        else $(".uproject").append("<button type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</button>");
+                        if (flag == 0) $(".uproject").html("<li type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
+                        else $(".uproject").append("<li type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
                         flag = 1;
                     }
                 }
@@ -143,7 +143,6 @@ $(document).ready(function() {
         </div>
     </div>
     
-     <!-- Button Items -->
     <div class="col-lg-3 col-md-3" style="width:30%">
         <div class="card">
             <div class="header">

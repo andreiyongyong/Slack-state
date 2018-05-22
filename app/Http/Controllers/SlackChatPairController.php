@@ -232,7 +232,7 @@ class SlackChatPairController extends Controller
                         }
                         $message['tsi'] = (float)$message['ts'];
                         $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
-
+                        $message['text'] = $this->cutString($message['text'], '<@', '>');
                         $data['user_1'][] = $message;
                     }
                     $data['user_1'] = array_reverse($data['user_1']);
@@ -275,6 +275,7 @@ class SlackChatPairController extends Controller
                             }
                             $message['tsi'] = (float)$message['ts'];
                             $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
+                            $message['text'] = $this->cutString($message['text'], '<@', '>');
                             $data['user_2'][] = $message;
                         }
                         $data['user_2'] = array_reverse($data['user_2']);
@@ -284,6 +285,28 @@ class SlackChatPairController extends Controller
             $data['user_2'] = [];
         }
         return response()->json(['data' => $data]);
+    }
+
+    private function cutString($string, $firstChar, $secondChar){
+        $result = $string;
+
+        $firstPos = strpos($string, $firstChar);
+        
+        if($firstPos !== false){
+            $result = substr($string, 0, $firstPos);
+            $string = substr($string, $firstPos);
+
+            $secondPos = strpos($string, $secondChar);
+            if($secondPos !== false){
+                $result .= substr($string, $secondPos + 1);
+            } else {
+                return $result.$string;
+            }
+        }
+        if(strpos($result, $firstChar) !== false){
+            return $this->cutString($result, $firstChar, $secondChar );
+        }
+        return $result;
     }
 
     public function sendSlackMessage_ajax(Request $request){
@@ -313,6 +336,7 @@ class SlackChatPairController extends Controller
 
                     $message['tsi'] = (float)$message['ts'];
                     $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
+                    $message['text'] = $this->cutString($message['text'], '<@', '>');
                 }
 
             }

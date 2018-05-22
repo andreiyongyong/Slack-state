@@ -8,6 +8,8 @@ var slackChatPair = function () {
       messages_2_last : -1,
       auto: false,
       autoMessages : [],
+      keyword : '',
+      audio : {},
       urls : {
          updateStatuses : '/update-statuses-pair',
          getChannelChat : '/get-channel-chat-pair',
@@ -23,6 +25,11 @@ var slackChatPair = function () {
           }
       });
 
+
+
+      instance.audio = document.createElement('audio');
+      instance.audio.setAttribute('src', '/audio/beep.wav');
+
       instance.user_1 = JSON.parse($('#user_1').attr('data-creds'));
       instance.user_2 = JSON.parse($('#user_2').attr('data-creds'));
 
@@ -35,9 +42,14 @@ var slackChatPair = function () {
       setInterval(function() {
           if(instance.auto && (i <= instance.autoMessages.length)){
               var message = instance.autoMessages[i-1];
-              instance.sendAutoMessage(message);
-              instance.autoMessages.shift();
-              i++;
+
+              if(instance.keyword != '' && message.message.indexOf(instance.keyword) >= 0 ){
+                  $('.set-auto').click();
+              }else{
+                  instance.sendAutoMessage(message);
+                  instance.autoMessages.shift();
+                  i++;
+              }
           }else{
               i = 1;
           }
@@ -74,7 +86,7 @@ var slackChatPair = function () {
 
               $('.messaging-block .slack-massages.'+ msg_data.user ).append('' +
                   '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                  '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" data-ts="'+message.tsi+'" data-user="'+((msg_data.user == 'user_1') ? 'user_2' : 'user_1')+'"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                  '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" style="display: none;" data-ts="'+message.tsi+'" data-user="'+((msg_data.user == 'user_1') ? 'user_2' : 'user_1')+'"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
 
               $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
           }
@@ -104,6 +116,8 @@ var slackChatPair = function () {
       $(document).ready(function () {
           var body = $('body');
 
+
+
           body.on('keypress', '.slack-message',function(e) {
               if(e.which == 13) {
                   if($(this).hasClass('user_1')){
@@ -112,6 +126,10 @@ var slackChatPair = function () {
                       $('body .send-message[data-user="user_2"]').click()
                   }
               }
+          });
+
+          body.on('keyup', '.forbidden-keyword',function(e) {
+             instance.keyword = $(this).val();
           });
 
           body.on('click', '.set-auto',function(e) {
@@ -155,7 +173,7 @@ var slackChatPair = function () {
 
                       $('.messaging-block .slack-massages.'+ user ).append('' +
                           '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                          '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" data-ts="'+message.tsi+'" data-user="'+((user == 'user_1') ? 'user_2' : 'user_1')+'"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                          '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" style="display: none;" data-ts="'+message.tsi+'" data-user="'+((user == 'user_1') ? 'user_2' : 'user_1')+'"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
 
               instance.toggleLoader(false);
                       $('.slack-message').val('');
@@ -202,8 +220,7 @@ var slackChatPair = function () {
                 }
             },
             success: function (response) {
-                // $('.messaging-block .slack-massages').html('');
-
+                var play = true;
                 if(!cron || response.data.user_1.length > 0) {
                     $.each(response.data.user_1, function (index, message) {
 
@@ -214,15 +231,19 @@ var slackChatPair = function () {
 
                         $('.messaging-block .slack-massages.user_1').append('' +
                             '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                            '<div class="table-cell info-div '+(cron ? 'red-msg' : '')+'"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" data-ts="'+message.tsi+'" data-user="user_2"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                            '<div class="table-cell info-div '+(cron ? 'red-msg' : '')+'"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" '+((instance.user_1.slack_id == message.user.id) ? 'style="display:none"' : '')+' data-ts="'+message.tsi+'" data-user="user_2"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
+
                             instance.autoMessages.push({
                                 developer : instance['user_2'],
                                 message   : message.text,
                                 user : 'user_2'
                             });
+                            if(cron && play){
+                                instance.audio.play();
+                                play = false;
+                            }
                         }
                     });
-
                     instance.messages_1_last = parseFloat($('.messaging-block .slack-massages.user_1 .msg-btns').last().attr('data-ts'));
                 }
 
@@ -237,12 +258,16 @@ var slackChatPair = function () {
 
                             $('.messaging-block .slack-massages.user_2').append('' +
                                 '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                                '<div class="table-cell info-div '+(cron ? 'red-msg' : '')+'"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" data-ts="' + message.tsi + '" data-user="user_1"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                                '<div class="table-cell info-div '+(cron ? 'red-msg' : '')+'"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" '+((instance.user_1.slack_id == message.user.id) ? 'style="display:none"' : '')+' data-ts="' + message.tsi + '" data-user="user_1"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
                             instance.autoMessages.push({
                                 developer : instance['user_1'],
                                 message   : message.text,
                                 user : 'user_1'
                             });
+                            if(cron && play){
+                                instance.audio.play();
+                                play = false;
+                            }
                         }
                     });
                     instance.messages_2_last = parseFloat($('.messaging-block .slack-massages.user_2 .msg-btns').last().attr('data-ts'));

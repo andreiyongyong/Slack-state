@@ -39,7 +39,7 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">Workspace 1 </label>
-                                            <select name="workspace_id_1">
+                                            <select name="workspace_id_1" class="workspace_1">
                                                 @foreach($workspaces as $workspace)
                                                     <option value="{{$workspace->id}}">{{$workspace->id_}}</option>
                                                 @endforeach
@@ -51,7 +51,7 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">Workspace 2 </label>
-                                            <select name="workspace_id_2">
+                                            <select name="workspace_id_2" class="workspace_2">
                                                 @foreach($workspaces as $workspace)
                                                     <option value="{{$workspace->id}}">{{$workspace->id_}}</option>
                                                 @endforeach
@@ -67,7 +67,7 @@
                                             <label class="form-label">User 1 </label>
                                             <select name="user_id_1">
                                                 @foreach($users as $user)
-                                                    <option value="{{$user->id}}">{{$user->username}}</option>
+                                                    <option class="user_1_list ws_{{$user->workspace_id}}" value="{{$user->id}}">{{$user->username}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -79,7 +79,7 @@
                                             <label class="form-label">User 2 </label>
                                             <select name="user_id_2">
                                                 @foreach($users as $user)
-                                                    <option value="{{$user->id}}">{{$user->username}}</option>
+                                                    <option class="user_2_list ws_{{$user->workspace_id}}" value="{{$user->id}}">{{$user->username}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

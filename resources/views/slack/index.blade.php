@@ -48,7 +48,7 @@
                                 <div class="slack-card">
                                     <div class="row slack-card-row">
                                         <div class="slack-card-title">
-                                            <span>{{$user['workspace_id']}}  {{$user['project']}}</span>
+                                            <span data-slack_id="{{$user['id']}}" class="slack-status"></span><span>{{$user['workspace_id']}}  {{$user['project']}}</span>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -69,7 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @endforeach                            
+                            @endforeach
                         </div>
                     </div>
                 </form>

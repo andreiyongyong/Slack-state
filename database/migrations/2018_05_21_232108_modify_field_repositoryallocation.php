@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFieldAllocation extends Migration
+class ModifyFieldRepositoryallocation extends Migration
 {
     /**
      * Run the migrations.
@@ -27,7 +27,6 @@ class AddFieldAllocation extends Migration
     {
         Schema::table('repository_allocation', function (Blueprint $table) {
             $table->dropColumn('user_id');
-            
         });
     }
 }

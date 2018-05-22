@@ -16,7 +16,7 @@ class AddColumnToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->tinyInteger('level')->default(11);
             $table->tinyInteger('type')->default(2);
-            $table->string('image');
+            $table->string('image') -> default('');
             $table->boolean('called') -> default(0);
             $table->string('stack') -> default('');
             $table->string('skypeid') -> default('');

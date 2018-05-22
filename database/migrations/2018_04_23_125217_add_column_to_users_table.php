@@ -28,7 +28,7 @@ class AddColumnToUsersTable extends Migration
             $table->string('time_doctor_email');
             $table->string('time_doctor_password'); 
         });
-    }
+    }    
 
     /**
      * Reverse the migrations.

@@ -16,35 +16,10 @@
                 <form class="form-horizontal">
                     <div class="body">                    
                         <div class="row">
-                            <div class="table-responsive">
-                                <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-statuses dataTable">
-                                    <thead>
-                                    <tr>
-                                        <th>Workspace Id</th>
-                                        <th>Project</th>
-                                        <th>STATUS</th>
-                                        <th>NAME</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($data as $user)
-                                        <tr>
-                                            <td>{{$user['workspace_id']}}</td>
-                                            <th>{{$user['project']}}</th>
-                                            <td><span data-slack_id="{{$user['id']}}" class="slack-status"></span></td>
-                                            <td><img width="60" height="60" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}"> {{$user['display_name']}}</td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row">
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group form-float">
                                     <div>
-                                        <select name="project" id="project" class="project" onchange="submit();">
+                                        <select name="project" id="project" class="project">
                                             <option value="">All</option>
                                             @foreach($projects as $project)                                                            
                                             <option value="{{$project['id']}}">{{$project->p_name}}</option>                                            
@@ -56,7 +31,7 @@
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group form-float">
                                     <div>
-                                        <select name="type" class="type" onchange="submit();">
+                                        <select name="type" class="type">
                                             <option value="">All</option>
                                             <option value="2">Developer</option>
                                             <option value="1">Member</option>
@@ -69,20 +44,20 @@
 
                         <div class="row">
                             @foreach($data as $user)
-                            <div class="col-12 col-sm-6 col-md-3">
+                            <div class="col-12 col-sm-6 col-md-3 filter-field" project="{{$user['project']}}" type="2">
                                 <div class="slack-card">
                                     <div class="row slack-card-row">
                                         <div class="slack-card-title">
-                                        <span class="dot"></span> <span>{{$user['workspace_id']}}  {{$user['project']}}</span>
+                                            <span>{{$user['workspace_id']}}  {{$user['project']}}</span>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="image-container">
-                                                <img width="120" height="auto" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}" />
+                                                <img width="60" height="auto" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}" />
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="padding:0">
                                             <div class="content-container">
                                                 <p class="user-name"> {{$user['display_name']}} </p>
                                                 <p>task name</p>                                            
@@ -94,7 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
+                            @endforeach                            
                         </div>
                     </div>
                 </form>
@@ -103,3 +78,46 @@
     </div>
     
 @endsection
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+            var selected_project = '';
+            var selected_type = '';
+            
+            $(document).ready(function(){
+                $("select.project").change(function(){
+                    selected_project = $(".project option:selected").val();
+                    filter();                    
+                });
+            
+                $("select.type").change(function(){
+                    selected_type = $(".type option:selected").val();
+                    filter();
+                });
+            });
+
+            function filter(){
+                var current_project = '';
+                var current_type = '';
+                for (i = 0; i < $(".filter-field").length; i++){
+                    current_project = $(".filter-field").eq(i).attr('project');
+                    current_type = $(".filter-field").eq(i).attr('type');    
+                    $(".filter-field").eq(i).show();
+                    if (selected_project == ''){
+                        if (selected_type != '' && selected_type != current_type){
+                            $(".filter-field").eq(i).hide();
+                            continue;
+                        }
+                    } else {
+                        if (selected_project != current_project){
+                            $(".filter-field").eq(i).hide();
+                            continue;
+                        } else if (selected_type != '' && selected_type != current_type){
+                            $(".filter-field").eq(i).hide();
+                            continue;
+                        }
+                    }
+                }
+            }
+        </script>
+

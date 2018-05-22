@@ -8206,7 +8206,7 @@ textarea.forum_answer_textarea{
 }
 
 .slack-card {
-  background: #fff;
+  background: #F2F2F2;
   margin: .5em;
   min-height: 50px;
   border-color: #C2C2C2;
@@ -8219,6 +8219,12 @@ textarea.forum_answer_textarea{
   -ms-border-radius: 2px;
   border-radius: 2px;
 }
+
+.slack-card.active {
+  background-color: #FFFFFF;
+}
+
+
 
 .slack-card-title {
   margin-top: 1em;

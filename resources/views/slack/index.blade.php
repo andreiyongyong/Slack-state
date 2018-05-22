@@ -39,13 +39,24 @@
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <div class="form-group form-float">
+                                    <div>
+                                        <select name="userSate" class="userState">
+                                            <option value="">All</option>
+                                            <option value="2">Online</option>
+                                            <option value="1">Offline</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div> 
                         </div> 
 
                         <div class="row">
                             @foreach($data as $user)
                             <div class="col-12 col-sm-6 col-md-2 filter-field" project="{{$user['project']}}" type="2">
-                                <div class="slack-card">                                    
+                                <div class="slack-card " data-slack_id="{{$user['id']}}">                                    
                                     <div class="row">
                                         <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
                                             <div class="row slack-card-row">

@@ -30,7 +30,9 @@ class GitManageController extends Controller
     public function index()
     {
     	$users = User::paginate(10);
-
+        foreach ($users as $user) {
+           
+        }
     	try {
             $repos = $this->client->api('current_user')->repositories();
             
@@ -90,7 +92,7 @@ class GitManageController extends Controller
 
                 if($repo_count == 0 )
                     DB::table('repository_allocation')->insert([
-                        ['git_username' => $gitname, 'repository'=> $data[$i]->name, 'is_delete'=> 0, "invite_id", $data[$i]->owner->id]
+                        ['git_username' => $gitname, 'repository'=> $data[$i]->name, 'is_delete'=> 0, 'invite_id' => $data[$i]->owner->id]
                 ]);
             }
             

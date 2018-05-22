@@ -12,7 +12,7 @@
           <div class="card">
               <div class="body" style="position: relative">
                   <div class="row clearfix">
-                      <div class="col-xs-5 m-b-2-px">
+                      <div class="col-xs-12">
                           <?php
                           $data = array(
                               'id' => $pair->user_1['id'],
@@ -22,11 +22,32 @@
                               'admin_id' => $pair->admin_1['id']
                           );
                           ?>
-                          <div class="col-xs-12 m-b-2-px">
+                          <div class="col-xs-5 m-b-2-px">
                               <h4 id="user_1" data-creds="{{json_encode($data)}}"><span class="user_1_name">{{$pair->user_1['username']}}</span>
                                   <span class="user_1_status slack-status {{(($pair->user_1['status'] == 'active') ? 'active' : '')}}" data-slack_id="{{$pair->user_1['slack_user_id']}}"></span>
                               </h4>
                           </div>
+                          <div class="col-xs-2 m-b-2-px">
+                              <div class="col-xs-12 m-b-2-px text-center">
+                                  <a href="javascript:" class="btn btn-info set-auto" data-state="auto">Automatic</a>
+                              </div>
+                          </div>
+                              <?php
+                              $data = array(
+                                  'id' => $pair->user_2['id'],
+                                  'slack_id' => $pair->user_2['slack_user_id'],
+                                  'channel_id' => $pair->user_2['channel_id'],
+                                  'workspace_id' => $pair->workspace_2['id'],
+                                  'admin_id' => $pair->admin_2['id']
+                              );
+                              ?>
+                              <div class="col-xs-5 m-b-2-px text-right">
+                                  <h4 id="user_2" data-creds="{{json_encode($data)}}"><span class="user_2_name">{{$pair->user_2['username']}}</span>
+                                      <span class="user_2_status slack-status {{(($pair->user_2['status'] == 'active') ? 'active' : '')}}" data-slack_id="{{$pair->user_2['slack_user_id']}}"></span>
+                                  </h4>
+                              </div>
+                      </div>
+                      <div style="padding-right: 0;" class="col-xs-6 m-b-2-px">
                           <div class="col-xs-12 messaging-block" data-photo="{{ URL::to('/') }}/image/user_temp.jpg">
                                   <div class="forum-block slack-massages user_1 wrapper">
 
@@ -48,28 +69,7 @@
                               </div>
                           </div>
                       </div>
-                      <div class="col-xs-2 m-b-2-px">
-
-                          <div class="col-xs-12 m-b-2-px text-center">
-                             <a href="javascript:" class="btn btn-info set-auto" data-state="auto">Automatic</a>
-                          </div>
-                      </div>
-                      <div class="col-xs-5 m-b-2-px">
-                          <?php
-                          $data = array(
-                              'id' => $pair->user_2['id'],
-                              'slack_id' => $pair->user_2['slack_user_id'],
-                              'channel_id' => $pair->user_2['channel_id'],
-                              'workspace_id' => $pair->workspace_2['id'],
-                              'admin_id' => $pair->admin_2['id']
-
-                          );
-                          ?>
-                          <div class="col-xs-12 m-b-2-px">
-                              <h4 id="user_2" data-creds="{{json_encode($data)}}"><span class="user_2_name">{{$pair->user_2['username']}}</span>
-                                  <span class="user_2_status slack-status {{(($pair->user_2['status'] == 'active') ? 'active' : '')}}" data-slack_id="{{$pair->user_2['slack_user_id']}}"></span>
-                              </h4>
-                          </div>
+                      <div style="padding-left: 0;" class="col-xs-6 m-b-2-px">
                           <div class="col-xs-12 messaging-block" data-photo="{{ URL::to('/') }}/image/user_temp.jpg">
                               <div class="forum-block slack-massages user_2 wrapper">
 

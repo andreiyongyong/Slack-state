@@ -290,7 +290,6 @@ class SlackChatPairController extends Controller
 
         $developer = $request['developer'];
         $message = $request['message'];
-        $error = false;
 
         try {
             $token = SlackToken::where('workspace_id', $developer['workspace_id'])->where('user_id', $developer['admin_id'])->get()->first();
@@ -303,14 +302,26 @@ class SlackChatPairController extends Controller
                     'text' => $message,
                     'as_user' => true
                 ]);
+                
+                if($response['ok']){
+                    $message = $response['message'];
+
+                    $result = $api->execute('users.info', ['user' => $developer['slack_id']]);
+                    if ($result['ok']) {
+                        $message['user'] = $result['user'];
+                    }
+
+                    $message['tsi'] = (float)$message['ts'];
+                    $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
+                }
 
             }
 
         } catch (SlackApiException $e) {
-            $error = true;
+            $message = [];
         }
 
-        return response()->json(['error' => $error]);
+        return response()->json(['data' => $message]);
     }
 
     public function destroy($id){

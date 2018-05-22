@@ -79,7 +79,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="image-container">
-                                                <img width="120" height="160" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}" />
+                                                <img width="120" height="auto" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -95,31 +95,6 @@
                                 </div>
                             </div>
                             @endforeach
-                            <div class="col-12 col-sm-6 col-md-3">
-                                <div class="slack-card">
-                                    <div class="row slack-card-row">
-                                        <div class="slack-card-title">
-                                        <span class="dot"></span> <span>project 1</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="image-container">
-                                                <img width="120" height="auto" src="image/left1.png" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="content-container">
-                                                <p class="user-name">My yong</p>
-                                                <p>task name</p>                                            
-                                                <p>track</p>                                            
-                                                <p>Today 8 hours</p>                                            
-                                                <p>Week 35 hours</p>                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </form>

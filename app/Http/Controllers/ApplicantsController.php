@@ -65,16 +65,19 @@ class ApplicantsController extends Controller
      */
     public function store(Request $request)
     {
+
+        /*
         $this->validate($request, [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
+        */
+/*
         $image = $request->file('image');
         $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
         $destinationPath = public_path('/image');
 
         $image->move($destinationPath, $input['imagename']);
-
+*/
         $slack_user_id = '';
         if($request['workspace'] != ''){
             try {
@@ -105,7 +108,7 @@ class ApplicantsController extends Controller
                 //'lastname' => $request['lastname'],
                 'type' => $request['type'],
                 'level' => $request['level'],
-                'image' => $input['imagename'],
+                //'image' => $input['imagename'],
                 'slack_user_id'=> $slack_user_id,
                 'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
                 'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
@@ -119,7 +122,7 @@ class ApplicantsController extends Controller
                 //'lastname' => $request['lastname'],
                 'type' => $request['type'],
                 'level' => $request['level'],
-                'image' => $input['imagename'],
+                //'image' => $input['imagename'],
                 'slack_user_id'=> $slack_user_id,
                 'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
                 'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],

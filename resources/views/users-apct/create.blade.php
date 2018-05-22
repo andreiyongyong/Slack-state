@@ -79,12 +79,14 @@
                                         </div> 
                                     </div>
                                 </div>
+                                <!--
                                 <div class="col-md-2">
                                     <label class="form-label">Upload image</label> 
                                 </div>
                                 <div class="col-md-2">
                                     <input type="file" name="image"/>
                                 </div>
+                                -->
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6">

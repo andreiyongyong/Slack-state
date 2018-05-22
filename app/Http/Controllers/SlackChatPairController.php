@@ -329,7 +329,7 @@ class SlackChatPairController extends Controller
                 if($response['ok']){
                     $message = $response['message'];
 
-                    $result = $api->execute('users.info', ['user' => $developer['slack_id']]);
+                    $result = $api->execute('users.info', ['user' => $message['user']]);
                     if ($result['ok']) {
                         $message['user'] = $result['user'];
                     }

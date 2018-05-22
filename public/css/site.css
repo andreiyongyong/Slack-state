@@ -125,6 +125,8 @@
     border-radius: 50%;
     border: 1px solid #4dac86;
     display: inline-block;
+    margin-right: 9px;
+    margin-bottom: -3px;
 }
 
 .messaging-block {
@@ -242,8 +244,4 @@
     margin: 5px;
     float: right;
     cursor: pointer;
-}
-
-.red-msg{
-    border-right: 5px solid red;
 }

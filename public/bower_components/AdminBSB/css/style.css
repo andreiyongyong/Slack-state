@@ -8207,8 +8207,7 @@ textarea.forum_answer_textarea{
 
 .slack-card {
     background: #fff;
-    margin-left: 1em;
-    margin-right: 1em;
+    margin: .5em;
     min-height: 50px;
     border-color: #444;
     border-style: solid;
@@ -8222,9 +8221,9 @@ textarea.forum_answer_textarea{
 }
 
 .slack-card-title {
-  margin-top: 1.5em;
+  margin-top: 1em;
   margin-bottom: 0.5em;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .content-container {
@@ -8235,7 +8234,6 @@ textarea.forum_answer_textarea{
 }
 
 .user-name {
-  font-size: 16px;
   font-weight: 400;
 }
 
@@ -8250,11 +8248,21 @@ textarea.forum_answer_textarea{
   margin-bottom: -3px;
 }
 
+.slack-status {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid #4dac86;
+  display: inline-block;
+  margin-right: 9px;
+  margin-bottom: -3px;
+}
+
 @media (min-width: 768px) and (max-width: 991px) {
   .slack-card-title {
-      margin-top: 1.5em;
+      margin-top: 0.5em;
       margin-bottom: 0.1em;
-      font-size: 14px;
+      font-size: 12px;
   }
 
 }

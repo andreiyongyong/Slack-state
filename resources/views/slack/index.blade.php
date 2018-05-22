@@ -44,20 +44,20 @@
 
                         <div class="row">
                             @foreach($data as $user)
-                            <div class="col-12 col-sm-6 col-md-3 filter-field" project="{{$user['project']}}" type="2">
-                                <div class="slack-card">
-                                    <div class="row slack-card-row">
-                                        <div class="slack-card-title">
-                                            <span data-slack_id="{{$user['id']}}" class="slack-status"></span><span>{{$user['workspace_id']}}  {{$user['project']}}</span>
-                                        </div>
-                                    </div>
+                            <div class="col-12 col-sm-6 col-md-2 filter-field" project="{{$user['project']}}" type="2">
+                                <div class="slack-card">                                    
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
+                                            <div class="row slack-card-row">
+                                                <div class="slack-card-title">
+                                                    <span data-slack_id="{{$user['id']}}" class="slack-status"></span><span>{{$user['workspace_id']}}  {{$user['project']}}</span>
+                                                </div>
+                                            </div>
                                             <div class="image-container">
                                                 <img width="60" height="auto" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}" />
                                             </div>
                                         </div>
-                                        <div class="col-md-6" style="padding:0">
+                                        <div class="col-md-6" style="padding:0">                                            
                                             <div class="content-container">
                                                 <p class="user-name"> {{$user['display_name']}} </p>
                                                 <p>task name</p>                                            

@@ -30,7 +30,9 @@ class GitManageController extends Controller
     public function index()
     {
     	$users = User::paginate(10);
-
+        foreach ($users as $user) {
+           
+        }
     	try {
             $repos = $this->client->api('current_user')->repositories();
             
@@ -50,7 +52,7 @@ class GitManageController extends Controller
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_USERAGENT => "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13",
-            CURLOPT_URL => "https://api.github.com/users/".$gitname."/repos?type=member",
+            CURLOPT_URL => "https://api.github.com/users/".$gitname."/repos?type=all",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -90,7 +92,7 @@ class GitManageController extends Controller
 
                 if($repo_count == 0 )
                     DB::table('repository_allocation')->insert([
-                        ['git_username' => $gitname, 'repository'=> $data[$i]->name, 'is_delete'=> 0, "invite_id", $data[$i]->owner->id]
+                        ['git_username' => $gitname, 'repository'=> $data[$i]->name, 'is_delete'=> 0, 'invite_id' => $data[$i]->owner->id]
                 ]);
             }
             

@@ -65,16 +65,19 @@ class ApplicantsController extends Controller
      */
     public function store(Request $request)
     {
+
+        /*
         $this->validate($request, [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-
+        */
+/*
         $image = $request->file('image');
         $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
         $destinationPath = public_path('/image');
 
         $image->move($destinationPath, $input['imagename']);
-
+*/
         $slack_user_id = '';
         if($request['workspace'] != ''){
             try {
@@ -95,20 +98,37 @@ class ApplicantsController extends Controller
             }
         }
 
-
-        $last_inserted_id = User::create([
-            'username' => $request['username'],
-            'email' => $request['email'],
-            'password' => bcrypt($request['password']),
-            'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
-            'type' => $request['type'],
-            'level' => $request['level'],
-            'image' => $input['imagename'],
-            'slack_user_id'=> $slack_user_id,
-            'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
-            'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
-        ])->id;
+        $last_inserted_id = '';
+        if ($request['password'] == '') {
+            $last_inserted_id = User::create([
+                'username' => $request['username'],
+                'email' => $request['email'],
+                //'password' => bcrypt($request['password']),
+                //'firstname' => $request['firstname'],
+                //'lastname' => $request['lastname'],
+                'type' => $request['type'],
+                'level' => $request['level'],
+                //'image' => $input['imagename'],
+                'slack_user_id'=> $slack_user_id,
+                'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
+                'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
+            ])->id;
+        } else {
+            $last_inserted_id = User::create([
+                'username' => $request['username'],
+                'email' => $request['email'],
+                'password' => bcrypt($request['password']),
+                //'firstname' => $request['firstname'],
+                //'lastname' => $request['lastname'],
+                'type' => $request['type'],
+                'level' => $request['level'],
+                //'image' => $input['imagename'],
+                'slack_user_id'=> $slack_user_id,
+                'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
+                'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
+            ])->id;
+        }
+        
         UserInfo::create([
             'user_id' => $last_inserted_id,
             'stack' => $request['stack'] ,

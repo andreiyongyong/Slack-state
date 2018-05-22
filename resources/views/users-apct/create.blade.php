@@ -32,6 +32,7 @@
                                     </div>
                                 </div>
                             </div> 
+                            <!--
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
@@ -51,7 +52,8 @@
                                         <div class="help-info"> Max. 50 characters</div>
                                     </div>
                                 </div>
-                            </div>   
+                            </div>  
+                            --> 
                             <div class="row clearfix">
                                 <div class="col-md-3">
                                     <div class="form-group form-float">
@@ -77,12 +79,14 @@
                                         </div> 
                                     </div>
                                 </div>
+                                <!--
                                 <div class="col-md-2">
                                     <label class="form-label">Upload image</label> 
                                 </div>
                                 <div class="col-md-2">
                                     <input type="file" name="image"/>
                                 </div>
+                                -->
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6">
@@ -151,7 +155,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="number" class="form-control" name="age" id="age" value="{{ old('age') }}"  min="1" max="3" required>
+                                            <input type="number" class="form-control" name="age" id="age" value="{{ old('age') }}"  min="0" max="150" required>
                                             <label class="form-label">Age</label>
                                         </div> 
                                         <div class="help-info"> Max. 3 characters</div>
@@ -209,7 +213,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="password" class="form-control" name="password" id="password" value="{{ old('password') }}"  min="1" max="200" required>
+                                            <input type="password" class="form-control" name="password" id="password" value="{{ old('password') }}"  min="1" max="200">
                                             <label class="form-label">Password</label>
                                         </div> 
                                         <div class="help-info"> Max. 200 characters</div>
@@ -220,7 +224,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}"  min="1" max="200" required>
+                                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}"  min="1" max="200">
                                             <label class="form-label">Confirm Password</label>
                                         </div> 
                                         <div class="help-info"> Max. 200 characters</div>

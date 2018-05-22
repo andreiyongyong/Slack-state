@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddChannelIdColumnToUsersTable extends Migration
+class ModifyFieldRepositoryallocation extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddChannelIdColumnToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('channel_id') -> default('');
+        Schema::table('repository_allocation', function (Blueprint $table) {
+            $table->integer('user_id')->nullable()->change();
         });
     }
 
@@ -25,8 +25,8 @@ class AddChannelIdColumnToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('channel_id');
+        Schema::table('repository_allocation', function (Blueprint $table) {
+            $table->dropColumn('user_id');
         });
     }
 }

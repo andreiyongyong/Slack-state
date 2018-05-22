@@ -40,7 +40,7 @@ class UserManagementController extends Controller
     {
         $users = User::with(['userinfo' => function($query){
             $query->where('approved', 1);
-        }])->paginate(5);
+        }])->paginate(100);
 
         return view('users-mgmt/index', ['users' => $users]);
     }

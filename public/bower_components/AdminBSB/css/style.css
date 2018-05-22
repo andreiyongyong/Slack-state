@@ -8199,3 +8199,71 @@ textarea.forum_answer_textarea{
   -moz-border-radius: 2px;
   border-radius: 2px;
 }
+
+.slack-card-row {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.slack-card {
+    background: #fff;
+    margin-left: 1em;
+    margin-right: 1em;
+    min-height: 50px;
+    border-color: #444;
+    border-style: solid;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    margin-bottom: 30px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.slack-card-title {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-size: 18px;
+}
+
+.content-container {
+  padding: 1em .1em;
+}
+.image-container {
+  padding: 1em .1em 1em 1em;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.dot {
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  border-style: solid;
+  display: inline-block;
+  border-color: #444;
+  margin-bottom: -3px;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .slack-card-title {
+      margin-top: 1.5em;
+      margin-bottom: 0.1em;
+      font-size: 14px;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .slack-card-title {
+      margin-top: 1.2em;
+      margin-bottom: 0.1em;
+      font-size: 12px;
+  }
+
+}

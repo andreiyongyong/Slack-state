@@ -28,7 +28,7 @@ class User extends Authenticatable
 
 
     protected $fillable = [
-        'username' , 'email' , 'lastname' , 'firstname' , 'room' , 'country' , 'age' , 'github_id'
+        'username' , 'email' , 'room' , 'country' , 'age' , 'github_id', 'channel_id', 'project_id', 'skypeid', 'workspace_id'
    ];
 
     function userinfo(){

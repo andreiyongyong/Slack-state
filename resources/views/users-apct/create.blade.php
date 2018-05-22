@@ -32,8 +32,19 @@
                                     </div>
                                 </div>
                             </div> 
-                            <!--
+                            
+                            
                             <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="github_id" id="github_id" value="{{ old('github_id')  }}"  min="1" max="100" required>
+                                            <label class="form-label">Github ID</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                            <!--</div>
+                            
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
@@ -53,8 +64,9 @@
                                     </div>
                                 </div>
                             </div>  
-                            --> 
-                            <div class="row clearfix">
+                            
+                            <div class="row clearfix"> -->
+                                </div>
                                 <div class="col-md-3">
                                     <div class="form-group form-float">
                                         <div>

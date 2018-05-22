@@ -19,8 +19,6 @@
                               <tr> 
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
-                                  <th>FIRSTNAME</th>
-                                  <th>LASTNAME</th> 
                                   <th>TYPE</th>
                                   <th>LEVEL</th>
                                   <th>ACTION</th>
@@ -30,8 +28,6 @@
                               <tr> 
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
-                                  <th>FIRSTNAME</th>
-                                  <th>LASTNAME</th>
                                   <th>TYPE</th>
                                   <th>LEVEL</th>
                                   <th>ACTION</th>
@@ -43,8 +39,6 @@
                                   <tr>
                                       <td><img class="users-circle" src="{{ $user->image ? asset ("/image/".$user->image) :  asset ("/image/user_temp.jpg") }}" width="50" height="50" />&nbsp;{{ $user->username }}</td>
                                       <td>{{ $user->email }}</td>
-                                      <td>{{ $user->firstname }}</td>
-                                      <td>{{ $user->lastname }}</td>
                                       <td>{{ $user->type }}</td>
                                       <td>{{ $user->level }}</td>
                                       <td align = 'center'>

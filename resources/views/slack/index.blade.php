@@ -15,7 +15,7 @@
                 </div>
                 <form class="form-horizontal">
                     <div class="body">                    
-                        <!-- <div class="row">
+                        <div class="row">
                             <div class="table-responsive">
                                 <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-statuses dataTable">
                                     <thead>
@@ -38,7 +38,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div> -->
+                        </div>
 
                         <div class="row">
                             <div class="col-sm-12 col-md-3">
@@ -79,7 +79,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="image-container">
-                                                <img width="120" height="160" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}" />
+                                                <img width="120" height="auto" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -100,5 +100,6 @@
                 </form>
             </div>
         </div>
-    </div> 
+    </div>
+    
 @endsection

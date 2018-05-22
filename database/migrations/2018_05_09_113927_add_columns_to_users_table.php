@@ -14,8 +14,8 @@ class AddColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('slack_user_id', 255) -> default('');
-            $table->string('workspace_id', 255) -> default('');
+            $table->string('slack_user_id', 255);
+            $table->string('workspace_id', 255);
         });
     }
 

@@ -29,6 +29,8 @@ class AddDefaultsToUsersTable extends Migration
             $table->boolean('approved') -> default(0)->change();
             $table->string('time_doctor_email') -> default('')->change();
             $table->string('time_doctor_password') -> default('')->change(); 
+            $table->string('slack_user_id', 255) -> default('')->change();
+            $table->string('workspace_id', 255) -> default('')->change();
         });
     }
 

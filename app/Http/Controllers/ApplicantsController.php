@@ -104,10 +104,10 @@ class ApplicantsController extends Controller
                 'username' => $request['username'],
                 'email' => $request['email'],
                 //'password' => bcrypt($request['password']),
-                //'firstname' => $request['firstname'],
-                //'lastname' => $request['lastname'],
                 'type' => $request['type'],
                 'level' => $request['level'],
+                'github_id'=>$request['github_id'],
+                'skypeid'=>$request['skypeid'],
                 //'image' => $input['imagename'],
                 'slack_user_id'=> $slack_user_id,
                 'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
@@ -118,10 +118,10 @@ class ApplicantsController extends Controller
                 'username' => $request['username'],
                 'email' => $request['email'],
                 'password' => bcrypt($request['password']),
-                //'firstname' => $request['firstname'],
-                //'lastname' => $request['lastname'],
                 'type' => $request['type'],
                 'level' => $request['level'],
+                'github_id'=>$request['github_id'],
+                'skypeid'=>$request['skypeid'],
                 //'image' => $input['imagename'],
                 'slack_user_id'=> $slack_user_id,
                 'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
@@ -131,15 +131,16 @@ class ApplicantsController extends Controller
         
         UserInfo::create([
             'user_id' => $last_inserted_id,
-            'stack' => $request['stack'] ,
-            'skypeid'=>$request['skypeid'] ,
-            'room' => $request['room'] ,
-            'country'=>$request['country'] ,
-            'age' => $request['age'] ,
-            'notes' => $request['notes'] ,
-            'called'=>$request['called'] ,
-            'approved' => $request['approved'] ,
-            'time_doctor_email' => $request['time_doctor_email'] ,
+            'stack' => $request['stack'],
+            'github_id'=>$request['github_id'],
+            'skypeid'=>$request['skypeid'],
+            'room' => $request['room'],
+            'country'=>$request['country'],
+            'age' => $request['age'],
+            'notes' => $request['notes'],
+            'called'=>$request['called'],
+            'approved' => $request['approved'],
+            'time_doctor_email' => $request['time_doctor_email'],
             'time_doctor_password' => $request['time_doctor_password'],
             'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
             'project_id'=> $request['project'] === null ? '' : $request['project']
@@ -187,9 +188,7 @@ class ApplicantsController extends Controller
     public function update(Request $request, $id)
     {
         $constraints = [
-            'username' => 'required|max:20',
-            'firstname'=> 'required|max:60',
-            'lastname' => 'required|max:60'
+            'username' => 'required|max:20'
         ];
         if($request->file('image')){
             $image = $request->file('image');
@@ -221,8 +220,6 @@ class ApplicantsController extends Controller
 
         $input = [
             'username' => $request['username'],
-            'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
             'type' => $request['type'],
             'level' => $request['level'],
             'image' => '',

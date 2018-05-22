@@ -44,10 +44,11 @@
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group form-float">
                                     <div>
-                                        <select name="project" id="project" >
-                                            <option value=" ">All</option>                                            
-                                            <option value="1">Project 1</option>
-                                            <option value="2">Project 2</option>
+                                        <select name="project" id="project" class="project" onchange="submit();">
+                                            <option value="">All</option>
+                                            @foreach($projects as $project)                                                            
+                                            <option value="{{$project['id']}}">{{$project->p_name}}</option>                                            
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -55,8 +56,8 @@
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group form-float">
                                     <div>
-                                        <select name="type">
-                                            <option value=" ">All</option>
+                                        <select name="type" class="type" onchange="submit();">
+                                            <option value="">All</option>
                                             <option value="2">Developer</option>
                                             <option value="1">Member</option>
                                             <option value="0">Admin</option>

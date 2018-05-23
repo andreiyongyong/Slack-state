@@ -16,7 +16,7 @@ class CreateTaskcollocationTable extends Migration
         Schema::create('task_allocation', function (Blueprint $table) {
             $table->increments('id' ,true);
             $table->integer('user_id')->nullable();
-            $table->integer('task_id', 50)->nullable();
+            $table->integer('task_id')->nullable();
             $table->tinyInteger('is_delete');
             $table->timestamps('create_at');
             $table->timestamps('update_at');

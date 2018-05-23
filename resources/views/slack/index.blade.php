@@ -55,7 +55,7 @@
 
                         <div class="row">
                             @foreach($data as $user)
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" project="{{$user['project']}}" type="{{$user['type']}}" status="{{$user['status']}}">
+                            <div class="col-12 col-sm-6 col-md-2 filter-field" project="{{$user['project_id']}}" type="{{$user['type']}}" status="{{$user['status']}}">
                                 <div class="slack-card {{(($user['status'] == 'active') ? 'active' : '')}}" data-slack_id="{{$user['id']}}">                                    
                                     <div class="row">
                                         <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
@@ -105,9 +105,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> -->
+                            </div>
 
-                            <!-- <div class="col-12 col-sm-6 col-md-2 filter-field" type="2" project="2" status="active">
+                            <div class="col-12 col-sm-6 col-md-2 filter-field" type="2" project="2" status="active">
                                 <div class="slack-card active">
                                     <div class="row slack-card-row">
                                         <div class="slack-card-title">
@@ -115,7 +115,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6" style="padding:0">
+                                        <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
                                             <div class="image-container">
                                                 <img width="60" height="auto" src="image/left1.png" />
                                             </div>
@@ -141,12 +141,12 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
                                             <div class="image-container">
                                                 <img width="60" height="auto" src="image/left1.png" />
                                             </div>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-6" style="padding:0">
                                             <div class="content-container">
                                                 <p class="user-name">My yong</p>
                                                 <p>task name</p>                                            
@@ -159,7 +159,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-sm-6 col-md-3 filter-field" type="0" project="1" status=" ">
+                            <div class="col-12 col-sm-6 col-md-2 filter-field" type="0" project="1" status=" ">
                                 <div class="slack-card">
                                     <div class="row slack-card-row">
                                         <div class="slack-card-title">
@@ -167,12 +167,12 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6"style="padding: .1em .1em .1em .5em;">
                                             <div class="image-container">
                                                 <img width="60" height="auto" src="image/left1.png" />
                                             </div>
                                         </div>
-                                        <div class="col-md-8">
+                                        <div class="col-md-6" style="padding: 0">
                                             <div class="content-container">
                                                 <p class="user-name">My yong</p>
                                                 <p>task name</p>                                            

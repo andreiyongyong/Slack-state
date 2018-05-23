@@ -56,11 +56,14 @@ class SlackController extends Controller
                     $project = Project::find($user->userinfo['project_id']);
                     $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
                     $data[] = array_merge($responce['user'], array(
+                            'status' => $responce['user']['status'] ? $responce['user']['status'] : ($responce['user']['profile']['status'] ? $responce['user']['profile']['status'] : ''),
                             'avatar' => $responce['user']['profile']['image_512'],
                             'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
                                 ? $responce['user']['profile']['display_name'] : ( isset( $responce['user']['real_name'] ) ? $responce['user']['real_name'] : '' ) ,
+                            'type' => $responce['user']['profile']['type'],
                             'workspace_id' => $user->workspace_id,
-                            'project' => $project !== null ? $project->p_name : ''
+                            'project' => $project !== null ? $project->p_name : '',
+                            'project_id' => $project !== null ? $project->id : ''
                         )
                     );
                 }

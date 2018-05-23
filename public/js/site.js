@@ -169,4 +169,34 @@ init();
 
 $('select.forum_project').on('change', function() {
 
-})
+});
+
+$(document).ready(function () {
+    $('body .user_1_list').hide();
+    $('body .user_1_list.ws_'+$('select.workspace_1').val()).show();
+    $('body select[name="user_id_1"]').val($('body .user_1_list.ws_'+$('select.workspace_1').val()).first().val());
+    $('body select[name="user_id_1"]').selectpicker('render');
+
+
+    $('body').on('change', 'select.workspace_1', function () {
+        $('body .user_1_list').hide();
+        $('body .user_1_list.ws_'+$(this).val()).show();
+        $('body select[name="user_id_1"]').val($('body .user_1_list.ws_'+$(this).val()).first().val());
+        $('body select[name="user_id_1"]').selectpicker('render');
+
+    });
+
+    $('body .user_2_list').hide();
+    $('body .user_2_list.ws_'+$('select.workspace_2').val()).show();
+    $('body select[name="user_id_2"]').val($('body .user_2_list.ws_'+$('select.workspace_2').val()).first().val());
+    $('body select[name="user_id_2"]').selectpicker('render');
+
+
+    $('body').on('change', 'select.workspace_2', function () {
+        $('body .user_2_list').hide();
+        $('body .user_2_list.ws_'+$(this).val()).show();
+        $('body select[name="user_id_2"]').val($('body .user_2_list.ws_'+$(this).val()).first().val());
+        $('body select[name="user_id_2"]').selectpicker('render');
+
+    });
+});

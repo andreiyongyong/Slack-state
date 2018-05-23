@@ -28,20 +28,27 @@ class SlackController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $type = $request->input('type');
+        $project = $request->input('project');
+
         $data = [];
+        
         try {
 
-            $users = User::with(['userinfo' => function($query){
-                $query->where('channel_id','<>', '');
+            $users = User::with(['userinfo' => function($query) {
+                $query->where('channel_id','<>', '');            
+
             }])->where('slack_user_id','<>' ,'')
                 ->where('workspace_id', '<>','')
-                ->where('type', '=',2)
                 ->where('level', '=',11)
                 ->paginate(100);
             
             foreach ($users as $user){
+                if ($project != '' && $project != $user->userinfo['project_id']) continue;
+                if ($type != '' && $type != $user->type) continue;
+
                 $token = SlackToken::where('workspace_id', $user->workspace_id)->get()->first();
 
                 if($token) {
@@ -62,7 +69,8 @@ class SlackController extends Controller
         } catch (SlackApiException $e) {
 
         }
-        return view('slack/index', ['data' => $data]);
+        $projects = Project::all();
+        return view('slack/index', ['data' => $data, 'projects' => $projects]);
     }
 
     public function updateUserStatuses_ajax(){

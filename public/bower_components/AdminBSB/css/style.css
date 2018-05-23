@@ -8199,3 +8199,85 @@ textarea.forum_answer_textarea{
   -moz-border-radius: 2px;
   border-radius: 2px;
 }
+
+.slack-card-row {
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.slack-card {
+  background: #F2F2F2;
+  margin: .5em;
+  min-height: 50px;
+  border-color: #C2C2C2;
+  border-style: solid;
+  border-width: .1em;
+  position: relative;
+  margin-bottom: 30px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.slack-card.active {
+  background-color: #FFFFFF;
+}
+
+
+
+.slack-card-title {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  font-size: 14px;
+}
+
+.content-container {
+  padding: 1em .1em .1em .1em;
+}
+.image-container {
+  padding: 1em .1em .1em 1em;
+}
+
+.user-name {
+  font-weight: 400;
+}
+
+.dot {
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  border-style: solid;
+  display: inline-block;
+  border-color: #444;
+  margin-bottom: -3px;
+}
+
+.slack-status {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 1px solid #4dac86;
+  display: inline-block;
+  margin-right: 9px;
+  margin-bottom: -3px;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .slack-card-title {
+      margin-top: 0.5em;
+      margin-bottom: 0.1em;
+      font-size: 12px;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .slack-card-title {
+      margin-top: 1.2em;
+      margin-bottom: 0.1em;
+      font-size: 12px;
+  }
+
+}

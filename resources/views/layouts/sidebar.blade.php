@@ -36,12 +36,6 @@
                                     <span>Resources</span>
                                 </a>
                             </li>
-                            <li class="{{ Request::segment(1) == "allocation" ? "active" : "" }}" >
-                                <a href="{{ route('allocation.index') }}">
-                                    <i class="material-icons">touch_app</i>
-                                    <span>Allocation</span>
-                                </a>
-                            </li>
                             <li class="{{ Request::segment(1) == "messaging" ? "active" : "" }}" >
                                 <a href="{{ route('messaging.index') }}">
                                     <i class="material-icons">forum</i>
@@ -65,8 +59,7 @@
                                     <i class="material-icons">touch_app</i>
                                     <span>Github</span>
                                 </a>
-                            </li>     
-
+                            </li>   
                         </ul>
                     </div>
                 </div>
@@ -173,10 +166,37 @@
                             {{--<span>AWS</span>--}}
                             {{--</a>--}}
                             {{--</li>--}}
-                            <li class="{{ Request::segment(1) == "allocateprodects" ? "active" : "" }}" >
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="panel-title">
+                        <a class="title" data-toggle="collapse" data-parent="#accordion" href="#collapseFifth">
+                            Allocation
+                        </a>
+                    </p>
+                </div>
+                <div id="collapseFifth" class="panel-collapse collapse {{(in_array(Request::segment(1),['allocateprojects','taskallocation', 'allocation' ]) ? 'in' : '')}}">
+                    <div class="panel-body">
+                        <ul class="list">
+                            <li class="{{ Request::segment(1) == "allocateprojects" ? "active" : "" }}" >
                                 <a href="{{ route('allocate-projects.index') }}">
-                                    <i class="material-icons">filter_b_and_w</i>
-                                    <span>Projects Allocation</span>
+                                    <i class="material-icons">touch_app</i>
+                                    <span>Project</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::segment(1) == "taskallocation" ? "active" : "" }}" >
+                                <a href="{{ route('task-allocation.index') }}">
+                                    <i class="material-icons">group</i>
+                                    <span>Task</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::segment(1) == "allocation" ? "active" : "" }}" >
+                                <a href="{{ route('allocation.index') }}">
+                                    <i class="material-icons">group</i>
+                                    <span>Resource</span>
                                 </a>
                             </li>
                         </ul>

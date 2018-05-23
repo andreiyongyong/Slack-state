@@ -87,7 +87,14 @@ Route::get('allocateprojects', 'AllocateProjectsController@index')->name('alloca
 Route::post('/allocateprojects/ajaxprofromuser', 'AllocateProjectsController@ajaxprofromuser');
 Route::post('/allocateprojects/updateproj', 'AllocateProjectsController@updateproj');
 Route::post('/allocateprojects/del_proj', 'AllocateProjectsController@delproj');
+
 Route::get('/allocation', 'AllocationController@index')->name('allocation.index');
+
+Route::get('taskallocation', 'TaskAllocationController@index')->name('task-allocation.index');
+Route::post('/taskallocation/taskfromuser', 'TaskAllocationController@taskfromuser');
+Route::post('/taskallocation/updatetask', 'TaskAllocationController@updatetask');
+Route::post('/taskallocation/del_task', 'TaskAllocationController@deltask');
+Route::post('/taskallocation/taskfromproj', 'TaskAllocationController@taskfromproj');
 
 Route::post('/gitmanage/ajaxrepofromuser', 'GitManageController@ajaxrepofromuser');
 Route::post('/gitmanage/updaterepos', 'GitManageController@updaterepos');

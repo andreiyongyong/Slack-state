@@ -114,7 +114,7 @@ $(document).ready(function() {
             }
         })
     })
-
+    //when click project list...
     $("ul.dropdown-menu li").click(function(){
         project_name = $(this).text();
         $.ajax({
@@ -160,13 +160,14 @@ $(document).ready(function() {
         </div>
     </div>
     
-    <div class="col-lg-3 col-md-3" style="width:30%">
+    <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">
                 <h2>
                     Tasks
                 </h2>
-                <button type="button" class="btn btn-danger waves-effect" id="del_proj" style="position: absolute;right:15px;top:15px">Delete
+                <button type="button" id="shift_proj" class="btn btn-primary waves-effect" style="position: absolute; right: 100px; top: 15px;">Add</button>
+                <button type="button" class="btn btn-danger waves-effect" id="del_proj" style="position: absolute;right:20px;top:15px">Delete
                 </button>
             </div>
             <div class="body">
@@ -177,16 +178,18 @@ $(document).ready(function() {
         </div>
     </div>
 
-    <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px" id="shift_proj">
+    <!-- <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px; cursor: pointer;" id="shift_proj">
         <i class="large material-icons" style="zoom:2">arrow_back</i>
-    </a>
+    </a> -->
+    
+
     <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">
                 <h2 style="float: left; margin-top: 10px;">
                     Task List For
                 </h2>
-        <!-- all project list -->
+                <!-- all project list -->
                 <div style="padding-left: 300px;">
                     <select>
                         <option value="0">All Projects</option>

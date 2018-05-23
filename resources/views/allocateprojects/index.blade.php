@@ -11,24 +11,23 @@ $(document).ready(function() {
             $(element).css("border", "1px solid #ddd");
         });
 
-            $(this).css("border", "2px solid black");
-            
-            $.ajax({
-                type: "POST",
-                url: '/allocateprojects/ajaxprofromuser',
-                data: {userid: id},
-                success: function( resp ) {
-                    var flag = 0;     
-                    $(".uproject").html("<li class='list-group-item'>No data available in table</li>");               
-                    for ( i = 0 ; i < resp.length; i++){
-                        if(resp[i].user_id == id){
-                            if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
-                            else $(".uproject").append("<li class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
-                            flag = 1;
-                        }
+        $(this).css("border", "2px solid black");
+        
+        $.ajax({
+            type: "POST",
+            url: '/allocateprojects/ajaxprofromuser',
+            data: {userid: id},
+            success: function( resp ) {
+                var flag = 0;     
+                $(".uproject").html("<li class='list-group-item'>No data available in table</li>");               
+                for ( i = 0 ; i < resp.length; i++){
+                    if(resp[i].user_id == id){
+                        if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
+                        else $(".uproject").append("<li class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
+                        flag = 1;
                     }
                 }
-            
+            }
         });
     });
 
@@ -142,13 +141,14 @@ $(document).ready(function() {
         </div>
     </div>
     
-    <div class="col-lg-3 col-md-3" style="width:30%">
+    <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">
                 <h2>
                     Projects
                 </h2>
-                <button type="button" class="btn btn-danger waves-effect" id="del_proj" style="position: absolute;right:15px;top:15px">Delete
+                <button type="button" id="shift_proj" class="btn btn-primary waves-effect" style="position: absolute; right: 100px; top: 15px;">Add</button>
+                <button type="button" class="btn btn-danger waves-effect" id="del_proj" style="position: absolute;right:20px;top:15px">Delete
                 </button>
             </div>
             <div class="body">
@@ -159,9 +159,9 @@ $(document).ready(function() {
         </div>
     </div>
 
-    <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px" id="shift_proj">
+<!--     <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px; cursor: pointer;" id="shift_proj">
         <i class="large material-icons" style="zoom:2">arrow_back</i>
-    </a>
+    </a> -->
     <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">

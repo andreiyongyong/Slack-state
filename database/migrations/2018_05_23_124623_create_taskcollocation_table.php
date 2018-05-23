@@ -18,8 +18,6 @@ class CreateTaskcollocationTable extends Migration
             $table->integer('user_id')->nullable();
             $table->integer('task_id')->nullable();
             $table->tinyInteger('is_delete');
-            $table->timestamps('create_at');
-            $table->timestamps('update_at');
             $table->timestamps();
         });    
     }

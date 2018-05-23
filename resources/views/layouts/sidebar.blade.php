@@ -183,19 +183,19 @@
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "allocateprojects" ? "active" : "" }}" >
                                 <a href="{{ route('allocate-projects.index') }}">
-                                    <i class="material-icons">touch_app</i>
+                                    <i class="material-icons">collections</i>
                                     <span>Project</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "taskallocation" ? "active" : "" }}" >
                                 <a href="{{ route('task-allocation.index') }}">
-                                    <i class="material-icons">group</i>
+                                    <i class="material-icons">collections</i>
                                     <span>Task</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "allocation" ? "active" : "" }}" >
                                 <a href="{{ route('allocation.index') }}">
-                                    <i class="material-icons">group</i>
+                                    <i class="material-icons">collections</i>
                                     <span>Resource</span>
                                 </a>
                             </li>

@@ -51,16 +51,20 @@ class AllocateProjectsController extends Controller
         $projname = $request->proj_id;
         $userid = $request->userid;
 
-        for($i=0; $i<count($projname); $i++){
+        for($i = 0; $i < count($projname); $i ++){
             $proj_count = DB::table('allocation')->where([
                 ['user_id','=', $userid],
                 ['project_id', '=', $projname[$i]],
             ])->count();
-            if($proj_count==0) DB::table('allocation')->insert([
-
-                ['user_id' => $userid, 'project_id'=> $projname[$i] ,'is_delete'=> 0]
-
-            ]);
+            if($proj_count==0) 
+                DB::table('allocation')->insert([
+                    ['user_id' => $userid, 'project_id'=> $projname[$i] ,'is_delete'=> 0]
+                ]);
+            else{
+                DB::table('allocation')
+                    ->where([['user_id','=', $userid],['project_id', '=', $projname[$i]]])
+                    ->update(['is_delete' => 0]);
+            }
         }
 
         $updateData = DB::table('project')

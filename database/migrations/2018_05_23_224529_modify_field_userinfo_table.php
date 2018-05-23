@@ -14,8 +14,8 @@ class ModifyFieldUserinfoTable extends Migration
     public function up()
     {
         Schema::table('user_infos', function (Blueprint $table) {
-            $table->tinyInteger('called')->nullable()->change();
-            $table->tinyInteger('approved')->nullable()->change();
+            $table->Integer('called')->nullable()->change();
+            $table->Integer('approved')->nullable()->change();
         });
     }
 

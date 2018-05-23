@@ -55,7 +55,7 @@
 
                         <div class="row">
                             @foreach($data as $user)
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" project="{{$user['project_id']}}" type="{{$user['type']}}" status="{{$user['status']}}">
+                            <div class="col-12 col-sm-6 col-md-2 filter-field" project="{{$user['project_id']}}" type="2">
                                 <div class="slack-card {{(($user['status'] == 'active') ? 'active' : '')}}" data-slack_id="{{$user['id']}}">                                    
                                     <div class="row">
                                         <div class="col-md-6" style="padding: .1em .1em .1em .5em;">

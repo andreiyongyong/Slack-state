@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ForbiddenKeywords;
 use App\SlackChatPair;
 use Illuminate\Http\Request;
 
@@ -55,7 +56,6 @@ class SlackChatPairController extends Controller
         $users = User::where('type', '=',2)
             ->where('level', '=',11)
             ->get();
-
         $admins = User::where('type', '=',0)->get();
 
         return view('slack-chat-pair/create', ['workspaces' => $workspaces, 'projects' => $projects, 'users' => $users, 'admins' => $admins]);
@@ -140,9 +140,10 @@ class SlackChatPairController extends Controller
     }
 
     public function slackChat($id){
+        $keywords = ForbiddenKeywords::get();
         $projects = Project::get();
         $pair = SlackChatPair::where('id', $id)->with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
-        return view('slack-chat/pair-chat', ['projects' => $projects, 'pair' => $pair]);
+        return view('slack-chat/pair-chat', ['projects' => $projects, 'pair' => $pair, 'keywords' => $keywords]);
     }
 
     public function selectPair_ajax(Request $request){
@@ -232,7 +233,12 @@ class SlackChatPairController extends Controller
                         }
                         $message['tsi'] = (float)$message['ts'];
                         $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
-                        $message['text'] = $this->cutString($message['text'], '<@', '>');
+                        if(isset($message['subtype']) && $message['subtype'] = 'file_share' && isset($message['file'])){
+                            $message['text'] = $this->cutString($message['text'], '<@', '>');
+                            $message['text'] = $this->cutString($message['text'], '<https:', '>', ' <a href="'.$message['file']['url_private_download'].'">'.$message['file']['name'].'</a>');
+                        }else{
+                            $message['text'] = $this->cutString($message['text'], '<@', '>');
+                        }
                         $data['user_1'][] = $message;
                     }
                     $data['user_1'] = array_reverse($data['user_1']);
@@ -275,7 +281,12 @@ class SlackChatPairController extends Controller
                             }
                             $message['tsi'] = (float)$message['ts'];
                             $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
-                            $message['text'] = $this->cutString($message['text'], '<@', '>');
+                            if(isset($message['subtype']) && $message['subtype'] = 'file_share' && isset($message['file'])){
+                                $message['text'] = $this->cutString($message['text'], '<@', '>');
+                                $message['text'] = $this->cutString($message['text'], '<https:', '>', ' <a href="'.$message['file']['url_private_download'].'">'.$message['file']['name'].'</a>');
+                            }else{
+                                $message['text'] = $this->cutString($message['text'], '<@', '>');
+                            }
                             $data['user_2'][] = $message;
                         }
                         $data['user_2'] = array_reverse($data['user_2']);
@@ -287,7 +298,7 @@ class SlackChatPairController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    private function cutString($string, $firstChar, $secondChar){
+    private function cutString($string, $firstChar, $secondChar, $replace = ''){
         $result = $string;
 
         $firstPos = strpos($string, $firstChar);
@@ -298,7 +309,7 @@ class SlackChatPairController extends Controller
 
             $secondPos = strpos($string, $secondChar);
             if($secondPos !== false){
-                $result .= substr($string, $secondPos + 1);
+                $result .= $replace.substr($string, $secondPos + 1);
             } else {
                 return $result.$string;
             }
@@ -325,7 +336,7 @@ class SlackChatPairController extends Controller
                     'text' => $message,
                     'as_user' => true
                 ]);
-                
+
                 if($response['ok']){
                     $message = $response['message'];
 
@@ -336,13 +347,40 @@ class SlackChatPairController extends Controller
 
                     $message['tsi'] = (float)$message['ts'];
                     $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
-                    $message['text'] = $this->cutString($message['text'], '<@', '>');
+
+                    if(isset($message['subtype']) && $message['subtype'] = 'file_share' && isset($message['file'])){
+                        $message['text'] = $this->cutString($message['text'], '<@', '>');
+                        $message['text'] = $this->cutString($message['text'], '<https:', '>', ' <a href="'.$message['file']['url_private_download'].'">'.$message['file']['name'].'</a>');
+                    }else{
+                        $message['text'] = $this->cutString($message['text'], '<@', '>');
+                    }
                 }
 
             }
 
         } catch (SlackApiException $e) {
             $message = [];
+        }
+
+        return response()->json(['data' => $message]);
+    }
+    
+    public function uploadFile_ajax(Request $request){
+
+        $developer = json_decode($request['user'], true);
+        $file = $request->file('attach');
+        $message = '';
+
+        try {
+            $token = SlackToken::where('workspace_id', $developer['workspace_id'])->where('user_id', $developer['admin_id'])->get()->first();
+
+            if($token) {
+                $response = exec('curl -F file=@'.$file->getRealPath().' -F channels='.$developer['slack_id'].' -F filename='.$file->getClientOriginalName().' -F token='.$token->token.' https://slack.com/api/files.upload');
+
+            }
+
+        } catch (SlackApiException $e) {
+            $message = $e->getMessage();
         }
 
         return response()->json(['data' => $message]);

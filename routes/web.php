@@ -35,6 +35,7 @@ Route::post('user-management/search', 'UserManagementController@search')->name('
 Route::resource('user-management', 'UserManagementController');
 Route::resource('workspaces', 'SlackWorkSpaceController');
 Route::resource('applicants', 'ApplicantsController');
+Route::resource('keywords', 'ForbiddenKeywordsController');
 Route::resource('resource-management', 'ResourceManagementController');
 Route::resource('forum-master', 'ForumMasterController');
 Route::post('forum-master/add-forum-answer', 'ForumMasterController@addForumAnswer');
@@ -73,6 +74,7 @@ Route::post('/update-statuses-pair', 'SlackChatPairController@updateUserStatuses
 Route::post('/get-channel-chat-pair', 'SlackChatPairController@getChannelChat_ajax');
 Route::post('/send-slack-message-pair', 'SlackChatPairController@sendSlackMessage_ajax');
 Route::post('/select-pair', 'SlackChatPairController@selectPair_ajax');
+Route::post('/upload-file', 'SlackChatPairController@uploadFile_ajax');
 
 Route::post('/update-status-slack', 'SlackController@updateUserStatuses_ajax')->name('slack.updateUserStatuses');
 

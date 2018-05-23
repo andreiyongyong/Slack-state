@@ -8,13 +8,14 @@ var slackChatPair = function () {
       messages_2_last : -1,
       auto: false,
       autoMessages : [],
-      keyword : '',
+      keywords : $('#forbidden').val() != '' ? JSON.parse($('#forbidden').val()) : {},
       audio : {},
       urls : {
          updateStatuses : '/update-statuses-pair',
          getChannelChat : '/get-channel-chat-pair',
          sendMessage    : '/send-slack-message-pair',
-         selectPair     : '/select-pair'
+         selectPair     : '/select-pair',
+         uploadFile     : '/upload-file'
       }
   };
 
@@ -42,14 +43,21 @@ var slackChatPair = function () {
       setInterval(function() {
           if(instance.auto && (i <= instance.autoMessages.length)){
               var message = instance.autoMessages[i-1];
+              var check = true;
+              $.each(instance.keywords, function (index, key) {
+                  if(key.keyword != '' && message.message.indexOf(key.keyword) >= 0 ){
+                      $('.set-auto').click();
+                      check = false;
+                      return false;
+                  }
+              });
 
-              if(instance.keyword != '' && message.message.indexOf(instance.keyword) >= 0 ){
-                  $('.set-auto').click();
-              }else{
+              if(check){
                   instance.sendAutoMessage(message);
                   instance.autoMessages.shift();
                   i++;
               }
+
           }else{
               i = 1;
           }
@@ -110,6 +118,14 @@ var slackChatPair = function () {
           });
   };
 
+    instance.convert = function(text)
+    {
+        var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+        var text1=text.replace(exp, '<a href="$1">$1</a>');
+        var exp2 =/(^|[^\/])(www\.[\S]+(\b|$))/gim;
+        return text1.replace(exp2, '<a target="_blank" href="http://$2">$2</a>');
+    };
+
   instance.eventListeners = function () {
       instance.renderMessaging(false);
 
@@ -144,6 +160,15 @@ var slackChatPair = function () {
                   $.each(instance.user_2, function (index, message) {
                       message.act = false;
                   });
+              }
+          });
+
+          body.on('change','.upload-file',function(){
+
+              if($(this).prop('files').length > 0)
+              {
+                  var file =$(this).prop('files')[0];
+                  instance.uploadFile(file, $(this).attr('data-user'));
               }
           });
 
@@ -276,6 +301,26 @@ var slackChatPair = function () {
                 if(!cron){
                     instance.toggleLoader(false);
                 }
+            }
+        });
+    };
+
+    instance.uploadFile = function (file, user) {
+        var formdata = new FormData();
+
+        formdata.append("attach", file);
+        formdata.append("user", JSON.stringify(instance[user]));
+        $.ajax({
+            url: instance.urls.uploadFile,
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            beforeSend: function () {
+                instance.toggleLoader(true);
+            },
+            success: function (result) {
+                instance.renderMessaging(false);
             }
         });
     };

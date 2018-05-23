@@ -15,8 +15,7 @@
                       <div class="col-xs-12">
                           <div class="form-group form-float">
                               <div class="form-line">
-                                  <input type="text" class="form-control forbidden-keyword" name="forbidden" value="">
-                                  <label class="form-label">Forbidden Keyword</label>
+                                  <input type="hidden" id="forbidden" value="{{json_encode($keywords)}}">
                               </div>
                           </div>
                       </div>
@@ -63,10 +62,14 @@
                           </div>
                           <div class="col-md-12 m-b-2-px" style="margin-top: 15px;">
                               <div class="row clearfix">
+                                  <div class="col-md-12 text-right">
+                                      <span><label for="attach_file_1"><i class="material-icons attach-file user_1">attach_file</i></label></span>
+                                      <input style="display: none;" type="file" id="attach_file_1" data-user="user_1" class="upload-file" name="attach_file_1">
+                                  </div>
                                   <div class="col-xs-12 m-b-2-px">
                                       <div class="form-group form-float">
                                           <div class="form-line">
-                                              <input type="text" class="form-control slack-message user_1" name="message" value="">
+                                              <textarea type="text" class="form-control slack-message user_1" name="message"></textarea>
                                               {{--<label class="form-label">Message</label>--}}
                                           </div>
                                       </div>
@@ -85,10 +88,14 @@
                           </div>
                           <div class="col-md-12 m-b-2-px" style="margin-top: 15px;">
                               <div class="row clearfix">
+                                  <div class="col-md-12 text-right">
+                                      <span><label for="attach_file_2"><i class="material-icons attach-file user_2">attach_file</i></label></span>
+                                      <input style="display: none;" type="file" id="attach_file_2" data-user="user_2" class="upload-file" name="attach_file_2">
+                                  </div>
                                   <div class="col-xs-12 m-b-2-px">
                                       <div class="form-group form-float">
                                           <div class="form-line">
-                                              <input type="text" class="form-control slack-message user_2" name="message" value="">
+                                              <textarea type="text" class="form-control slack-message user_2" name="message"></textarea>
                                           </div>
                                       </div>
                                   </div>

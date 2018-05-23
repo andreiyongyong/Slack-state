@@ -245,3 +245,7 @@
     float: right;
     cursor: pointer;
 }
+
+.attach-file{
+    cursor: pointer;
+}

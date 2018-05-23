@@ -1,9 +1,10 @@
-@extends('allocateprojects.base')
+@extends('allocatetask.base')
 @section('action-content') 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
-    var id = 0, proj_name = [];
+    var id = 0, task_ids = [];
+    //if click record in first table..
     $(".user-group").click(function() {
         id = $(this).data("userid");
         
@@ -11,36 +12,35 @@ $(document).ready(function() {
             $(element).css("border", "1px solid #ddd");
         });
 
-            $(this).css("border", "2px solid black");
-            
-            $.ajax({
-                type: "POST",
-                url: '/allocateprojects/ajaxprofromuser',
-                data: {userid: id},
-                success: function( resp ) {
-                    var flag = 0;     
-                    $(".uproject").html("<li class='list-group-item'>No data available in table</li>");               
-                    for ( i = 0 ; i < resp.length; i++){
-                        if(resp[i].user_id == id){
-                            if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
-                            else $(".uproject").append("<li class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
-                            flag = 1;
-                        }
+        $(this).css("border", "2px solid black");
+        
+        $.ajax({
+            type: "POST",
+            url: '/taskallocation/taskfromuser',
+            data: {userid: id},
+            success: function( resp ) {
+                var flag = 0;
+                $(".utask").html("<li class='list-group-item' style = 'background-color: #f9f9f9;'>No data available in table</li>");            
+                for ( i = 0 ; i < resp.length; i++){
+                    if(resp[i].user_id == id){
+                        if (flag == 0) $(".utask").html("<li class='list-group-item alloc' data-task_id =  "+resp[i].task_id+">"+resp[i].task_name+"</li>");
+                        else $(".utask").append("<li class='list-group-item alloc' data-task_id =  "+resp[i].task_id+">"+resp[i].task_name+"</li>");
+                        flag = 1;
                     }
                 }
-            
+            }
         });
     });
 
-    $(".projects-group").click(function() {
+    $("#tasks").on("click", ".tasks-group", function() {
         if($(this).hasClass("selected")){
             $(this).css("border", "0");
             $(this).removeClass("selected");
-            var index = proj_name.indexOf($(this).data('prject_id'));
-            proj_name.splice(index, 1);
+            var index = task_ids.indexOf($(this).data('task_id'));
+            task_ids.splice(index, 1);
         }
         else {
-            proj_name.push($(this).data('prject_id'));
+            task_ids.push($(this).data('task_id'));
             $(this).addClass("selected");
             $(this).css("border", "1px solid black");
         }
@@ -53,37 +53,35 @@ $(document).ready(function() {
             alert("Please select a user!");
             return;
         }
+
         $.ajax({
             type: "POST",
-            url: '/allocateprojects/updateproj',
-            data: {userid: id, proj_id: proj_name},
+            url: '/taskallocation/updatetask',
+            data: {userid: id, task_ids: task_ids},
             success: function( resp ) {
                 var flag = 0;   
-                $(".uproject").html("");                     
+                $(".utask").html("");                     
                 for ( i = 0 ; i < resp.length; i++){
                     if(resp[i].user_id == id){
-                        if (flag == 0) $(".uproject").html("<li type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
-                        else $(".uproject").append("<li type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
+                        if (flag == 0) $(".utask").html("<li class='list-group-item alloc'  data-task_id =  "+resp[i].task_id+">"+resp[i].task_name+"</li>");
+                        else $(".utask").append("<li class='list-group-item alloc' data-task_id =  "+resp[i].task_id+">"+resp[i].task_name+"</li>");
                         flag = 1;
                     }
                 }
             }
         })
     });
-
-    var del_proj_name = [];
-    $(".uproject").on('click', '.alloc', function(){
-    //$(".uproject .alloc").click(function(){
+    //when click record in second table...
+    var del_task_ids = [];
+    $(".utask").on('click', '.alloc', function(){
         if($(this).hasClass("selected")){
             $(this).css("border", "1px solid #ddd");
             $(this).removeClass("selected");
-            var index = del_proj_name.indexOf($(this).data('project_id'));
-            del_proj_name.splice(index, 1);
+            var index = del_task_ids.indexOf($(this).data('task_id'));
+            del_task_ids.splice(index, 1);
         }
         else {
-            
-            del_proj_name.push($(this).data('project_id'));
-
+            del_task_ids.push($(this).data('task_id'));
             $(this).addClass("selected");
             $(this).css("border", "2px solid red");
         }
@@ -95,27 +93,47 @@ $(document).ready(function() {
             alert("Please select a user!");
             return;
         }
-        if(del_proj_name.length==0){
+        if(del_task_ids.length==0){
             alert("Please select a project to delete");
             return;
         }
         $.ajax({
             type:"POST",
-            url: '/allocateprojects/del_proj',
-            data: {userid : id, del_proj_id: del_proj_name},
+            url: '/taskallocation/del_task',
+            data: {userid : id, del_task_ids: del_task_ids},
             success: function(resp) {
                 var flag = 0;   
-                $(".uproject").html("");                     
+                $(".utask").html("");                     
                 for ( i = 0 ; i < resp.length; i++){
                     if(resp[i].user_id == id){
-                        //old_proj_name.push(resp[i].p_name);
-                        if (flag == 0) $(".uproject").html("<li type='button' class='list-group-item alloc' data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
-                        else $(".uproject").append("<li type='button' class='list-group-item alloc'  data-project_id =  "+resp[i].project_id+">"+resp[i].p_name+"</li>");
+                        if (flag == 0) $(".utask").html("<li class='list-group-item alloc' data-task_id =  "+resp[i].task_id+">"+resp[i].task_name+"</li>");
+                        else $(".utask").append("<li class='list-group-item alloc'  data-task_id =  "+resp[i].task_id+">"+resp[i].task_name+"</li>");
                         flag = 1;
                     }
                 }
             }
         })
+    })
+
+    $("ul.dropdown-menu li").click(function(){
+        project_name = $(this).text();
+        $.ajax({
+            type: "POST",
+            url: '/taskallocation/taskfromproj',
+            data: {project_name : project_name},
+            success: function(resp) {
+                var flag = 0;   
+
+                $("#tasks").html("<tr><td style = 'background-color: #f9f9f9;'>No data available in table</td></tr>");  
+                for ( i = 0 ; i < resp.length; i++){
+                    if (flag == 0) $("#tasks").html("<tr><td class='tasks-group alloc' data-task_id="+resp[i].id +">"+resp[i].task_name+"</td></tr>");
+                    else $("#tasks").append("<tr><td class='tasks-group alloc'  data-task_id =  "+resp[i].id+">"+resp[i].task_name+"</td></tr>");
+                    flag = 1;
+                
+                }
+            }
+        })
+        
     })
 });
 </script>
@@ -146,13 +164,13 @@ $(document).ready(function() {
         <div class="card">
             <div class="header">
                 <h2>
-                    Projects
+                    Tasks
                 </h2>
                 <button type="button" class="btn btn-danger waves-effect" id="del_proj" style="position: absolute;right:15px;top:15px">Delete
                 </button>
             </div>
             <div class="body">
-                <ul class="list-group uproject">
+                <ul class="list-group utask">
                     <li class="list-group-item" style = "background-color: #f9f9f9;">No data available in table</li>
                 </ul>
             </div>
@@ -165,28 +183,37 @@ $(document).ready(function() {
     <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">
-                <h2>
-                    All Projects
+                <h2 style="float: left; margin-top: 10px;">
+                    Task List For
                 </h2>
+        <!-- all project list -->
+                <div style="padding-left: 300px;">
+                    <select>
+                        <option value="0">All Projects</option>
+                        @foreach ($projects as $project)
+                            <option value="{{ $loop->index + 1 }}">{{ $project->p_name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div> 
             <div class="body">
                 <div class="table-responsive">
                     <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
                         <thead> 
                             <tr>
-                                <th>PROJECT</th>
+                                <th>TASK</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
-                                <th>PROJECT</th>
+                                <th>TASK</th>
                             </tr>
                         </tfoot>
-                        <tbody>
-                        @foreach ($projects as $project)
+                        <tbody id="tasks">
+                        @foreach ($tasks as $task)
                             <tr>
-                                <td class="projects-group" data-prject_id="{{ $project->id }}">
-                                    <div >{{ $project->p_name }}</div>
+                                <td class="tasks-group" data-task_id="{{ $task->id }}">
+                                    <div >{{ $task->task_name }}</div>
                                 </td>
                             </tr>
                         @endforeach 

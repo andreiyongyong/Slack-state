@@ -13,6 +13,14 @@
               <div class="body" style="position: relative">
                   <div class="row clearfix">
                       <div class="col-xs-12">
+                          <div class="form-group form-float">
+                              <div class="form-line">
+                                  <input type="text" class="form-control forbidden-keyword" name="forbidden" value="">
+                                  <label class="form-label">Forbidden Keyword</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-xs-12">
                           <?php
                           $data = array(
                               'id' => $pair->user_1['id'],

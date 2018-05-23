@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use Github\Api\Repository\Collaborators;
 
-
 class GitManageController extends Controller
 {
 	    /**

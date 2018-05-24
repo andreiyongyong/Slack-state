@@ -43,10 +43,10 @@
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group form-float">
                                     <div>
-                                        <select name="userStatus" class="userStatus">
-                                            <option value="">All</option>
+                                        <select id="userStatus" class="userStatus">
+                                            <option value="" selected>All</option>
                                             <option value="active">Online</option>
-                                            <option value=" ">Offline</option>
+                                            <option value="away">Offline</option>
                                         </select>
                                     </div>
                                 </div>
@@ -55,13 +55,13 @@
 
                         <div class="row">
                             @foreach($data as $user)
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" project="{{$user['project_id']}}" type="2">
-                                <div class="slack-card {{(($user['status'] == 'active') ? 'active' : '')}}" data-slack_id="{{$user['id']}}">                                    
+                            <div class="col-12 col-sm-6 col-md-2 filter-field" user-id="{{$user['id']}}" project="{{$user['project_id']}}" type="{{$user['type']}}">
+                                <div class="slack-card" data-slack_id="{{$user['id']}}">                                    
                                     <div class="row">
                                         <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
                                             <div class="row slack-card-row">
                                                 <div class="slack-card-title">
-                                                    <span data-slack_id="{{$user['id']}}" class="slack-status {{(($user['status'] == 'active') ? 'active' : '')}}"></span><span>{{$user['workspace_id']}}  {{$user['project']}}</span>
+                                                    <span id = "{{$user['id']}}" status="away" data-slack_id="{{$user['id']}}" class="slack-status"></span><span>{{$user['workspace_id']}}  {{$user['project']}}</span>
                                                 </div>
                                             </div>
                                             <div class="image-container">
@@ -81,7 +81,8 @@
                                 </div>
                             </div>
                             @endforeach
-                            <!-- <div class="col-12 col-sm-6 col-md-2 filter-field" type="3" status=" ">
+                            <!--
+                            <div class="col-12 col-sm-6 col-md-2 filter-field" type="3" status=" ">
                                 <div class="slack-card">
                                     <div class="row">
                                         <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
@@ -106,84 +107,7 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" type="2" project="2" status="active">
-                                <div class="slack-card active">
-                                    <div class="row slack-card-row">
-                                        <div class="slack-card-title">
-                                        <span class="slack-status active"></span><span>project 2-2</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
-                                            <div class="image-container">
-                                                <img width="60" height="auto" src="image/left1.png" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6" style="padding:0">
-                                            <div class="content-container">
-                                                <p class="user-name">My yong</p>
-                                                <p>task name</p>                                            
-                                                <p>track</p>                                            
-                                                <p>Today 8 hours</p>                                            
-                                                <p>Week 35 hours</p>                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" type="1" project="3" status="active">
-                                <div class="slack-card active">
-                                    <div class="row slack-card-row">
-                                        <div class="slack-card-title">
-                                        <span>project 1-3</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
-                                            <div class="image-container">
-                                                <img width="60" height="auto" src="image/left1.png" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6" style="padding:0">
-                                            <div class="content-container">
-                                                <p class="user-name">My yong</p>
-                                                <p>task name</p>                                            
-                                                <p>track</p>                                            
-                                                <p>Today 8 hours</p>                                            
-                                                <p>Week 35 hours</p>                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" type="0" project="1" status=" ">
-                                <div class="slack-card">
-                                    <div class="row slack-card-row">
-                                        <div class="slack-card-title">
-                                        <span>project 0-1</span>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6"style="padding: .1em .1em .1em .5em;">
-                                            <div class="image-container">
-                                                <img width="60" height="auto" src="image/left1.png" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6" style="padding: 0">
-                                            <div class="content-container">
-                                                <p class="user-name">My yong</p>
-                                                <p>task name</p>                                            
-                                                <p>track</p>                                            
-                                                <p>Today 8 hours</p>                                            
-                                                <p>Week 35 hours</p>                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
+                            -->
                         </div>
                     </div>
                 </form>
@@ -194,73 +118,77 @@
 @endsection
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script type="text/javascript">
-            var selected_project = '';
-            var selected_type = '';
-            var selected_user_status = '';
-            $(document).ready(function(){
-                $("select.project").change(function(){
-                    selected_project = $(".project option:selected").val();
-                    filter();                    
-                });
-            
-                $("select.type").change(function(){
-                    selected_type = $(".type option:selected").val();
-                    filter();
-                });
-                $("select.userStatus").change(function(){
-                    selected_user_status =  $(".userStatus option:selected").val();;
-                    filter();
-                });
-            });
+<script type="text/javascript">
+    var selected_project = '';
+    var selected_type = '';
+    var selected_user_status = '';
+    $(document).ready(function(){
+        $("select.project").change(function(){
+            filter();                    
+        });
+    
+        $("select.type").change(function(){
+            filter();
+        });
+        $("select.userStatus").change(function(){
+            filter();
+        });
+    });
 
-            function filter(){
-                var current_project = '';
-                var current_type = '';
-                var current_user_status = '';
-                for (i = 0; i < $(".filter-field").length; i++){
-                    current_project = $(".filter-field").eq(i).attr('project');
-                    current_type = $(".filter-field").eq(i).attr('type');
-                    current_user_status = $(".filter-field").eq(i).attr('status');
+    function filter(){
+        selected_project = $(".project option:selected").val();
+        selected_type = $(".type option:selected").val();
+        selected_user_status =  $("#userStatus").val();;
 
-                    $(".filter-field").eq(i).show();
-                    if (selected_user_status == ''){
-                        if (selected_project == ''){
-                            if (selected_type != '' && selected_type != current_type){
-                                $(".filter-field").eq(i).hide();
-                                continue;
-                            }
-                        } else {
-                            if (selected_project != current_project){
-                                $(".filter-field").eq(i).hide();
-                                continue;
-                            } else if (selected_type != '' && selected_type != current_type){
-                                $(".filter-field").eq(i).hide();
-                                continue;
-                            }
-                        }
-                    } else {
-                        if (selected_user_status != current_user_status) {
+        var current_project = '';
+        var current_type = '';
+        var current_user_status = '';
+        for (i = 0; i < $(".filter-field").length; i++){
+            var userObj = $(".filter-field").eq(i);
+            var userId = userObj.attr('user-id');
+
+            current_project = $(".filter-field").eq(i).attr('project');
+            current_type = $(".filter-field").eq(i).attr('type');
+            current_user_status = $('#' + userId).attr('status');
+
+            $(".filter-field").eq(i).show();
+            if (selected_user_status == ''){
+                if (selected_project == ''){
+                    if (selected_type != '' && selected_type != current_type){
+                        $(".filter-field").eq(i).hide();
+                        continue;
+                    }
+                } else {
+                    if (selected_project != current_project){
+                        $(".filter-field").eq(i).hide();
+                        continue;
+                    } else if (selected_type != '' && selected_type != current_type){
+                        $(".filter-field").eq(i).hide();
+                        continue;
+                    }
+                }
+            } else {
+                if (selected_user_status != current_user_status) {
+                    $(".filter-field").eq(i).hide();
+                    continue;
+                } else {
+                    if (selected_project == ''){
+                        if (selected_type != '' && selected_type != current_type){
                             $(".filter-field").eq(i).hide();
                             continue;
-                        } else {
-                            if (selected_project == ''){
-                                if (selected_type != '' && selected_type != current_type){
-                                    $(".filter-field").eq(i).hide();
-                                    continue;
-                                }
-                            } else {
-                                if (selected_project != current_project){
-                                    $(".filter-field").eq(i).hide();
-                                    continue;
-                                } else if (selected_type != '' && selected_type != current_type){
-                                    $(".filter-field").eq(i).hide();
-                                    continue;
-                                }
-                            }
                         }
-                    }    
+                    } else {
+                        if (selected_project != current_project){
+                            $(".filter-field").eq(i).hide();
+                            continue;
+                        } else if (selected_type != '' && selected_type != current_type){
+                            $(".filter-field").eq(i).hide();
+                            continue;
+                        }
+                    }
                 }
-            }
-        </script>
+            }    
+        }
+    }
+</script>
 

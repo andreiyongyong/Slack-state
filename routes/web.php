@@ -16,9 +16,9 @@
  * Laravel is providing the auth middleware defined in Illuminate\Auth\Middleware\Authenticate
  * 
  * example: 
- *              Route::get('profile' , function(){
- *                  ...authenticated users may enter....
- *              })->middleware('auth');
+*              Route::get('profile' , function(){
+*                  ...authenticated users may enter....
+*              })->middleware('auth');
  * 
  */
 

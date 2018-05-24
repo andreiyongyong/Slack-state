@@ -33,6 +33,9 @@ $(document).ready(function() {
                             $(".uproject").append("<li class='list-group-item alloc' data-invite_id=  "+resp[i].owner.id+">"+resp[i].name+"</li>");
                     }
                 }
+            },
+            error: function(err){
+                alert('ajax error');
             }
         });
     });
@@ -102,7 +105,7 @@ $(document).ready(function() {
             $(this).css("border", "2px solid red");
         }
 
-    })
+    });
 
     $("#del_proj").click(function(){
         if(git_username == '' || git_username == null) {
@@ -131,7 +134,7 @@ $(document).ready(function() {
                 }
             }
         })
-    })
+    });
 });
 </script>
 <div class="row clearfix">

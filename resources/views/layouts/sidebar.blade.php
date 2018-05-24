@@ -204,7 +204,7 @@
                 </div>
             </div>
         </div>
-        <center><a href="#" id="close_menu" style="cursor: pointer;"><img src="image/left1.png" style="width: 40px;"></a></center>
+        <center><a href="#" id="close_menu" style="cursor: pointer;"><img src="{{ asset('image/left1.png') }}" style="width: 40px;"></a></center>
     </div>
 
     <!-- #Menu -->

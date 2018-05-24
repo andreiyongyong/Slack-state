@@ -18,10 +18,14 @@ class Project extends Model
      * @var array
      */ 
     protected $fillable = [
-        'p_name' , 'p_client' , 'price' , 'meet_time' ,'id'
+        'p_name' , 'p_client' , 'price' , 'meet_time' ,'id', 'status', 'hot', 'level'
    ];
 
     function tasks(){
         return $this->hasMany('App\Task','project_id','id');
+    }
+
+    function allocation(){
+        return $this->hasMany('App\Allocation','project_id','id');
     }
 }

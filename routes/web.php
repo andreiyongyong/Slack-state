@@ -53,7 +53,11 @@ Route::post('member-log/search', 'MemberLogController@search')->name('member-log
 Route::post('member-log/log_detail_add', ['as'=>'ajaxImageUpload','uses'=>'MemberLogController@ajaxImageUpload']);   
 Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_delete');
 
+Route::post('project/store', 'ProjectController@store');
 Route::post('project/addTask', 'ProjectController@addTask');
+Route::post('project/getfromstatus', 'ProjectController@getfromstatus');
+
+
 Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');
 Route::get('slack', 'SlackController@index')->name('slack.index');
 

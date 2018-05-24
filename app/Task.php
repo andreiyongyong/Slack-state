@@ -12,7 +12,8 @@ class Task extends Model
         'task_name',
         'project_id',
         'price',
-        'id'
+        'id',
+        'created_at'
     ];
     public function project()
     {

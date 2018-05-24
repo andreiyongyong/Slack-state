@@ -86,7 +86,7 @@
                                             <select name="level">
                                                 @for($i=11;$i>0;$i--)
                                                 <option value="{{$i}}">{{$i}}</option>
-                                                    @endfor
+                                                @endfor
                                             </select>
                                         </div> 
                                     </div>

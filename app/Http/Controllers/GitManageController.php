@@ -47,7 +47,6 @@ class GitManageController extends Controller
 
     public function ajaxrepofromuser(Request $request){
         
-        $resp = array();
         $gitname = $request->git_username;
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -69,8 +68,6 @@ class GitManageController extends Controller
         $err = curl_error($curl);
 
         curl_close($curl);
-
-        $data = json_decode($response);
 
         if ($err) {
             $resp['status'] = 'error';

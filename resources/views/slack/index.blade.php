@@ -80,34 +80,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
-                            <!--
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" type="3" status=" ">
-                                <div class="slack-card">
-                                    <div class="row">
-                                        <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
-                                            <div class="row slack-card-row">
-                                                <div class="slack-card-title">
-                                                <span class="slack-status"></span><span>project 3</span>
-                                                </div>
-                                            </div>
-                                            <div class="image-container">
-                                                <img width="60" height="auto" src="image/left1.png" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6" style="padding:0">
-                                            <div class="content-container">
-                                                <p class="user-name">My yong</p>
-                                                <p>task name</p>                                            
-                                                <p>track</p>                                            
-                                                <p>Today 8 hours</p>                                            
-                                                <p>Week 35 hours</p>                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            -->
+                            @endforeach                            
                         </div>
                     </div>
                 </form>

@@ -9,7 +9,7 @@
                 <h2>Add new project</h2>
             </div>
             <div class="body">
-                <form id="project" class="form-horizontal" role="form" enctype="multipart/form-data">
+                <!-- <form id="project" class="form-horizontal" role="form" enctype="multipart/form-data"> -->
                     {{ csrf_field() }} 
                     <div class="row clearfix">
                         <div class="col-md-8">
@@ -83,7 +83,7 @@
                     </div>
 
                     <button class="btn btn-primary" id = 'create' type="submit">Create</button>
-                </form>
+                <!-- </form> -->
             </div>
         </div>
     </div>
@@ -98,12 +98,14 @@
             level = $("#level").val();
             status = $("#status").val();
             hot = $("#hot").val();
+            console.log(hot);
+            console.log(status);
             $.ajax({
                 type: "POST",
                 url: "/project/store",
                 data: {p_name: p_name, p_client:p_client, level:level, status:status, hot:hot},
                 success: function(resp){
-                    if(resp.status = 'success'){
+                    if(resp.status == 'success'){
                         alert('Project is created');
                         location.reload();
                     }else{

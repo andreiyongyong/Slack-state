@@ -28,11 +28,9 @@ class SlackController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $type = $request->input('type');
-        $project = $request->input('project');
-
+        
         $data = [];
         
         try {
@@ -46,9 +44,7 @@ class SlackController extends Controller
                 ->paginate(100);
             
             foreach ($users as $user){
-                if ($project != '' && $project != $user->userinfo['project_id']) continue;
-                if ($type != '' && $type != $user->type) continue;
-
+            
                 $token = SlackToken::where('workspace_id', $user->workspace_id)->get()->first();
 
                 if($token) {
@@ -57,6 +53,8 @@ class SlackController extends Controller
                     $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
                     $data[] = array_merge($responce['user'], array(
                             'avatar' => $responce['user']['profile']['image_512'],
+                            'type' => '2',
+                            'status' => $responce['user']['profile']['status_text'],
                             'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
                                 ? $responce['user']['profile']['display_name'] : ( isset( $responce['user']['real_name'] ) ? $responce['user']['real_name'] : '' ) ,
                             'workspace_id' => $user->workspace_id,
@@ -78,10 +76,10 @@ class SlackController extends Controller
 
         $developers = User::with(['userinfo' => function($query){
             $query->where('channel_id','<>', '');
-        }])->where('slack_user_id','<>' ,'')
-            ->where('workspace_id', '<>','')
-            ->where('type', '=',2)
-            ->where('level', '=',11)
+        }])->where('slack_user_id','<>' , '')
+            ->where('workspace_id', '<>', '')
+            ->where('type', '=', 2)
+            ->where('level', '=', 11)
             ->get();
 
         $data = [];

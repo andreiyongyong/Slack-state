@@ -77,31 +77,31 @@
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "slack" ? "active" : "" }}" >
                                 <a href="{{ route('slack.index') }}">
-                                    <i class="material-icons">forum</i>
-                                    <span>Slack</span>
+                                    <!-- <i class="material-icons">forum</i> -->
+                                    <span>State</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "workspaces" ? "active" : "" }}" >
                                 <a href="{{ route('workspaces.index') }}">
-                                    <i class="material-icons">forum</i>
+                                    <!-- <i class="material-icons">forum</i> -->
                                     <span>Workspace</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "slack-chat-pair" ? "active" : "" }}" >
                                 <a href="{{ route('slack-chat-pair.index') }}">
-                                    <i class="material-icons">forum</i>
+                                    <!-- <i class="material-icons">forum</i> -->
                                     <span>Slack Chat Pair</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "slack-admin-state" ? "active" : "" }}" >
                                 <a href="{{ route('slack-admin-state.index') }}">
-                                    <i class="material-icons">forum</i>
+                                    <!-- <i class="material-icons">forum</i> -->
                                     <span>Admin State</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "keywords" ? "active" : "" }}" >
                                 <a href="{{ route('keywords.index') }}">
-                                    <i class="material-icons">forum</i>
+                                    <!-- <i class="material-icons">forum</i> -->
                                     <span>Forbidden Keywords</span>
                                 </a>
                             </li>

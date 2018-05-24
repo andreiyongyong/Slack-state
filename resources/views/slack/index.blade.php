@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="header">
                     <h2>
-                        Send message
+                        Slack State
                     </h2>
                 </div>
                 <form class="form-horizontal">

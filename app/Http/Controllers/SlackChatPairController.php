@@ -326,7 +326,7 @@ class SlackChatPairController extends Controller
         $result = curl_exec($ch);
         curl_close($ch);
         $link_arr = explode('.', $link);
-        file_put_contents(public_path('slack/'.$id.'.'.end($link_arr)), $result);
+        file_put_contents(public_path('image/slack/'.$id.'.'.end($link_arr)), $result);
     }
     private function filter_urls($string, $file_link = '' , $file_name = ''){
         preg_match_all("~\<(.*?)\>~",$string,$matches);
@@ -434,7 +434,7 @@ class SlackChatPairController extends Controller
                         $comment = str_replace('>','',$comment);
                     }
 
-                    $response = exec('curl -F file=@' . public_path('slack/' . $file['id'] . '.' . end($name_arr)) .$comment. ' -F channels=' . $developer['slack_id'] . ' -F filename=' .  (($file['name']=escapeshellarg($file['name']))? $file['name'] : "''"). ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
+                    $response = exec('curl -F file=@' . public_path('image/slack/' . $file['id'] . '.' . end($name_arr)) .$comment. ' -F channels=' . $developer['slack_id'] . ' -F filename=' .  (($file['name']=escapeshellarg($file['name']))? $file['name'] : "''"). ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
                 } else {
                     $file = $request->file('attach');
                     $response = exec('curl -F file=@' . $file->getRealPath() . ' -F channels=' . $developer['slack_id'] . ' -F filename=' . $file->getClientOriginalName() . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');

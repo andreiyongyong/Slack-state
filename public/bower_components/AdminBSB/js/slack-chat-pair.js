@@ -290,7 +290,7 @@ var slackChatPair = function () {
 
                             $('.messaging-block .slack-massages.user_2').append('' +
                                 '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                                '<div class="table-cell info-div '+(cron ? 'red-msg' : '')+'"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" '+((instance.user_1.slack_id != message.user.id) ? 'style="display:none"' : '')+'data-type="'+message.type+'" data-ts="' + message.tsi + '" data-user="user_1"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><div class="info-txt">' + message.text + '</div></div></div></div>');
+                                '<div class="table-cell info-div '+(cron ? 'red-msg' : '')+'"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" '+((instance.user_2.slack_id != message.user.id) ? 'style="display:none"' : '')+'data-type="'+message.type+'" data-ts="' + message.tsi + '" data-user="user_1"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><div class="info-txt">' + message.text + '</div></div></div></div>');
                             instance.autoMessages.push({
                                 developer : instance['user_1'],
                                 message   : message,

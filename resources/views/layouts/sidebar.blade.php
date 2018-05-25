@@ -21,7 +21,7 @@
                         </a>
                     </p>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse {{(in_array(Request::segment(1),['project', "resource-management", "allocation", 'messaging', 'forum-master', 'member-log','' ]) ? 'in' : '')}}">
+                <div id="collapseOne" class="panel-collapse collapse {{(in_array(Request::segment(1),['project', "resource-management", "allocation", 'messaging', 'forum-master', 'member-log','git-manage' ]) ? 'in' : '')}}">
                     <div class="panel-body">
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "project" ? "active" : "" }}" >

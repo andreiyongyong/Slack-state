@@ -161,12 +161,13 @@ $(document).ready(function() {
     </div>
     
      <!-- Button Items -->
-    <div class="col-lg-3 col-md-3" style="width:30%">
+    <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">
                 <h2>
                     Repositories
                 </h2>
+                <button type="button" id="shift_proj" class="btn btn-primary waves-effect" style="position: absolute; right: 100px; top: 15px;">Add</button>
                 <button type="button" class="btn btn-danger waves-effect" id="del_proj" style="position: absolute;right:15px;top:15px">Delete
                 </button>
             </div>
@@ -178,9 +179,9 @@ $(document).ready(function() {
         </div>
     </div>
 
-    <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px; cursor: pointer;" id="shift_proj">
+   <!--  <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px; cursor: pointer;" id="shift_proj">
         <i class="large material-icons" style="zoom:2">arrow_back</i>
-    </a>
+    </a> -->
     <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">

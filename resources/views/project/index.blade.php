@@ -8,7 +8,7 @@
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
               <div class="header">                
-                    <div class="col-md-2" style="position: absolute;left: 100px;top: 12px;">
+                    <div class="col-md-1" style="position: absolute;left: 100px;top: 12px;">
                         <select class="form-control show-tick">
                             <option value="0">All</option>
                             <option value="1">Upcoming</option>

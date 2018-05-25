@@ -55,7 +55,7 @@
                                             <label class="form-label">Workspace 2 </label>
                                             <select name="workspace_id_2">
                                                 @foreach($workspaces as $workspace)
-                                                    <option value="{{$workspace->id}}" {{(($pair->workspace_id == $workspace->id) ? 'selected' : '')}}>{{$workspace->id_}}</option>
+                                                    <option value="{{$workspace->id}}" {{(($pair->workspace_id_2 == $workspace->id) ? 'selected' : '')}}>{{$workspace->id_}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -67,11 +67,12 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">User 1 </label>
-                                            <select name="user_id_1">
+                                            <select name="userid_1">
                                                 @foreach($users as $user)
                                                     <option value="{{$user->id}}" {{(($pair->user_id_1 == $user->id) ? 'selected' : '')}}>{{$user->username}}</option>
                                                 @endforeach
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>
@@ -79,7 +80,7 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">User 2 </label>
-                                            <select name="user_id_2">
+                                            <select name="userid_2">
                                                 @foreach($users as $user)
                                                     <option value="{{$user->id}}" {{(($pair->user_id_2 == $user->id) ? 'selected' : '')}}>{{$user->username}}</option>
                                                 @endforeach

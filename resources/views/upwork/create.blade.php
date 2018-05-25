@@ -1,4 +1,4 @@
-@extends('upwork.base') 
+@extends('market.base') 
 
 @section('action-content')
 <div class="row clearfix">
@@ -8,7 +8,7 @@
                 <h2>Add new Marketing</h2>
             </div>
             <div class="body">
-                <form id="upwork" class="form-horizontal" role="form" method="POST" action="{{ route('upwork.store') }}" enctype="multipart/form-data">
+                <form id="market" class="form-horizontal" role="form" method="POST" action="{{ route('market.store') }}" enctype="multipart/form-data">
                     {{ csrf_field() }}  
                     <div class="row clearfix">
                         <div class="col-md-3"> 
@@ -37,7 +37,7 @@
                         <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="upwork_name" id="upwork_name" value="{{ old('upwork_name') }}"  min="1" max="200" required>
+                                    <input type="text" class="form-control" name="market_name" id="market_name" value="{{ old('market_name') }}"  min="1" max="200" required>
                                     <label class="form-label">Marketing Name</label>
                                 </div>  
                             </div>
@@ -45,7 +45,7 @@
                         <div class="col-md-6">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="upwork_id" id="upwork_id" value="{{ old('upwork_id') }}"  min="1" max="200" required>
+                                    <input type="text" class="form-control" name="market_id" id="market_id" value="{{ old('market_id') }}"  min="1" max="200" required>
                                     <label class="form-label">Marketing Id</label>
                                 </div>  
                             </div>

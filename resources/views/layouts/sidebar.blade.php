@@ -144,11 +144,11 @@
                         </a>
                     </p>
                 </div>
-                <div id="collapseFour" class="panel-collapse collapse {{(in_array(Request::segment(1),['upwork', 'allocateprodects' ]) ? 'in' : '')}}">
+                <div id="collapseFour" class="panel-collapse collapse {{(in_array(Request::segment(1),['market', 'allocateprodects' ]) ? 'in' : '')}}">
                     <div class="panel-body">
                         <ul class="list">
-                            <li class="{{ Request::segment(1) == "upwork" ? "active" : "" }}" >
-                                <a href="{{ route('upwork.index') }}">
+                            <li class="{{ Request::segment(1) == "market" ? "active" : "" }}" >
+                                <a href="{{ route('market.index') }}">
                                     <i class="material-icons">play_for_work</i>
                                     <span>Marketing</span>
                                 </a>

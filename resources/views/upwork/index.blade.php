@@ -1,4 +1,4 @@
-@extends('upwork.base')
+@extends('market.base')
 @section('action-content') 
 <div class="row clearfix">
   <div class="col-sm-6"></div>
@@ -13,7 +13,7 @@
                   </h2>
                   <ul class="header-dropdown m-r--5">
                       <li class="dropdown">
-                          <a class="btn btn-primary" href="{{ route('upwork.create') }}">Add Marketing</a>
+                          <a class="btn btn-primary" href="{{ route('market.create') }}">Add Marketing</a>
                       </li>
                   </ul>
               </div>  
@@ -47,21 +47,21 @@
                           </tfoot>
                           <tbody>
 
-                          @foreach ($upworks as $upwork)
+                          @foreach ($markets as $market)
                               <tr>
-                                  <td>{{ $upwork->date }}</td>
-                                  <td>{{ $upwork->country }}</td>
-                                  <td>{{ $upwork->upwork_name }}</td>
-                                  <td>{{ $upwork->upwork_id }}</td>
-                                  <td>{{ $upwork->email }}</td>
-                                  <td>{{ $upwork->rising_talent }}</td>
-                                  <td>{{ $upwork->bid_date }}</td>
-                                  <td>{{ $upwork->lancer_type }}</td> 
+                                  <td>{{ $market->date }}</td>
+                                  <td>{{ $market->country }}</td>
+                                  <td>{{ $market->market_name }}</td>
+                                  <td>{{ $market->market_id }}</td>
+                                  <td>{{ $market->email }}</td>
+                                  <td>{{ $market->rising_talent }}</td>
+                                  <td>{{ $market->bid_date }}</td>
+                                  <td>{{ $market->lancer_type }}</td> 
                                   <td align = "center">
-                                      <form class="row" method="POST" action="{{ route('upwork.destroy', ['id' => $upwork->id]) }}" onsubmit = "return confirm('Are you sure?')">
+                                      <form class="row" method="POST" action="{{ route('market.destroy', ['id' => $market->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <a href="{{ route('upwork.edit', ['id' => $upwork->id]) }}" class="btn btn-info waves-effect">
+                                            <a href="{{ route('market.edit', ['id' => $market->id]) }}" class="btn btn-info waves-effect">
                                             Update
                                             </a>
                                             {{--@if ($user->username != Auth::user()->username)--}}

@@ -41,7 +41,7 @@ Route::resource('forum-master', 'ForumMasterController');
 Route::post('forum-master/add-forum-answer', 'ForumMasterController@addForumAnswer');
 Route::resource('aws-master', 'AwsMasterController');
 Route::resource('project' , 'ProjectController');
-Route::resource('upwork' , 'UpworkController');
+Route::resource('market' , 'marketController');
 Route::resource('slack-chat-pair' , 'SlackChatPairController');
 
 Route::resource('slack-admin-state' , 'SlackAdminStateController');

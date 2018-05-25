@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUpworkTables extends Migration
+class CreatemarketTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateUpworkTables extends Migration
      */
     public function up()
     {
-        Schema::create('upwork', function (Blueprint $table) {
+        Schema::create('market', function (Blueprint $table) {
             $table->increments('id' , true);
             $table->integer('country');
             $table->date('date');
@@ -21,8 +21,8 @@ class CreateUpworkTables extends Migration
             $table->string('test');
             $table->date('bid_date');
             $table->string('lancer_type');
-            $table->string('upwork_name');
-            $table->string('upwork_id');
+            $table->string('market_name');
+            $table->string('market_id');
             $table->string('email');
             $table->string('password');
             $table->string('security_question');

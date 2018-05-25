@@ -96,6 +96,7 @@
                             <th>Name</th>
                             <th>Price</th>
                             <th>Date</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -105,6 +106,21 @@
                                 <td>{{ $task->task_name }}</td>
                                 <td>{{ $task->price }}</td>
                                 <td>{{ $task->created_at }}</td>
+                                <td align="center">
+                                    <form class="row" method="POST" action="{{ url('project/removeTask') }}" onsubmit = "return confirm('Are you sure?')">
+                                            <input type="hidden" name="id" value="{{ $task->id }}">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <a href="{{ url('project/editTask') }}" class="btn btn-info waves-effect">
+                                            Edit
+                                            </a>
+                                            {{--@if ($user->username != Auth::user()->username)--}}
+                                            <button type="submit" class="btn btn-danger waves-effect">
+                                            Delete
+                                            </button>
+                                            {{--@endif--}}
+                                    </form>
+
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -130,7 +146,6 @@
                 data: {p_name: p_name, p_client:p_client, id: id, level:level, status:status, hot:hot},
                 success: function(resp){
                     if(resp.status == 'success'){
-                        alert('Project is saved');
                     }else{
                         alert('ajax error');
                     }

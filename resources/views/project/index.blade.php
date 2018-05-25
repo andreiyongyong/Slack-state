@@ -7,12 +7,8 @@
   <div class="row clearfix">
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
-              <div class="header">
-                  <h2>
-                      Project
-                  </h2>
-                  
-                    <div class="col-md-1" style="position: absolute;left: 100px;top: 12px;">
+              <div class="header">                
+                    <div class="col-md-2" style="position: absolute;left: 100px;top: 12px;">
                         <select class="form-control show-tick">
                             <option value="0">All</option>
                             <option value="1">Upcoming</option>
@@ -55,6 +51,7 @@
                               </tr>
                           </tfoot>
                           <tbody>
+                          @if(count($projects) != 0)
                           @foreach ($projects as $project)
                               <tr>
                                 <td align="center">
@@ -82,7 +79,8 @@
                                       </form>
                                 </td>
                               </tr>
-                          @endforeach 
+                          @endforeach
+                          @endif 
                           </tbody>
                       </table>
                   </div>
@@ -94,9 +92,22 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+      $.ajax({
+            type: "POST",
+            url: '/project/getfromstatus',
+            data: {status : 'Live'},
+            dataType: "JSON",
+            success: function(resp) {
+              response = resp.string;
+              $("tbody").html("");
+              for ( i = 0 ; i < response.length; i++){
+                $("tbody").append("<tr><td><svg height='20' width='20' style='position: absolute;left: 50px;margin-top: 5px;' ><circle cx='10' cy='10' r='8'  fill='"+response[i].hot+"'/></svg></td><td>"+response[i].p_name+"</td><td>"+response[i].p_client+"</td><td>"+response[i].developer+"</td><td>"+response[i].task+"</td><td>"+response[i].status+"</td><td align = 'center'><a href='{{ route('project.edit', ['id' => $project['id']]) }}' >Edit</a></td></tr>");
+
+              }
+            }
+        })
       $("ul.dropdown-menu li").click(function(){
         status = $(this).text();
-
         $.ajax({
             type: "POST",
             url: '/project/getfromstatus',

@@ -29,37 +29,39 @@ class ProjectController extends Controller
     {  
         $data = array();
         $projects = Project::get();
-        foreach ($projects as $key => $project) {
-            $data[$key]['id'] = $project->id;
-           $data[$key]['p_name'] = $project->p_name;
-           if($project->hot == "Hot") $data[$key]['hot'] = 'red';
-           elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
-           elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
-           else $data[$key]['hot'] = 'white';
-           $data[$key]['p_client'] = $project->p_client;
+        //$projects = Project::where('status', 'Live')->get();
+        if(count($projects) > 0) { 
+            foreach ($projects as $key => $project) {
+               $data[$key]['id'] = $project->id;
+               $data[$key]['p_name'] = $project->p_name;
+               if($project->hot == "Hot") $data[$key]['hot'] = 'red';
+               elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
+               elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+               else $data[$key]['hot'] = 'white';
+               $data[$key]['p_client'] = $project->p_client;
 
-           $dev = "";
-           $developers =  DB::table('allocation')
-                            ->join('users', 'allocation.user_id','=','users.id')
-                            ->join('project', 'allocation.project_id','=','project.id')
-                            ->select('users.username', 'allocation.user_id','allocation.project_id')
-                            ->where([
-                                ['project_id','=', $project->id],
-                                ['is_delete','=', '0']
-                            ])->get();
-            foreach ($developers as $developer) {
-                $dev .= ($developer->username." ,");
+               $dev = "";
+               $developers =  DB::table('allocation')
+                                ->join('users', 'allocation.user_id','=','users.id')
+                                ->join('project', 'allocation.project_id','=','project.id')
+                                ->select('users.username', 'allocation.user_id','allocation.project_id')
+                                ->where([
+                                    ['project_id','=', $project->id],
+                                    ['is_delete','=', '0']
+                                ])->get();
+                foreach ($developers as $developer) {
+                    $dev .= ($developer->username." ,");
+                }
+                if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
+                $data[$key]['developer'] = $dev;
+
+                $task = Task::where('project_id',$project->id)
+                            ->orderBy('created_at', 'asc')->first();
+                if(!is_object($task)) $data[$key]['task'] = "";
+                else $data[$key]['task'] = $task->task_name;
+                $data[$key]['status'] = $project->status;
             }
-            if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
-            $data[$key]['developer'] = $dev;
-
-            $task = Task::where('project_id',$project->id)
-                        ->orderBy('created_at', 'asc')->first();
-            if(!is_object($task)) $data[$key]['task'] = "";
-            else $data[$key]['task'] = $task->task_name;
-            $data[$key]['status'] = $project->status;
         }
-       
         return view('project/index', ['projects' => $data]);
     }
 
@@ -257,5 +259,10 @@ class ProjectController extends Controller
         return redirect()->back()->withTasks($tasks);
     }
 
-    
+    public function removeTask(Request $request) 
+    {
+        Task::where('id', $request['id'])->delete();
+        $tasks = Task::get();
+        return redirect()->back()->withTasks($tasks);
+    }
 }

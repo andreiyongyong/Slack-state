@@ -214,7 +214,7 @@ class SlackChatPairController extends Controller
                     }
                 }
 
-                $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true]);
+                $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true, 'count' => 12]);
 
                 if ($response['ok']) {
                     $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
@@ -272,7 +272,7 @@ class SlackChatPairController extends Controller
                         }
                     }
 
-                    $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true]);
+                    $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true, 'count' => 12]);
 
                     if ($response['ok']) {
                         $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {

@@ -55,13 +55,13 @@
 
                         <div class="row">
                             @foreach($data as $user)
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" user-id="{{$user['id']}}" project="{{$user['project_id']}}" type="{{$user['type']}}">
+                            <div class="col-12 col-sm-6 col-md-2 filter-field" user-id="{{$user['id']}}" project="{{$user['projects']}}" type="{{$user['type']}}">
                                 <div class="slack-card" data-slack_id="{{$user['id']}}">                                    
                                     <div class="row">
                                         <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
                                             <div class="row slack-card-row">
                                                 <div class="slack-card-title">
-                                                    <span id = "{{$user['id']}}" status="away" data-slack_id="{{$user['id']}}" class="slack-status"></span><span>{{$user['workspace_id']}}  {{$user['project']}}</span>
+                                                    <span id = "{{$user['id']}}" status="away" data-slack_id="{{$user['id']}}" class="slack-status"></span><span>{{$user['workspace_id']}}</span>
                                                 </div>
                                             </div>
                                             <div class="image-container">
@@ -71,6 +71,9 @@
                                         <div class="col-md-6" style="padding:0">                                            
                                             <div class="content-container">
                                                 <p class="user-name"> {{$user['display_name']}} </p>
+                                                @foreach($user['project'] as $project)
+                                                <p>{{$project}}</p>
+                                                @endforeach
                                                 <p>task name</p>                                            
                                                 <p>track</p>                                            
                                                 <p>Today 8 hours</p>                                            
@@ -92,7 +95,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
-    var selected_project = '';
+    var selected_project = 0;
     var selected_type = '';
     var selected_user_status = '';
     $(document).ready(function(){
@@ -109,30 +112,31 @@
     });
 
     function filter(){
-        selected_project = $(".project option:selected").val();
+        selected_project = parseInt($(".project option:selected").val());
         selected_type = $(".type option:selected").val();
         selected_user_status =  $("#userStatus").val();;
 
-        var current_project = '';
+        var current_project = [];
         var current_type = '';
         var current_user_status = '';
         for (i = 0; i < $(".filter-field").length; i++){
             var userObj = $(".filter-field").eq(i);
             var userId = userObj.attr('user-id');
 
-            current_project = $(".filter-field").eq(i).attr('project');
+            current_project = JSON.parse($(".filter-field").eq(i).attr('project'));
             current_type = $(".filter-field").eq(i).attr('type');
             current_user_status = $('#' + userId).attr('status');
 
             $(".filter-field").eq(i).show();
             if (selected_user_status == ''){
-                if (selected_project == ''){
+                if (selected_project == 0){
                     if (selected_type != '' && selected_type != current_type){
                         $(".filter-field").eq(i).hide();
                         continue;
                     }
                 } else {
-                    if (selected_project != current_project){
+                    var k = $.inArray(selected_project, current_project);
+                    if ($.inArray(selected_project, current_project) == -1){
                         $(".filter-field").eq(i).hide();
                         continue;
                     } else if (selected_type != '' && selected_type != current_type){
@@ -145,13 +149,13 @@
                     $(".filter-field").eq(i).hide();
                     continue;
                 } else {
-                    if (selected_project == ''){
+                    if (selected_project == 0){
                         if (selected_type != '' && selected_type != current_type){
                             $(".filter-field").eq(i).hide();
                             continue;
                         }
                     } else {
-                        if (selected_project != current_project){
+                        if ($.inArray(selected_project, current_project) == -1){
                             $(".filter-field").eq(i).hide();
                             continue;
                         } else if (selected_type != '' && selected_type != current_type){

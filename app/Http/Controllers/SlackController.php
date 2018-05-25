@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\SlackToken;
 use App\SlackWorkspace;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 use App\User;
 use App\Project;
+use App\Allocation;
 
 class SlackController extends Controller
 {
@@ -50,6 +52,9 @@ class SlackController extends Controller
                 if($token) {
                     $api = new SlackApi($token->token);
                     $project = Project::find($user->userinfo['project_id']);
+                    $projects = Allocation::where('user_id', '=', $user->id)
+                        ->where('is_delete', '=', '0')->pluck('project_id');
+                    $project_names = Project::whereIn('id', $projects)->get()->pluck('p_name');
                     $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
                     $data[] = array_merge($responce['user'], array(
                             'avatar' => $responce['user']['profile']['image_512'],
@@ -58,8 +63,9 @@ class SlackController extends Controller
                             'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
                                 ? $responce['user']['profile']['display_name'] : ( isset( $responce['user']['real_name'] ) ? $responce['user']['real_name'] : '' ) ,
                             'workspace_id' => $user->workspace_id,
-                            'project' => $project !== null ? $project->p_name : '',
-                            'project_id' => $project !== null ? $project->id : ''
+                            'project' => $project_names !== null ? $project_names : [],
+                            'project_id' => $project !== null ? $project->id : '',
+                            'projects' => $projects !== null ? $projects: []
                         )
                     );
                 }

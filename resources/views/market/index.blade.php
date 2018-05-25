@@ -31,6 +31,7 @@
                                   <th>TALENT</th>
                                   <th>B-DATE</th>
                                   <th>TYPE</th> 
+                                  <th></th>
                               </tr>
                           </thead>
                           <tfoot>
@@ -43,6 +44,7 @@
                                   <th>TALENT</th>
                                   <th>B-DATE</th>
                                   <th>LANCER TYPE</th> 
+                                  <th></th>
                               </tr>
                           </tfoot>
                           <tbody>

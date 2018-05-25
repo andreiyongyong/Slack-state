@@ -101,7 +101,7 @@
     <!-- Main Header -->
     @include('layouts.header')
     <!-- Sidebar -->
-    <a href="#" class="right-icon" style="position:absolute; top:50%; z-index: 999;display: none;" id="open_menu"><img src="{{asset('image/right1.png')}}" style="width: 40px;"></a>
+    <a href="#" class="right-icon" style="position:absolute; top:95%; z-index: 999;display: none;" id="open_menu"><img src="{{asset('image/right1.png')}}" style="width: 40px;"></a>
     <section>
     @include('layouts.sidebar')
     @include('layouts.rightsidebar')

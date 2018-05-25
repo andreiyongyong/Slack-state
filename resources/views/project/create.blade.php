@@ -104,7 +104,6 @@
                 data: {p_name: p_name, p_client:p_client, level:level, status:status, hot:hot},
                 success: function(resp){
                     if(resp.status == 'success'){
-                        alert('Project is created');
                         location.reload();
                     }else{
                         alert('ajax error');

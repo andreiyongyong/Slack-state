@@ -5,7 +5,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 body-container">
         <div class="card">
             <div class="header">
-                <h2>Update Upworkf</h2> 
+                <h2>Marketing</h2> 
             </div>
             <div class="body">
                 <form class="form-horizontal" id="upwork" role="form" method="POST" action="{{ route('upwork.update', ['id' => $upwork->id]) }}">

@@ -9,11 +9,11 @@
           <div class="card">
               <div class="header">
                   <h2>
-                      Upwork
+                      Markeing
                   </h2>
                   <ul class="header-dropdown m-r--5">
                       <li class="dropdown">
-                          <a class="btn btn-primary" href="{{ route('upwork.create') }}">Add new upwork</a>
+                          <a class="btn btn-primary" href="{{ route('upwork.create') }}">Add Marketing</a>
                       </li>
                   </ul>
               </div>  
@@ -25,23 +25,23 @@
                               <tr>
                                   <th>DATE</th>
                                   <th>COUNTRY</th>
-                                  <th>UPWORK NAME</th>
-                                  <th>UPWORK ID</th>
+                                  <th>Marketing NAME</th>
+                                  <th>Marketing ID</th>
                                   <th>EMAIL</th>
-                                  <th>RISING TALENT</th>
-                                  <th>BID DATE</th>
-                                  <th>LANCER TYPE</th> 
+                                  <th>TALENT</th>
+                                  <th>B-DATE</th>
+                                  <th>TYPE</th> 
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
                                   <th>DATE</th>
                                   <th>COUNTRY</th>
-                                  <th>UPWORK NAME</th>
-                                  <th>UPWORK ID</th>
+                                  <th>Marketing NAME</th>
+                                  <th>Marketing ID</th>
                                   <th>EMAIL</th>
-                                  <th>RISING TALENT</th>
-                                  <th>BID DATE</th>
+                                  <th>TALENT</th>
+                                  <th>B-DATE</th>
                                   <th>LANCER TYPE</th> 
                               </tr>
                           </tfoot>

@@ -5,7 +5,7 @@
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 body-container">
         <div class="card">
             <div class="header">
-                <h2>Add new upwork</h2>
+                <h2>Add new Marketing</h2>
             </div>
             <div class="body">
                 <form id="upwork" class="form-horizontal" role="form" method="POST" action="{{ route('upwork.store') }}" enctype="multipart/form-data">
@@ -38,7 +38,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="upwork_name" id="upwork_name" value="{{ old('upwork_name') }}"  min="1" max="200" required>
-                                    <label class="form-label">Upwork Name</label>
+                                    <label class="form-label">Marketing Name</label>
                                 </div>  
                             </div>
                         </div>
@@ -46,7 +46,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="upwork_id" id="upwork_id" value="{{ old('upwork_id') }}"  min="1" max="200" required>
-                                    <label class="form-label">Upwork Id</label>
+                                    <label class="form-label">Marketing Id</label>
                                 </div>  
                             </div>
                         </div>  
@@ -76,9 +76,9 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="rising_talent" id="rising_talent" value="{{ old('rising_talent') }}"  min="1" max="200" required>
-                                    <label class="form-label">Rising Talent</label>
+                                    <label class="form-label"> Talent</label>
                                 </div> 
-                                <div class="help-info">top rate , rising talent</div>
+                                <div class="help-info">top rate ,  talent</div>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -105,7 +105,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="lancer_type" id="lancer_type" value="{{ old('lancer_type') }}" required>
-                                    <label class="form-label">Freelancer Type</label>
+                                    <label class="form-label"> Type</label>
                                 </div> 
                                 <div class="help-info">ex: developer , graphic designer , translator , writer ,,,</div>
                             </div>
@@ -116,7 +116,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="security_question" id="security_question" required>
-                                    <label class="form-label">Security Question</label>
+                                    <label class="form-label">S Question</label>
                                 </div>   
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                             <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="security_answer" id="security_answer" required>
-                                    <label class="form-label">Security Answer</label>
+                                    <label class="form-label">S Answer</label>
                                 </div>   
                             </div>
                         </div>

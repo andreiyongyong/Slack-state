@@ -57,9 +57,15 @@ class TaskAllocationController extends Controller
                 ['user_id','=', $userid],
                 ['task_id', '=', $taskids[$i]],
             ])->count();
-            if($task_count==0) DB::table('task_allocation')->insert([
-                ['user_id' => $userid, 'task_id'=> $taskids[$i] ,'is_delete'=> 0]
-            ]);
+            if($task_count==0) 
+                    DB::table('task_allocation')->insert([
+                    ['user_id' => $userid, 'task_id'=> $taskids[$i] ,'is_delete'=> 0]
+                ]);
+            else{
+                DB::table('task_allocation')
+                    ->where([['user_id','=', $userid],['task_id', '=', $taskids[$i]]])
+                    ->update(['is_delete' => 0]);
+            }
         }
 
         $updateData = DB::table('tasks')

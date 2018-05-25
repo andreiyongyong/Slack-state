@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>SQ Tecnology</title>
+    <title>Slack State</title>
     <!-- Favicon-->
     <link rel="icon" href="favicon.ico" type="image/x-icon"> 
     <!-- Google Fonts -->
@@ -59,7 +59,15 @@
 
     <link href="{{ asset("/bower_components/AdminBSB/css/themes/all-themes.css") }}" rel="stylesheet" />
     <link href="{{ asset("css/site.css") }}" rel="stylesheet"> 
+    <style>
+        .sidebar-menu-closed {
+            width:15px;
+        }
 
+        section.sidebar-closed {
+            margin-left:20px;
+        }
+    </style>
   </head> 
 
   <body class="theme-blue">
@@ -93,6 +101,7 @@
     <!-- Main Header -->
     @include('layouts.header')
     <!-- Sidebar -->
+    <a href="#" class="right-icon" style="position:absolute; top:95%; z-index: 999;display: none;" id="open_menu"><img src="{{asset('image/right1.png')}}" style="width: 40px;"></a>
     <section>
     @include('layouts.sidebar')
     @include('layouts.rightsidebar')
@@ -211,33 +220,49 @@
       Both of these plugins are recommended to enhance the
       user experience. Slimscroll is required when using the
       fixed layout. -->
-      <script>
+    <script>
 
-            window.Laravel = {!! json_encode([
-                'csrfToken' => csrf_token(),
-            ]) !!}; 
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!}; 
 
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
- 
-        
-      $(document).ready(function() {
-         
-        // $('#log_date').datepicker({
-        //   autoclose: true,
-        //   format: 'yyyy/mm/dd'
-        // });
-        $("#DataTables_Table_0").DataTable(); 
-
-       $('.js-modal-buttons .btn').on('click', function () {
-            var color = $(this).data('color');
-            $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
-            $('#mdModal').modal('show');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
-    }); 
+
+    
+        $(document).ready(function() {        
+            // $('#log_date').datepicker({
+            //   autoclose: true,
+            //   format: 'yyyy/mm/dd'
+            // });
+            $("#DataTables_Table_0").DataTable(); 
+
+            $('.js-modal-buttons .btn').on('click', function () {
+                var color = $(this).data('color');
+                $('#mdModal .modal-content').removeAttr('class').addClass('modal-content modal-col-' + color);
+                $('#mdModal').modal('show');
+            });
+
+            $("#close_menu").click(function(e){
+                e.preventDefault();
+                $(".sidebar").addClass('sidebar-menu-closed');
+                $(".content").addClass('sidebar-closed');
+                $(this).hide();
+                $(".right-icon").show(500);
+
+            });
+
+            $("#open_menu").click(function(e){
+                e.preventDefault();
+                $(".sidebar").removeClass('sidebar-menu-closed');
+                $(".content").removeClass('sidebar-closed');
+                $(this).hide();
+                $('#close_menu').show();
+            });
+        }); 
 </script>
 <script src="{{ asset('js/site.js') }}"></script>
 @yield('slack-chat-scripts')

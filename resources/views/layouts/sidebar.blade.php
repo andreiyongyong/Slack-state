@@ -21,7 +21,7 @@
                         </a>
                     </p>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse {{(in_array(Request::segment(1),['project', "resource-management", "allocation", 'messaging', 'forum-master', 'member-log','' ]) ? 'in' : '')}}">
+                <div id="collapseOne" class="panel-collapse collapse {{(in_array(Request::segment(1),['project', "resource-management", "allocation", 'messaging', 'forum-master', 'member-log','git-manage' ]) ? 'in' : '')}}">
                     <div class="panel-body">
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "project" ? "active" : "" }}" >
@@ -77,31 +77,31 @@
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "slack" ? "active" : "" }}" >
                                 <a href="{{ route('slack.index') }}">
-                                    <i class="material-icons">forum</i>
-                                    <span>Slack</span>
+                                    <!-- <i class="material-icons">forum</i> -->
+                                    <span>State</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "workspaces" ? "active" : "" }}" >
                                 <a href="{{ route('workspaces.index') }}">
-                                    <i class="material-icons">forum</i>
+                                    <!-- <i class="material-icons">forum</i> -->
                                     <span>Workspace</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "slack-chat-pair" ? "active" : "" }}" >
                                 <a href="{{ route('slack-chat-pair.index') }}">
-                                    <i class="material-icons">forum</i>
+                                    <!-- <i class="material-icons">forum</i> -->
                                     <span>Slack Chat Pair</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "slack-admin-state" ? "active" : "" }}" >
                                 <a href="{{ route('slack-admin-state.index') }}">
-                                    <i class="material-icons">forum</i>
+                                    <!-- <i class="material-icons">forum</i> -->
                                     <span>Admin State</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "keywords" ? "active" : "" }}" >
                                 <a href="{{ route('keywords.index') }}">
-                                    <i class="material-icons">forum</i>
+                                    <!-- <i class="material-icons">forum</i> -->
                                     <span>Forbidden Keywords</span>
                                 </a>
                             </li>
@@ -144,13 +144,13 @@
                         </a>
                     </p>
                 </div>
-                <div id="collapseFour" class="panel-collapse collapse {{(in_array(Request::segment(1),['upwork', 'allocateprodects' ]) ? 'in' : '')}}">
+                <div id="collapseFour" class="panel-collapse collapse {{(in_array(Request::segment(1),['market', 'allocateprodects' ]) ? 'in' : '')}}">
                     <div class="panel-body">
                         <ul class="list">
-                            <li class="{{ Request::segment(1) == "upwork" ? "active" : "" }}" >
-                                <a href="{{ route('upwork.index') }}">
+                            <li class="{{ Request::segment(1) == "market" ? "active" : "" }}" >
+                                <a href="{{ route('market.index') }}">
                                     <i class="material-icons">play_for_work</i>
-                                    <span>Upwork</span>
+                                    <span>Marketing</span>
                                 </a>
                             </li>
 
@@ -183,19 +183,19 @@
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "allocateprojects" ? "active" : "" }}" >
                                 <a href="{{ route('allocate-projects.index') }}">
-                                    <i class="material-icons">touch_app</i>
+                                    <i class="material-icons">collections</i>
                                     <span>Project</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "taskallocation" ? "active" : "" }}" >
                                 <a href="{{ route('task-allocation.index') }}">
-                                    <i class="material-icons">group</i>
+                                    <i class="material-icons">collections</i>
                                     <span>Task</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "allocation" ? "active" : "" }}" >
                                 <a href="{{ route('allocation.index') }}">
-                                    <i class="material-icons">group</i>
+                                    <i class="material-icons">collections</i>
                                     <span>Resource</span>
                                 </a>
                             </li>
@@ -204,8 +204,9 @@
                 </div>
             </div>
         </div>
-        <center><img src="image/left1.png" style="width: 40px"> </center>
+        <center><a href="#" id="close_menu" style="cursor: pointer;"><img src="{{ asset('image/left1.png') }}" style="width: 40px;"></a></center>
     </div>
+
     <!-- #Menu -->
     <!-- Footer -->
     <div class="legal">

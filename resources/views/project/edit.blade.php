@@ -10,26 +10,59 @@
             <div class="body">
                 <div class="table-responsive">
                     <label class="form-label">Project</label>
-                    <table class="table table-bordered table-striped table-hover">
-                        <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Client</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td> {{ $project->p_name }} </td>
-                            <td> {{ $project->p_client }} </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <table class="table table-bordered table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>Project</th>
+                                <th>Client</th>
+                                <th>Level</th>
+                                <th>Status</th>
+                                <th>Hot</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <!-- <td> {{ $project->p_name }} </td> -->
+                                <!-- <td> {{ $project->p_client }} </td> -->
+                                <td><input type="text" class="form-control" name="p_name" id="p_name" value="{{ $project->p_name }}"  min="1" max="100" required></td>
+                                <td><input type="text" class="form-control" name="p_client" id="p_client" value="{{ $project->p_client }}"  min="1" max="100" required></td>
+                                <td>
+                                    <select class="form-control show-tick" id = 'level'>
+                                        <option>LV1</option>
+                                        <option>LV2</option>
+                                        <option>LV3</option>
+                                        <option>LV4</option>
+                                        <option>LV5</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control show-tick" id = "status">
+                                        <option>Upcoming</option>
+                                        <option>Live</option>
+                                        <option>Hold</option>
+                                        <option>Closed</option>
+                                        <option>Deleted</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control show-tick" id= "hot">
+                                        <option>Hot</option>
+                                        <option>Normal</option>
+                                        <option>Loose</option>
+                                    </select>
+                                </td>
+                                <td align="center"><button class="btn btn-primary" id="save" type="submit">Save</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
             </div>
             <div class="body">
                 <label class="form-label">New Task</label>
                 <form id="project" class="form-horizontal" role="form" method="POST" action="{{url('project/addTask')}}">
-                    <input type="hidden" name="id" value="{{$project->id}}">
+                    <input type="hidden" name="id" id = "p_id"value="{{$project->id}}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     {{ csrf_field() }}
                     <div class="row clearfix">
@@ -81,6 +114,31 @@
         </div>
     </div>
 </div> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#save").click(function(){
+            p_name = $("#p_name").val();
+            p_client = $("#p_client").val();
+            id = $("#p_id").val();
+            level = $("#level").val();
+            status = $("#status").val();
+            hot = $("#hot").val();
+            $.ajax({
+                type: "POST",
+                url: "/project/editProject",
+                data: {p_name: p_name, p_client:p_client, id: id, level:level, status:status, hot:hot},
+                success: function(resp){
+                    if(resp.status == 'success'){
+                        alert('Project is saved');
+                    }else{
+                        alert('ajax error');
+                    }
+                }
+            })
+        })
+    });
+</script>
 @endsection
  
  

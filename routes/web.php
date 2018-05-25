@@ -16,9 +16,9 @@
  * Laravel is providing the auth middleware defined in Illuminate\Auth\Middleware\Authenticate
  * 
  * example: 
- *              Route::get('profile' , function(){
- *                  ...authenticated users may enter....
- *              })->middleware('auth');
+*              Route::get('profile' , function(){
+*                  ...authenticated users may enter....
+*              })->middleware('auth');
  * 
  */
 
@@ -41,7 +41,7 @@ Route::resource('forum-master', 'ForumMasterController');
 Route::post('forum-master/add-forum-answer', 'ForumMasterController@addForumAnswer');
 Route::resource('aws-master', 'AwsMasterController');
 Route::resource('project' , 'ProjectController');
-Route::resource('upwork' , 'UpworkController');
+Route::resource('market' , 'MarketController');
 Route::resource('slack-chat-pair' , 'SlackChatPairController');
 
 Route::resource('slack-admin-state' , 'SlackAdminStateController');
@@ -52,6 +52,11 @@ Route::resource('/git-manage', 'GitManageController');
 Route::post('member-log/search', 'MemberLogController@search')->name('member-log.search');   
 Route::post('member-log/log_detail_add', ['as'=>'ajaxImageUpload','uses'=>'MemberLogController@ajaxImageUpload']);   
 Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_delete');
+
+Route::post('project/store', 'ProjectController@store');
+Route::post('project/addTask', 'ProjectController@addTask');
+Route::post('project/getfromstatus', 'ProjectController@getfromstatus');
+Route::post('project/editProject', 'ProjectController@editProject');
 
 
 Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');

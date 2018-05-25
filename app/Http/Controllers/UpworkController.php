@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use App\Upwork;
+use App\Market;
 
-class UpworkController extends Controller
+class MarketController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -25,9 +25,9 @@ class UpworkController extends Controller
      */
     public function index()
     {  
-        $upwork = Upwork::paginate(10);
+        $market = market::paginate(10);
 
-        return view('upwork/index', ['upworks' => $upwork]);
+        return view('market/index', ['markets' => $market]);
     }
 
     /**
@@ -37,7 +37,7 @@ class UpworkController extends Controller
      */
     public function create()
     {
-        return view('upwork/create');
+        return view('market/create');
     }
 
     /**
@@ -48,11 +48,11 @@ class UpworkController extends Controller
      */
     public function store(Request $request)
     {     
-        Upwork::create([
+        market::create([
             'date' => $request['date'],
             'country' => $request['country'],
-            'upwork_name' => $request['upwork_name'],
-            'upwork_id' => $request['upwork_id'],
+            'market_name' => $request['market_name'],
+            'market_id' => $request['market_id'],
             'email' => $request['email'] , 
             'password' => $request['password'] , 
             'rising_talent' => $request['rising_talent'] , 
@@ -64,7 +64,7 @@ class UpworkController extends Controller
             'series' => $request['series']   
         ]);
 
-        return redirect()->intended('/upwork');
+        return redirect()->intended('/market');
     }
 
     /**
@@ -86,13 +86,13 @@ class UpworkController extends Controller
      */
     public function edit($id)
     {
-        $upwork = Upwork::find($id);
+        $market = market::find($id);
         // Redirect to user list if updating user wasn't existed
-        if ($upwork == null || $upwork->count() == 0) {
-            return redirect()->intended('/upwork');
+        if ($market == null || $market->count() == 0) {
+            return redirect()->intended('/market');
         }
 
-        return view('upwork/edit', ['upwork' => $upwork]);
+        return view('market/edit', ['market' => $market]);
     }
 
     /**
@@ -104,12 +104,12 @@ class UpworkController extends Controller
      */
     public function update(Request $request, $id)
     {  
-        Upwork::findOrFail($id);
+        market::findOrFail($id);
         $input = [
             'date' => $request['date'],
             'country' => $request['country'],
-            'upwork_name' => $request['upwork_name'],
-            'upwork_id' => $request['upwork_id'],
+            'market_name' => $request['market_name'],
+            'market_id' => $request['market_id'],
             'email' => $request['email'] , 
             'password' => $request['password'] , 
             'rising_talent' => $request['rising_talent'] , 
@@ -121,10 +121,10 @@ class UpworkController extends Controller
             'series' => $request['series'] 
         ]; 
 
-        Upwork::where('id', $id)
+        market::where('id', $id)
             ->update($input);
 
-        return redirect()->intended('/upwork');
+        return redirect()->intended('/market');
     }
 
     /**
@@ -135,7 +135,7 @@ class UpworkController extends Controller
      */
     public function destroy($id)
     {
-        Upwork::where('id', $id)->delete();
-        return redirect()->intended('/upwork');
+        market::where('id', $id)->delete();
+        return redirect()->intended('/market');
     }
 }

@@ -478,6 +478,8 @@ $(document).ready(function () {
             $.each(response.data, function (key, status) {
                 var active = (status == 'active') ? true : false;
                 $('.slack-status[data-slack_id="' + key + '"]').toggleClass('active', active);
+                $('.slack-card[data-slack_id="' + key + '"]').toggleClass('active', active);
+                $('.slack-status[data-slack_id="' + key + '"]').attr('status', status);
             });
         }
     });
@@ -490,6 +492,8 @@ $(document).ready(function () {
                 $.each(response.data, function (key, status) {
                     var active = (status == 'active') ? true : false;
                     $('.slack-status[data-slack_id="' + key + '"]').toggleClass('active', active);
+                    $('.slack-card[data-slack_id="' + key + '"]').toggleClass('active', active);
+                    $('.slack-status[data-slack_id="' + key + '"]').attr('status', status);
                 });
             }
         });

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Task;
 use Illuminate\Http\Request;
 use App\Project;
+use Illuminate\Support\Facades\DB;
+
 
 class ProjectController extends Controller
 {
@@ -15,7 +17,7 @@ class ProjectController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -25,10 +27,92 @@ class ProjectController extends Controller
      */
     public function index()
     {  
-        $projects = Project::paginate(10);
+        $data = array();
+        $projects = Project::get();
+        foreach ($projects as $key => $project) {
+            $data[$key]['id'] = $project->id;
+           $data[$key]['p_name'] = $project->p_name;
+           if($project->hot == "Hot") $data[$key]['hot'] = 'red';
+           elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
+           elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+           else $data[$key]['hot'] = 'white';
+           $data[$key]['p_client'] = $project->p_client;
 
-        return view('project/index', ['projects' => $projects]);
+           $dev = "";
+           $developers =  DB::table('allocation')
+                            ->join('users', 'allocation.user_id','=','users.id')
+                            ->join('project', 'allocation.project_id','=','project.id')
+                            ->select('users.username', 'allocation.user_id','allocation.project_id')
+                            ->where([
+                                ['project_id','=', $project->id],
+                                ['is_delete','=', '0']
+                            ])->get();
+            foreach ($developers as $developer) {
+                $dev .= ($developer->username." ,");
+            }
+            if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
+            $data[$key]['developer'] = $dev;
+
+            $task = Task::where('project_id',$project->id)
+                        ->orderBy('created_at', 'asc')->first();
+            if(!is_object($task)) $data[$key]['task'] = "";
+            else $data[$key]['task'] = $task->task_name;
+            $data[$key]['status'] = $project->status;
+        }
+       
+        return view('project/index', ['projects' => $data]);
     }
+
+
+    public function getfromstatus(Request $request){
+        $data = array();
+        $status = $request['status'];
+        if($status == 'All'){
+            $projects = Project::get();
+        }else{
+            $projects = Project::where('status', $status)->get();
+        }
+         foreach ($projects as $key => $project) {
+            $data[$key]['id'] = $project->id;
+           $data[$key]['p_name'] = $project->p_name;
+           if($project->hot == "Hot") $data[$key]['hot'] = 'red';
+           if($project->hot == "Normal") $data[$key]['hot'] = 'green';
+           if($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+           $data[$key]['p_client'] = $project->p_client;
+
+           $dev = "";
+           $developers =  DB::table('allocation')
+                            ->join('users', 'allocation.user_id','=','users.id')
+                            ->join('project', 'allocation.project_id','=','project.id')
+                            ->select('users.username', 'allocation.user_id','allocation.project_id')
+                            ->where([
+                                ['project_id','=', $project->id],
+                                ['is_delete','=', '0']
+                            ])->get();
+            foreach ($developers as $developer) {
+                $dev .= ($developer->username." ,");
+            }
+            if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
+            $data[$key]['developer'] = $dev;
+
+            $task = Task::where('project_id',$project->id)
+                        ->orderBy('created_at', 'asc')->first();
+            if(!is_object($task)) $data[$key]['task'] = "";
+            else $data[$key]['task'] = $task->task_name;
+            $data[$key]['status'] = $project->status;
+        }
+
+        if($request->ajax())
+        {
+            $response['status'] = 'success';
+            $response['string'] = $data;
+        }
+        else{
+            $response['error'] = 'error';
+        }
+        return response()->json($response) ;
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -48,14 +132,24 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-
         Project::create([
             'p_name' => $request['p_name'],
             'p_client' => $request['p_client'],
-            'meet_time' => $request['meet_time']
+            'level' => $request['level'],
+            'status' => $request['status'],
+            'hot' => $request['hot']
         ]);
 
-        return redirect()->intended('/project');
+        // return redirect()->intended('/project');
+        if($request->ajax())
+        {
+            $response['status'] = 'success';
+            
+        }
+        else{
+            $response['error'] = 'error';
+        }
+        return response()->json($response) ;
     }
 
     /**
@@ -95,7 +189,6 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-
     {
         Project::findOrFail($id);
         $input = [
@@ -108,6 +201,32 @@ class ProjectController extends Controller
             ->update($input);
 
         return redirect()->intended('/project');
+    }
+
+    public function editProject(Request $request){
+        $id = $request['id'];
+        Project::findOrFail($id);
+        $input = [
+            'p_name' => $request['p_name'],
+            'p_client' => $request['p_client'],
+            'level' => $request['level'],
+            'status' => $request['status'],
+            'hot' => $request['hot']
+        ]; 
+
+        Project::where('id', $id)
+            ->update($input);
+
+
+        if($request->ajax())
+        {
+            $response['status'] = 'success';
+            
+        }
+        else{
+            $response['error'] = 'error';
+        }
+        return response()->json($response) ;
     }
 
     /**

@@ -98,8 +98,6 @@
             level = $("#level").val();
             status = $("#status").val();
             hot = $("#hot").val();
-            console.log(hot);
-            console.log(status);
             $.ajax({
                 type: "POST",
                 url: "/project/store",

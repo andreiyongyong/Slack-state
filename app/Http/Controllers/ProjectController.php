@@ -65,6 +65,7 @@ class ProjectController extends Controller
 
 
     public function getfromstatus(Request $request){
+        $data = array();
         $status = $request['status'];
         if($status == 'All'){
             $projects = Project::get();
@@ -188,7 +189,6 @@ class ProjectController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-
     {
         Project::findOrFail($id);
         $input = [
@@ -201,6 +201,29 @@ class ProjectController extends Controller
             ->update($input);
 
         return redirect()->intended('/project');
+    }
+
+    public function editProject(Request $request){
+        $id = $request['id'];
+        Project::findOrFail($id);
+        $input = [
+            'p_name' => $request['p_name'],
+            'p_client' => $request['p_client']
+        ]; 
+
+        Project::where('id', $id)
+            ->update($input);
+
+
+        if($request->ajax())
+        {
+            $response['status'] = 'success';
+            
+        }
+        else{
+            $response['error'] = 'error';
+        }
+        return response()->json($response) ;
     }
 
     /**

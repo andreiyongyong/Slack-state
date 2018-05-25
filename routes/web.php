@@ -56,6 +56,7 @@ Route::post('member-log/log_detail_delete', 'MemberLogController@log_detail_dele
 Route::post('project/store', 'ProjectController@store');
 Route::post('project/addTask', 'ProjectController@addTask');
 Route::post('project/getfromstatus', 'ProjectController@getfromstatus');
+Route::post('project/editProject', 'ProjectController@editProject');
 
 
 Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');

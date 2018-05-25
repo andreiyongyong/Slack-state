@@ -57,9 +57,9 @@
                           <tbody>
                           @foreach ($projects as $project)
                               <tr>
-                                <td>
-                                  <svg height="20" width="20" style="position: absolute;left: 50px;margin-top: 5px;" >
-                                    <circle cx="10" cy="10" r="8"  fill="{{$project['hot']}}" />
+                                <td align="center">
+                                  <svg height="20" width="20">
+                                    <circle cx="10" cy="12" r="8"  fill="{{$project['hot']}}" />
                                   </svg>
                                 </td>
                                 <td>{{ $project['p_name'] }}</td>

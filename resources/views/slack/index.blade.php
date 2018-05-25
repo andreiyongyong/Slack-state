@@ -20,7 +20,7 @@
                                 <div class="form-group form-float">
                                     <div>
                                         <select name="project" id="project" class="project">
-                                            <option value="">All</option>
+                                            <option value="0">All</option>
                                             @foreach($projects as $project)                                                            
                                             <option value="{{$project['id']}}">{{$project->p_name}}</option>                                            
                                             @endforeach

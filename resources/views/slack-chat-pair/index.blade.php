@@ -23,24 +23,16 @@
                           <thead>
                               <tr>
                                   <th>PROJECT</th>
-                                  <th>WORKSPACE 1</th>
                                   <th>USER 1</th>
-                                  <th>ADMIN 1</th>
-                                  <th>WORKSPACE 2</th>
                                   <th>USER 2</th>
-                                  <th>ADMIN 2</th>
                                   <th>ACTION</th>
                               </tr>
                           </thead>
                           <tfoot>
                               <tr>
                                   <th>PROJECT</th>
-                                  <th>WORKSPACE 1</th>
                                   <th>USER 1</th>
-                                  <th>ADMIN 1</th>
-                                  <th>WORKSPACE 2</th>
                                   <th>USER 2</th>
-                                  <th>ADMIN 2</th>
                                   <th>ACTION</th>
                               </tr>
                           </tfoot>
@@ -48,12 +40,8 @@
                           @foreach ($pairs as $pair)
                                   <tr>
                                       <td>{{ $pair->project['p_name'] }}</td>
-                                      <td>{{ $pair->workspace_1['id_'] }}</td>
-                                      <td>{{ $pair->user_1['username'] }}</td>
-                                      <td>{{ $pair->admin_1['username'] }}</td>
-                                      <td>{{ $pair->workspace_2['id_'] }}</td>
-                                      <td>{{ $pair->user_2['username'] }}</td>
-                                      <td>{{ $pair->admin_2['username'] }}</td>
+                                      <td>{{ $pair->workspace_1['id_'].' - '.$pair->user_1['username'] }}</td>
+                                      <td>{{ $pair->workspace_2['id_'].' - '.$pair->user_2['username'] }}</td>
                                       <td align = 'center'>
                                           <form class="row" method="POST" action="{{ route('slack-chat-pair.destroy', ['id' => $pair->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                                 <input type="hidden" name="_method" value="DELETE">

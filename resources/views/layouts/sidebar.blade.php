@@ -150,7 +150,7 @@
                             <li class="{{ Request::segment(1) == "upwork" ? "active" : "" }}" >
                                 <a href="{{ route('upwork.index') }}">
                                     <i class="material-icons">play_for_work</i>
-                                    <span>Upwork</span>
+                                    <span>Marketing</span>
                                 </a>
                             </li>
 

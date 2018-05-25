@@ -426,8 +426,15 @@ class SlackChatPairController extends Controller
                     $this->uploadFile($file['id'], $file['url_private_download'], $token->token);
 
                     $name_arr = explode('.', $file['name']);
+
                     $comment = isset($file['initial_comment']) ? ' -F initial_comment='.$file['initial_comment']['comment']: '';
-                    $response = exec('curl -F file=@' . public_path('slack/' . $file['id'] . '.' . end($name_arr)) .$comment. ' -F channels=' . $developer['slack_id'] . ' -F filename=' . $file['name'] . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
+
+                    if(strpos($comment, '<') !== false){
+                        $comment = str_replace('<','',$comment);
+                        $comment = str_replace('>','',$comment);
+                    }
+
+                    $response = exec('curl -F file=@' . public_path('slack/' . $file['id'] . '.' . end($name_arr)) .$comment. ' -F channels=' . $developer['slack_id'] . ' -F filename=' .  (($file['name']=escapeshellarg($file['name']))? $file['name'] : "''"). ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
                 } else {
                     $file = $request->file('attach');
                     $response = exec('curl -F file=@' . $file->getRealPath() . ' -F channels=' . $developer['slack_id'] . ' -F filename=' . $file->getClientOriginalName() . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');

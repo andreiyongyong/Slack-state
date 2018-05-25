@@ -208,7 +208,7 @@ var slackChatPair = function () {
 
               instance.toggleLoader(false);
                       $('.slack-message').val('');
-                      $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
+                      $('.messaging-block .slack-massages.' + user).scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
                   }
               });
           });
@@ -230,22 +230,16 @@ var slackChatPair = function () {
   };
 
   instance.sendEditMessage = function (action, user, text, type) {
-console.log(instance.messages_list);
-      if(action == 'send') {
-          if(type == 'file'){
-              console.log(text);
-              instance.uploadFile(text.file, user, 'auto');
-          }else{
+
+      if(type == 'file'){
+          instance.uploadFile(text.file, user, 'auto');
+      }else{
+          if(action == 'send') {
               $('body .slack-message.' + user).val(instance.filterUrl(text));
               $('body .send-message[data-user="'+ user +'"]').click();
-          }
-      }else{
-          if(type == 'file'){
-
           }else{
               $('body .slack-message.' + user).val(instance.filterUrl(text));
           }
-
       }
   };
 
@@ -345,9 +339,10 @@ console.log(instance.messages_list);
                     var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
                     var display_name = ('user' in message) ? message.user.profile.real_name : '';
 
-                    $('.messaging-block .slack-massages.'+ user ).append('' +
+                    $('.messaging-block .slack-massages.'+ user).append('' +
                         '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
                         '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" data-type="'+message.type+'" '+((action == 'auto') ? 'style="display: none;"' : '')+' data-ts="'+message.tsi+'" data-user="'+((user == 'user_1') ? 'user_2' : 'user_1')+'"><i class="material-icons send-btn">send</i><i class="material-icons edit-btn">edit</i></span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                    $('.messaging-block .slack-massages.' + user).scrollTop($('.messaging-block .slack-massages.' + user)[0].scrollHeight);
                 }
                 if(action != 'auto'){
                     instance.toggleLoader(false);

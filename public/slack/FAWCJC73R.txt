@@ -1,0 +1,317 @@
+//    public function login(Request $request){
+//        $user = User::where('email','defaulkt@gm.com')->first();
+//        $user->password = Hash::make('password');
+//        $user->save();
+////        dd (Hash::check('password', $user->password));
+//        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+//            return redirect('/');
+//        }
+//    }
+
+
+    public function connection($id)
+    {
+        $data = ['error' => false];
+
+        $data['user'] = User::find($id);
+
+        if($data['user']->workspace_id == '' && $data['user']->slack_user_id == ''){
+            $data['workspaces'] = SlackWorkspace::get();
+            $data['view'] = 'no_invited';
+        }elseif($data['user']->workspace_id != '' && $data['user']->slack_user_id == ''){
+            $data['workspace'] = SlackWorkspace::find($data['user']->workspace_id);
+
+            $api = new SlackApi($data['workspace']->token);
+            $responce = $api->execute('users.list');
+            foreach ($responce['members'] as $member) {
+                if (isset($member['profile']['email']) && $member['profile']['email'] == $data['user']->email) {
+                    User::where('id', $id)->update([
+                        'slack_user_id' => $member['id']
+                    ]);
+                    $data['view'] = 'invited_success';
+
+                    $result = $api->execute('users.getPresence', ['user' => $member['id']]);
+
+                    $data['user']->presence = $result['presence'];
+                    $data['user']->display_name = $member['profile']['display_name'];
+                    $data['user']->avatar = isset($member['profile']['image_original']) ? $member['profile']['image_original'] : '';
+
+                    return view('slack-connection/index', ['data' => $data]);
+                }
+            }
+            
+            $data['view'] = 'invited_sent';
+            
+        }else{
+            $data['workspace'] = SlackWorkspace::find($data['user']->workspace_id);
+            $api = new SlackApi($data['workspace']->token);
+            
+            $responce = $api->execute('users.info', ['user' => $data['user']->slack_user_id]);
+
+
+            $result = $api->execute('users.getPresence', ['user' => $responce['user']['id']]);
+
+            $data['user']->presence = $result['presence'];
+            $data['user']->display_name = $responce['user']['profile']['display_name'];
+            $data['user']->avatar = isset($responce['user']['profile']['image_original']) ? $responce['user']['profile']['image_original'] : '';
+
+            $data['view'] = 'invited_success';
+        }
+
+        return view('slack-connection/index', ['data'=> $data]);
+    }
+
+    public function invite(Request $request)
+    {
+        $data = array(
+            'error' => false,
+            'message' => ''
+        );
+
+        try{
+            $data['user'] = User::find($request['user_id']);
+            $data['workspace'] = SlackWorkspace::find($request['workspace_id']);
+
+            $api = new SlackApi($data['workspace']->token);
+
+            $responce = $api->execute('users.admin.invite', ['email' => $data['user']->email]);
+
+            if($responce['ok']){
+                User::where('id', $request['user_id'])->update([
+                    'workspace_id' => $data['workspace']->id,
+                ]);
+            }
+        }catch (SlackApiException $e){
+            if($e->getMessage() == 'already_invited' || $e->getMessage() == 'already_in_team'){
+                $responce = $api->execute('users.list');
+
+                if($responce['ok']){
+                    foreach ($responce['members'] as $member){
+
+                        if(isset($member['profile']['email']) && $member['profile']['email'] == $data['user']->email){
+                            User::where('id', $request['user_id'])->update([
+                                'workspace_id' => $data['workspace']->id,
+                                'slack_user_id' => $member['id'],
+                            ]);
+                            $data['view'] = 'invited_success';
+
+                            $result = $api->execute('users.getPresence', ['user' => $member['id']]);
+
+                            $data['user']->presence = $result['presence'];
+                            $data['user']->display_name = $member['profile']['display_name'];
+                            $data['user']->avatar = isset($member['profile']['image_original']) ? $member['profile']['image_original'] : '';
+
+                            return view('slack-connection/index', ['data'=> $data]);
+                        }
+                    }
+                }
+
+                $data['view'] = 'invited_sent';
+                User::where('id', $request['user_id'])->update([
+                    'workspace_id' => $data['workspace']->id
+                ]);
+                return view('slack-connection/index', ['data'=> $data]);
+            }
+
+            $data['error'] = true;
+            $data['message'] = $e->getMessage();
+        }
+
+        if($data['error']){
+            $data['workspaces'][0] = $data['workspace'];
+            unset($data['workspace']);
+            $data['view'] = 'no_invited';
+            return view('slack-connection/index', ['data'=> $data]);
+        }
+
+        $data['view'] = 'invited_sent';
+
+        return view('slack-connection/index', ['data'=> $data]);
+    }
+
+
+ {{--<form class="form-horizontal" role="form" method="POST" action="{{ route('slack.send') }}">--}}
+                      {{--<input type="hidden" name="_method" value="POST">--}}
+                      {{--<input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
+                      {{--{{ csrf_field() }}--}}
+                      {{--<div class="row">--}}
+                          {{--<div class="col-md-12">--}}
+                              {{--<div class="row clearfix">--}}
+                                  {{--<div class="col-md-12">--}}
+                                      {{--<div class="form-group form-float">--}}
+                                          {{--<div class="form-line">--}}
+                                              {{--<input type="text" class="form-control" name="channel" id="channel" value="" required>--}}
+                                              {{--<label class="form-label">Channel</label>--}}
+                                          {{--</div>--}}
+                                      {{--</div>--}}
+                                  {{--</div>--}}
+                              {{--</div>--}}
+                              {{--<div class="row clearfix">--}}
+                                  {{--<div class="col-md-12">--}}
+                                      {{--<div class="form-group form-float">--}}
+                                          {{--<div class="form-line">--}}
+                                              {{--<input type="text" class="form-control" name="message" id="message" value="" required>--}}
+                                              {{--<label class="form-label">Message</label>--}}
+                                          {{--</div>--}}
+                                      {{--</div>--}}
+                                  {{--</div>--}}
+                              {{--</div>--}}
+                              {{--<button class="btn btn-primary waves-effect" type="submit">Send</button>--}}
+                          {{--</div>--}}
+                      {{--</div>--}}
+                  {{--</form>--}}
+
+
+
+
+
+{{--<div class="menu">--}}
+        {{--<ul class="list panel-group">--}}
+            {{--<li class="header">NAVIGATION</li>--}}
+            {{--<li class="panel panel-default">Project</li>--}}
+            {{--<li class="{{ Request::segment(1) == "project" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('project.index') }}">--}}
+                    {{--<i class="material-icons">filter_b_and_w</i>--}}
+                    {{--<span>Projects</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "resource-management" ? "active" : "" }}" >--}}
+                {{--<a href="{{ url('resource-management') }}">--}}
+                    {{--<i class="material-icons">filter_tilt_shift</i>--}}
+                    {{--<span>Resources</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "allocation" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('allocation.index') }}">--}}
+                    {{--<i class="material-icons">touch_app</i>--}}
+                    {{--<span>Allocation</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "messaging" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('messaging.index') }}">--}}
+                    {{--<i class="material-icons">forum</i>--}}
+                    {{--<span>Message</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "forum-master" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('forum-master.index') }}">--}}
+                    {{--<i class="material-icons">forum</i>--}}
+                    {{--<span>Forum</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "member-log" ? "active" : "" }}">--}}
+                {{--<a href="{{ url('member-log') }}">--}}
+                    {{--<i class="material-icons">access_time</i>--}}
+                    {{--<span>Tracks</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+
+            {{--<li class="header">Slack</li>--}}
+            {{--<li class="{{ Request::segment(1) == "slack" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('slack.index') }}">--}}
+                    {{--<i class="material-icons">forum</i>--}}
+                    {{--<span>Slack</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "workspaces" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('workspaces.index') }}">--}}
+                    {{--<i class="material-icons">forum</i>--}}
+                    {{--<span>Workspace</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+
+            {{--<li class="header">Slack</li>--}}
+            {{--<li class="{{ Request::segment(1) == "applicants" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('applicants.index') }}">--}}
+                    {{--<i class="material-icons">touch_app</i>--}}
+                    {{--<span>Applicants</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "user-management" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('user-management.index') }}">--}}
+                    {{--<i class="material-icons">group</i>--}}
+                    {{--<span>Users</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+
+            {{--<li class="header">Marketing</li>--}}
+            {{--<li class="{{ Request::segment(1) == "upwork" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('upwork.index') }}">--}}
+                    {{--<i class="material-icons">play_for_work</i>--}}
+                    {{--<span>Upwork</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+
+            {{--<li class="" >--}}
+                {{--<a href="{{ route('user-management.index') }}">--}}
+                    {{--<i class="material-icons">dashboard</i>--}}
+                    {{--<span>QA View</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "aws-master" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('aws-master.index') }}">--}}
+                    {{--<i class="material-icons">cloud</i>--}}
+                    {{--<span>AWS</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+            {{--<li class="{{ Request::segment(1) == "allocate-projects" ? "active" : "" }}" >--}}
+                {{--<a href="{{ route('allocate-projects.index') }}">--}}
+                    {{--<i class="material-icons">filter_b_and_w</i>--}}
+                    {{--<span>Projects Allocation</span>--}}
+                {{--</a>--}}
+            {{--</li>--}}
+        {{--</ul>--}}
+    {{--</div> --}}
+
+
+
+
+
+
+
+
+  // instance.selectPair = function (id) {
+  //
+  //     if(id) {
+  //         $.ajax({
+  //             type: 'post',
+  //             url: instance.urls.selectPair,
+  //             data: {
+  //                 id_: id
+  //             },
+  //             beforeSend: function () {
+  //                 instance.toggleLoader(true);
+  //             },
+  //             success: function (response) {
+  //                 if ('user_1' in response) {
+  //                     instance.user_1 = {
+  //                         "id": response.user_1.id,
+  //                         "slack_id": response.user_1.slack_user_id,
+  //                         "channel_id": response.user_1.channel_id,
+  //                         "workspace_id": response.workspace_1.id,
+  //                         "admin_id": response.admin_1.id
+  //                     };
+  //                     $('.user_1_status').attr('data-slack_id', response.user_1.slack_user_id);
+  //                     $('.user_1_name').html(response.user_1.username);
+  //                     $('#admin_1').html(response.admin_1.username);
+  //
+  //                     instance.user_2 = {
+  //                         "id": response.user_2.id,
+  //                         "slack_id": response.user_2.slack_user_id,
+  //                         "channel_id": response.user_2.channel_id,
+  //                         "workspace_id": response.workspace_2.id,
+  //                         "admin_id": response.admin_2.id
+  //                     };
+  //                     $('.user_2_status').attr('data-slack_id', response.user_2.slack_user_id);
+  //                     $('.user_2_name').html(response.user_2.username);
+  //                     $('#admin_2').html(response.admin_2.username);
+  //
+  //                     instance.renderMessaging();
+  //                     $('.slack-message').val('');
+  //                     $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
+  //                 }
+  //             }
+  //         });
+  //     }
+  //
+  // };

@@ -4,9 +4,9 @@
 <script>
 $(document).ready(function() {
     var id = 0, proj_name = [];
-    $(".user-group").click(function() {
+
+    $("#DataTables_Table_1").on('click', '.user-group', function(){
         id = $(this).data("userid");
-        
         $(".user-group").each(function( index, element ) {
             $(element).css("border", "1px solid #ddd");
         });
@@ -31,7 +31,7 @@ $(document).ready(function() {
         });
     });
 
-    $(".projects-group").click(function() {
+    $("#DataTables_Table_0").on('click', '.projects-group', function(){
         if($(this).hasClass("selected")){
             $(this).css("border", "0");
             $(this).removeClass("selected");
@@ -72,7 +72,6 @@ $(document).ready(function() {
 
     var del_proj_name = [];
     $(".uproject").on('click', '.alloc', function(){
-    //$(".uproject .alloc").click(function(){
         if($(this).hasClass("selected")){
             $(this).css("border", "1px solid #ddd");
             $(this).removeClass("selected");
@@ -132,20 +131,36 @@ $(document).ready(function() {
                 </h2>
             </div>
             <div class="body">
-                <div class="list-group">
-                @foreach ($users as $user)
-                    @if ( DB::table('allocation')->where([['user_id','=', $user->id],['is_delete','=', '0']])->count() == 0)
-                    <button type="button" class="list-group-item user-group" data-userid={{ $user->id }}>
-                        <svg height="20" width="20">
-                        <circle cx="10" cy="13" r="7"  fill="red" />
-                        </svg>{{ $user->username }}</button>
-                    @else
-                    <button type="button" class="list-group-item user-group" data-userid={{ $user->id }}>
-                        <svg height="20" width="20">
-                        <circle cx="10" cy="13" r="7"  fill="white" />
-                        </svg>{{ $user->username }}</button>
-                    @endif
-                @endforeach
+                <div class="table-responsive">
+                    <table id = 'DataTables_Table_1' class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                        <thead> 
+                            <tr>
+                                <th>USER</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>USER</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td class="user-group" data-userid = {{$user->id}}>
+                                    @if ( DB::table('allocation')->where([['user_id','=', $user->id],['is_delete','=', '0']])->count() == 0)
+                                    <div> <svg height="20" width="20">
+                                    <circle cx="10" cy="13" r="7"  fill="red" />
+                                    </svg>{{ $user->username }}</div>
+                                    @else
+                                    <div> <svg height="20" width="20">
+                                    <circle cx="10" cy="13" r="7"  fill="white" />
+                                    </svg>{{ $user->username }}</div>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach 
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -169,9 +184,6 @@ $(document).ready(function() {
         </div>
     </div>
 
-<!--     <a class="col-lg-1 col-md-1" style="width:5%;margin-left:-30px;padding:60px 30px; cursor: pointer;" id="shift_proj">
-        <i class="large material-icons" style="zoom:2">arrow_back</i>
-    </a> -->
     <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">

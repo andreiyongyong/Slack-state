@@ -226,6 +226,8 @@
                             $("[slack-id=" + slackId + "]").children().eq(0).removeClass('active');
                         }
                     }
+
+                    filterUsers();
                     
                     console.log(data);
                 }

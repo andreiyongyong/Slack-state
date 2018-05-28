@@ -120,7 +120,7 @@
                                         <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <!-- <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="">
                                             <label class="form-label">Project</label>
@@ -132,9 +132,9 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>  
-                            <div class="row clearfix">
+                            <!-- <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
@@ -153,7 +153,7 @@
                                         <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
-                            </div>  
+                            </div>   -->
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
@@ -280,6 +280,7 @@
                                     </div>
                                 </div>
                             </div>
+                           
                             <button class="btn btn-primary waves-effect" type="submit">Create</button>
                         </div>
                         <div class="col-md-1"></div>

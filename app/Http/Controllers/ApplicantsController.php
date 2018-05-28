@@ -39,7 +39,7 @@ class ApplicantsController extends Controller
     public function index()
     {
         $users = User::with(['userinfo' => function($query){
-            $query->where('approved', 0);
+            // $query->where('approved', 0);
         }])->paginate(5);
 
         return view('users-apct/index', ['users' => $users]);
@@ -106,7 +106,7 @@ class ApplicantsController extends Controller
                 'type' => $request['type'],
                 'level' => $request['level'],
                 'github_id'=>$request['github_id'],
-                'skypeid'=>$request['skypeid'],
+                // 'skypeid'=>$request['skypeid'],
                 //'image' => $input['imagename'],
                 'slack_user_id'=> $slack_user_id,
                 'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
@@ -120,7 +120,7 @@ class ApplicantsController extends Controller
                 'type' => $request['type'],
                 'level' => $request['level'],
                 'github_id'=>$request['github_id'],
-                'skypeid'=>$request['skypeid'],
+                // 'skypeid'=>$request['skypeid'],
                 //'image' => $input['imagename'],
                 'slack_user_id'=> $slack_user_id,
                 'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
@@ -132,8 +132,8 @@ class ApplicantsController extends Controller
             'user_id' => $last_inserted_id,
             'stack' => $request['stack'],
             'github_id'=>$request['github_id'],
-            'skypeid'=>$request['skypeid'],
-            'room' => $request['room'],
+            // 'skypeid'=>$request['skypeid'],
+            // 'room' => $request['room'],
             'country'=>$request['country'],
             'age' => $request['age'],
             // 'notes' => $request['notes'],
@@ -143,7 +143,7 @@ class ApplicantsController extends Controller
             'time_doctor_password' => $request['time_doctor_password'],
             'time_doctor_token' => $request['time_doctor_token'],
             'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
-            'project_id'=> $request['project'] === null ? '' : $request['project']
+            // 'project_id'=> $request['project'] === null ? '' : $request['project']
         ]);
         return redirect()->intended('/applicants');
     }

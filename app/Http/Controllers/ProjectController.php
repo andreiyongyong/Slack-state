@@ -28,7 +28,7 @@ class ProjectController extends Controller
     public function index()
     {  
         $data = array();
-        // $projects = Project::get();
+//         $projects = Project::get();
         $projects = Project::where('status', 'Live')->get();
         if(count($projects) > 0) { 
             foreach ($projects as $key => $project) {
@@ -44,7 +44,7 @@ class ProjectController extends Controller
                $developers =  DB::table('allocation')
                                 ->join('users', 'allocation.user_id','=','users.id')
                                 ->join('project', 'allocation.project_id','=','project.id')
-                                ->select('users.username', 'allocation.user_id','allocation.project_id')
+                                ->select('users.username', 'users.slack_user_id', 'users.workspace_id', 'allocation.user_id','allocation.project_id')
                                 ->where([
                                     ['project_id','=', $project->id],
                                     ['is_delete','=', '0']

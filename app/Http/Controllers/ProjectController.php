@@ -210,7 +210,10 @@ class ProjectController extends Controller
         Project::findOrFail($id);
         $input = [
             'p_name' => $request['p_name'],
-            'p_client' => $request['p_client']
+            'p_client' => $request['p_client'],
+            'level' => $request['level'],
+            'status' => $request['status'],
+            'hot' => $request['hot']
         ]; 
 
         Project::where('id', $id)

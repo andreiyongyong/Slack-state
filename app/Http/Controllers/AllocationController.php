@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Project;
 use App\ResourceManagement;
+use App\SlackToken;
 use App\User;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Resource;
+use \Lisennk\Laravel\SlackWebApi\SlackApi;
+use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
+use Illuminate\Support\Facades\Auth;
 
 class AllocationController extends Controller
 {
@@ -110,6 +114,23 @@ class AllocationController extends Controller
         } else {
             $newIds = array_unique(array_merge($relatedIds, [$request['id']]));
             $user->resources()->sync($newIds);
+        }
+
+        if($allow){
+            try {
+                $token = SlackToken::where('workspace_id', $user->workspace_id)->where('user_id', Auth::user()->id)->get()->first();
+
+                if($token) {
+                    $api = new SlackApi($token->token);
+                    $resource = ResourceManagement::find($id);
+                    $response = $api->execute('chat.postMessage', [
+                        'channel' => $user->channel_id,
+                        'text' => 'Resource '.$resource->name.' have been assigned to you.',
+                        'as_user' => true
+                    ]);
+                }
+
+            } catch (SlackApiException $e) {}
         }
 
         return response()->json($allow);

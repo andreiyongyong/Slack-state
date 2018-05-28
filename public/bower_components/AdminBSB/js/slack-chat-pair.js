@@ -38,7 +38,7 @@ var slackChatPair = function () {
 
       setInterval(function () {
           instance.updateStatuses()
-      }, 30000);
+      }, 60000);
 
       var i = 1;
       setInterval(function() {
@@ -101,7 +101,7 @@ var slackChatPair = function () {
 
               $('.messaging-block .slack-massages.'+ msg_data.user ).append('' +
                   '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                  '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                  '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" style="display:none;" data-type="'+message.type+'" data-ts="'+message.tsi+'" data-user="user_2"></span><p class="info-txt">' + message.text + '</p></div></div></div>');
 
               $('.messaging-block .slack-massages.' + msg_data.user).scrollTop($('.messaging-block .slack-massages.' + msg_data.user)[0].scrollHeight);
 
@@ -208,7 +208,7 @@ var slackChatPair = function () {
                       instance.messages_list[message.tsi] = message;
                       $('.messaging-block .slack-massages.'+ user ).append('' +
                           '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                          '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                          '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" style="display:none;" data-type="'+message.type+'" data-ts="'+message.tsi+'" data-user="user_2"></span><p class="info-txt">' + message.text + '</p></div></div></div>');
 
               instance.toggleLoader(false);
                       $('.slack-message').val('');
@@ -287,8 +287,8 @@ var slackChatPair = function () {
 
                 if(!cron || response.data.user_2.length > 0) {
                     $.each(response.data.user_2, function (index, message) {
+                        if(instance.messages_2_last < parseFloat(message.tsi)) {
 
-                        if(instance.messages_2_last < message.tsi) {
                             instance.messages_list[message.tsi] = message;
                             var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
                             var display_name = ('user' in message) ? message.user.profile.real_name : '';
@@ -347,7 +347,7 @@ var slackChatPair = function () {
 
                     $('.messaging-block .slack-massages.'+ user).append('' +
                         '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
-                        '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><p class="info-txt">' + message.text + '</p></div></div></div>');
+                        '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" style="display:none;" data-type="'+message.type+'" data-ts="'+message.tsi+'" data-user="user_2"></span><p class="info-txt">' + message.text + '</p></div></div></div>');
                     $('.messaging-block .slack-massages.' + user).scrollTop($('.messaging-block .slack-massages.' + user)[0].scrollHeight);
                 }
                 if(action != 'auto'){

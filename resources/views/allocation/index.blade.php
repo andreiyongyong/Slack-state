@@ -14,7 +14,7 @@
                           <div class="form-group form-float">
                               <div>
                                   <label class="form-label">Users</label>
-                                  <select name="user" id="select-user">
+                                  <select name="user" id="select-user" data-live-search="true">
                                       @foreach($users as $user)
                                           <option value="{{$user->id}}">{{$user->username}}</option>
                                       @endforeach

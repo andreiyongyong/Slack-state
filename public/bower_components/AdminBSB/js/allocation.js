@@ -71,6 +71,9 @@ var Allocation = function () {
 
 
           body.on('change', '#select-user', function () {
+              $('.users-circle').hide();
+              $('.users-circle.user_'+$(this).val()).show();
+
               $.ajax({
                   type : 'get',
                   url : instance.urls.getResourcesByUser + '/' + $(this).val(),

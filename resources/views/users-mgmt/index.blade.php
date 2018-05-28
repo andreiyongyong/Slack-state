@@ -37,7 +37,7 @@
                           @foreach ($users as $user)
                               @if($user->userinfo !== null)
                                   <tr>
-                                      <td><img class="users-circle" src="{{ $user->image ? asset ("/image/".$user->image) :  asset ("/image/user_temp.jpg") }}" width="50" height="50" />&nbsp;{{ $user->username }}</td>
+                                      <td><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />&nbsp;{{ $user->username }}</td>
                                       <td>{{ $user->email }}</td>
                                       <td>{{ $user->type }}</td>
                                       <td>{{ $user->level }}</td>

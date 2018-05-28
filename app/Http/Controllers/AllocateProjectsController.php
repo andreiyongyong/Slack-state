@@ -19,8 +19,8 @@ class AllocateProjectsController extends Controller
 
     public function index()
     {
-        $users = User::get();
-        $projects = Project::get();
+        $users = User::paginate(10);
+        $projects = Project::paginate(10);
        
         return view('allocateprojects/index', ['projects' => $projects, 'users' => $users]);
     }

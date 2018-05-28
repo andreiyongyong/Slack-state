@@ -28,57 +28,38 @@ class ProjectController extends Controller
     public function index()
     {  
         $data = array();
-        // $projects = Project::get();
-        $projects = Project::where('status', 'Live')->get();
-        if(count($projects) > 0) { 
-            foreach ($projects as $key => $project) {
-               $data[$key]['id'] = $project->id;
-               $data[$key]['p_name'] = $project->p_name;
-               if($project->hot == "Hot") $data[$key]['hot'] = 'red';
-               elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
-               elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
-               else $data[$key]['hot'] = 'white';
-               $data[$key]['p_client'] = $project->p_client;
+        $projects = Project::get();
+        foreach ($projects as $key => $project) {
+            $data[$key]['id'] = $project->id;
+           $data[$key]['p_name'] = $project->p_name;
+           if($project->hot == "Hot") $data[$key]['hot'] = 'red';
+           elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
+           elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+           else $data[$key]['hot'] = 'white';
+           $data[$key]['p_client'] = $project->p_client;
 
-<<<<<<< HEAD
            $dev = "";
            $developers =  DB::table('allocation')
                             ->join('users', 'allocation.user_id','=','users.id')
                             ->join('project', 'allocation.project_id','=','project.id')
-                            ->select('users.username', 'users.slack_user_id', 'users.workspace_id', 'allocation.user_id','allocation.project_id')
+                            ->select('users.username', 'allocation.user_id','allocation.project_id')
                             ->where([
                                 ['project_id','=', $project->id],
                                 ['is_delete','=', '0']
                             ])->get();
             foreach ($developers as $developer) {
-                $dev .= '<img class="users-circle" src="'.\App\Http\Controllers\HelperController::getAvatar($developer->slack_user_id, $developer->workspace_id).'" width="40" height="40" /> '.$developer->username." ,";
+                $dev .= ($developer->username." ,");
             }
             if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
             $data[$key]['developer'] = $dev;
-=======
-               $dev = "";
-               $developers =  DB::table('allocation')
-                                ->join('users', 'allocation.user_id','=','users.id')
-                                ->join('project', 'allocation.project_id','=','project.id')
-                                ->select('users.username', 'allocation.user_id','allocation.project_id')
-                                ->where([
-                                    ['project_id','=', $project->id],
-                                    ['is_delete','=', '0']
-                                ])->get();
-                foreach ($developers as $developer) {
-                    $dev .= ($developer->username." ,");
-                }
-                if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
-                $data[$key]['developer'] = $dev;
->>>>>>> b811066fb77484ac24e0e6d1065292d162b9ccf8
 
-                $task = Task::where('project_id',$project->id)
-                            ->orderBy('created_at', 'asc')->first();
-                if(!is_object($task)) $data[$key]['task'] = "";
-                else $data[$key]['task'] = $task->task_name;
-                $data[$key]['status'] = $project->status;
-            }
+            $task = Task::where('project_id',$project->id)
+                        ->orderBy('created_at', 'asc')->first();
+            if(!is_object($task)) $data[$key]['task'] = "";
+            else $data[$key]['task'] = $task->task_name;
+            $data[$key]['status'] = $project->status;
         }
+       
         return view('project/index', ['projects' => $data]);
     }
 
@@ -93,12 +74,11 @@ class ProjectController extends Controller
         }
          foreach ($projects as $key => $project) {
             $data[$key]['id'] = $project->id;
-            $data[$key]['p_name'] = $project->p_name;
-            if($project->hot == "Hot") $data[$key]['hot'] = 'red';
-            elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
-            elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
-            else $data[$key]['hot'] = 'white';
-            $data[$key]['p_client'] = $project->p_client;
+           $data[$key]['p_name'] = $project->p_name;
+           if($project->hot == "Hot") $data[$key]['hot'] = 'red';
+           if($project->hot == "Normal") $data[$key]['hot'] = 'green';
+           if($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+           $data[$key]['p_client'] = $project->p_client;
 
            $dev = "";
            $developers =  DB::table('allocation')
@@ -228,10 +208,7 @@ class ProjectController extends Controller
         Project::findOrFail($id);
         $input = [
             'p_name' => $request['p_name'],
-            'p_client' => $request['p_client'],
-            'level' => $request['level'],
-            'status' => $request['status'],
-            'hot' => $request['hot']
+            'p_client' => $request['p_client']
         ]; 
 
         Project::where('id', $id)
@@ -277,10 +254,5 @@ class ProjectController extends Controller
         return redirect()->back()->withTasks($tasks);
     }
 
-    public function removeTask(Request $request) 
-    {
-        Task::where('id', $request['id'])->delete();
-        $tasks = Task::get();
-        return redirect()->back()->withTasks($tasks);
-    }
+    
 }

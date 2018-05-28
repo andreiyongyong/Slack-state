@@ -199,7 +199,7 @@
                                     <div class="form-group form-float">
                                         <div class="form-line">
                                             <input type="text" class="form-control" name="time_doctor_token" id="time_doctor_token" value="{{ old('time_doctor_token') }}"  min="1" max="100" required>
-                                            <label class="form-label">Time Doctor Password</label>
+                                            <label class="form-label">Time Doctor Token</label>
                                         </div> 
                                         <div class="help-info"> Max. 100 characters</div>
                                     </div>

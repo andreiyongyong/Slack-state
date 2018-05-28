@@ -19,7 +19,7 @@ class AllocateProjectsController extends Controller
 
     public function index()
     {
-        $users = User::where('type','=', 2)->get();
+        $users = User::where('type','=', 2)->orderBy('workspace_id', 'asc')->get();
         $projects = Project::get();
        
         return view('allocateprojects/index', ['projects' => $projects, 'users' => $users]);

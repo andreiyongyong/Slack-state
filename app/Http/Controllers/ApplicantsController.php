@@ -65,7 +65,6 @@ class ApplicantsController extends Controller
      */
     public function store(Request $request)
     {
-
         /*
         $this->validate($request, [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -137,11 +136,12 @@ class ApplicantsController extends Controller
             'room' => $request['room'],
             'country'=>$request['country'],
             'age' => $request['age'],
-            'notes' => $request['notes'],
-            'called'=>$request['called'],
-            'approved' => $request['approved'],
+            // 'notes' => $request['notes'],
+            // 'called'=>$request['called'],
+            // 'approved' => $request['approved'],
             'time_doctor_email' => $request['time_doctor_email'],
             'time_doctor_password' => $request['time_doctor_password'],
+            'time_doctor_token' => $request['time_doctor_token'],
             'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
             'project_id'=> $request['project'] === null ? '' : $request['project']
         ]);

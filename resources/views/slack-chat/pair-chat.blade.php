@@ -2,9 +2,7 @@
 @section('slack-chat-pair-scripts')
     <script src="{{ asset ("/bower_components/AdminBSB/js/slack-chat-pair.js") }}"></script>
 @stop
-@section('title')
-    <title>{{$pair->project['p_name']}}</title>
-@stop
+
 @section('action-content')
 <div class="row clearfix">
   <div class="col-sm-6"></div>

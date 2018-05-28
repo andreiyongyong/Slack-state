@@ -1,5 +1,5 @@
 @extends('layouts.app-template')
-@section("title", "Message")
+@section("title", "Slack Chat")
 @section('content')
 <section class="content">
     <div class="container-fluid">

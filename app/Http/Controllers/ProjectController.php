@@ -28,8 +28,8 @@ class ProjectController extends Controller
     public function index()
     {  
         $data = array();
-        $projects = Project::get();
-        //$projects = Project::where('status', 'Live')->get();
+        // $projects = Project::get();
+        $projects = Project::where('status', 'Live')->get();
         if(count($projects) > 0) { 
             foreach ($projects as $key => $project) {
                $data[$key]['id'] = $project->id;
@@ -76,11 +76,12 @@ class ProjectController extends Controller
         }
          foreach ($projects as $key => $project) {
             $data[$key]['id'] = $project->id;
-           $data[$key]['p_name'] = $project->p_name;
-           if($project->hot == "Hot") $data[$key]['hot'] = 'red';
-           if($project->hot == "Normal") $data[$key]['hot'] = 'green';
-           if($project->hot == "Loose") $data[$key]['hot'] = 'grey';
-           $data[$key]['p_client'] = $project->p_client;
+            $data[$key]['p_name'] = $project->p_name;
+            if($project->hot == "Hot") $data[$key]['hot'] = 'red';
+            elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
+            elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+            else $data[$key]['hot'] = 'white';
+            $data[$key]['p_client'] = $project->p_client;
 
            $dev = "";
            $developers =  DB::table('allocation')

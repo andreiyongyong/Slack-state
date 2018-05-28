@@ -110,7 +110,7 @@
                                     <form class="row" method="POST" action="{{ url('project/removeTask') }}" onsubmit = "return confirm('Are you sure?')">
                                             <input type="hidden" name="id" value="{{ $task->id }}">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <a href="{{ url('project/editTask') }}" class="btn btn-info waves-effect">
+                                            <a href="{{ url('project/editTask', ['id' => $project['id']]) }}" class="btn btn-info waves-effect">
                                             Edit
                                             </a>
                                             {{--@if ($user->username != Auth::user()->username)--}}

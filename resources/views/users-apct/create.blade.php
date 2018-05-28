@@ -280,7 +280,17 @@
                                     </div>
                                 </div>
                             </div>
-                           
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="slack_user_id" id="slack_user_id" value="{{ old('slack_user_id') }}"  min="1" max="100" required>
+                                            <label class="form-label">Slack User Id</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>
                             <button class="btn btn-primary waves-effect" type="submit">Create</button>
                         </div>
                         <div class="col-md-1"></div>

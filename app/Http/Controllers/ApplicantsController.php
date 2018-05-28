@@ -108,7 +108,8 @@ class ApplicantsController extends Controller
                 'github_id'=>$request['github_id'],
                 // 'skypeid'=>$request['skypeid'],
                 //'image' => $input['imagename'],
-                'slack_user_id'=> $slack_user_id,
+                // 'slack_user_id'=> $slack_user_id,
+                'slack_user_id'=> $request['slack_user_id'],
                 'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
                 'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
             ])->id;
@@ -122,7 +123,8 @@ class ApplicantsController extends Controller
                 'github_id'=>$request['github_id'],
                 // 'skypeid'=>$request['skypeid'],
                 //'image' => $input['imagename'],
-                'slack_user_id'=> $slack_user_id,
+                // 'slack_user_id'=> $slack_user_id,
+                'slack_user_id'=> $request['slack_user_id'],
                 'workspace_id'=> $request['workspace'] === null ? '' : $request['workspace'],
                 'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
             ])->id;

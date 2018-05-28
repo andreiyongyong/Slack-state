@@ -1,6 +1,6 @@
  
 @extends('layouts.app-template')
-@section("title", "Resource")
+@section("title", "Allocation-Resource")
 @section('content')
 <section class="content">
     <div class="container-fluid">

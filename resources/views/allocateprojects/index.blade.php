@@ -66,10 +66,11 @@ $(document).ready(function() {
                         flag = 1;
                     }
                 }
+                location.reload();
             }
         })
     });
-
+    //second table
     var del_proj_name = [];
     $(".uproject").on('click', '.alloc', function(){
         if($(this).hasClass("selected")){

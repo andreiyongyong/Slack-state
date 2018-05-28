@@ -60,7 +60,7 @@
                                 </td>
                                 <td>{{ $project['p_name'] }}</td>
                                 <td>{{ $project['p_client'] }}</td>
-                                <td>{{ $project['developer']}}</td>
+                                <td><?=$project['developer']?></td>
                                 <td>{{ $project['task']}}</td>
                                 <td>{{ $project['status']}}</td>
                                 <td align = "center">

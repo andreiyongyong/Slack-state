@@ -28,7 +28,7 @@ class ProjectController extends Controller
     public function index()
     {  
         $data = array();
-        // $projects = Project::get();
+//         $projects = Project::get();
         $projects = Project::where('status', 'Live')->get();
         if(count($projects) > 0) { 
             foreach ($projects as $key => $project) {
@@ -44,13 +44,13 @@ class ProjectController extends Controller
                $developers =  DB::table('allocation')
                                 ->join('users', 'allocation.user_id','=','users.id')
                                 ->join('project', 'allocation.project_id','=','project.id')
-                                ->select('users.username', 'allocation.user_id','allocation.project_id')
+                                ->select('users.username', 'users.slack_user_id', 'users.workspace_id', 'allocation.user_id','allocation.project_id')
                                 ->where([
                                     ['project_id','=', $project->id],
                                     ['is_delete','=', '0']
                                 ])->get();
                 foreach ($developers as $developer) {
-                    $dev .= ($developer->username." ,");
+                    $dev .= '<img class="users-circle" src="'.\App\Http\Controllers\HelperController::getAvatar($developer->slack_user_id, $developer->workspace_id).'" width="40" height="40" /> '.$developer->username." ,";
                 }
                 if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
                 $data[$key]['developer'] = $dev;

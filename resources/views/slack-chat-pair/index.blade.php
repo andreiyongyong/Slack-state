@@ -40,8 +40,12 @@
                           @foreach ($pairs as $pair)
                                   <tr>
                                       <td>{{ $pair->project['p_name'] }}</td>
-                                      <td>{{ $pair->workspace_1['id_'].' - '.$pair->user_1['username'] }}</td>
-                                      <td>{{ $pair->workspace_2['id_'].' - '.$pair->user_2['username'] }}</td>
+                                      <td>
+                                          <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($pair->user_1['slack_user_id'], $pair->user_1['workspace_id'])}}" width="50" height="50" />
+                                          {{ $pair->workspace_1['id_'].' - '.$pair->user_1['username'] }}
+                                      </td>
+                                      <td><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($pair->user_2['slack_user_id'], $pair->user_2['workspace_id'])}}" width="50" height="50" />
+                                          {{ $pair->workspace_2['id_'].' - '.$pair->user_2['username'] }}</td>
                                       <td align = 'center'>
                                           <form class="row" method="POST" action="{{ route('slack-chat-pair.destroy', ['id' => $pair->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                                 <input type="hidden" name="_method" value="DELETE">

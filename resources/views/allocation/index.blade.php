@@ -16,9 +16,13 @@
                                   <label class="form-label">Users</label>
                                   <select name="user" id="select-user">
                                       @foreach($users as $user)
-                                          <option value="{{$user->id}}">{{$user->firstname}} {{$user->lastname}}</option>
+                                          <option value="{{$user->id}}">{{$user->username}}</option>
                                       @endforeach
                                   </select>
+                                  <?php $show = 0;?>
+                                  @foreach($users as $user)
+                                      <img style="{{$show++ > 0 ? 'display: none;' : '' }}" class="users-circle user_{{$user->id}}" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
+                                  @endforeach
                               </div>
                           </div>
                       </div>

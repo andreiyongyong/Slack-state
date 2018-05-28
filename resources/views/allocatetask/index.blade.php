@@ -152,7 +152,7 @@ $(document).ready(function() {
             <div class="body">
                 <div class="list-group">
                 @foreach ($users as $user)
-                    <button type="button" class="list-group-item user-group" data-userid={{ $user->id }}>{{ $user->username }}</button>
+                    <button type="button" class="list-group-item user-group" data-userid={{ $user->id }}><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" /> {{ $user->username }}</button>
                 @endforeach
                 </div>
             </div>

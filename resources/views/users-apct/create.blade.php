@@ -195,6 +195,17 @@
                                 </div>
                             </div>
                             <div class="row clearfix"> 
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="time_doctor_token" id="time_doctor_token" value="{{ old('time_doctor_token') }}"  min="1" max="100" required>
+                                            <label class="form-label">Time Doctor Token</label>
+                                        </div> 
+                                        <div class="help-info"> Max. 100 characters</div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!--     <div class="row clearfix"> 
                                 <div class="col-md-8">
                                     <div class="form-group form-float">
                                         <div class="form-line">
@@ -220,8 +231,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>  
-                            <div class="row clearfix">
+                            </div>   -->
+                            <!-- <div class="row clearfix">
                                 <div class="col-md-12">
                                     <div class="form-group form-float">
                                         <div class="form-line">
@@ -242,7 +253,7 @@
                                         <div class="help-info"> Max. 200 characters</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row clearfix">
                                 <div class="cal-xs-12">
                                     <h4 style="margin-left: 20px;">Slack Options</h4>

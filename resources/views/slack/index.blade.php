@@ -1,6 +1,34 @@
 @extends('slack.base')
 @section('action-content')
 
+    <style>
+        .slack-user-info {
+            width: calc(100% - 100px);
+            float: left;
+            padding: 5px;
+            padding-top: 40px;
+        }
+
+        .slack-status-info {
+            width: 100px;
+            // overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+            float: left;
+        }
+
+        .filter-field {
+            min-width: 250px !important;
+            margin-bottom: 0px !important;
+        }
+
+        .slack-users {
+            display: flex;
+            align-content: space-between;
+            flex-wrap: wrap;
+        }
+    </style>
     <div class="row clearfix">
         <div class="col-sm-6"></div>
         <div class="col-sm-6"></div>
@@ -19,20 +47,30 @@
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group form-float">
                                     <div>
-                                        <select name="project" id="project" class="project">
-                                            <option value="0">All</option>
+                                        <select name="project" id="project" class="form-control show-tick project" data-live-search="true">
+                                            <option value="" selected>All</option>
                                             @foreach($projects as $project)                                                            
                                             <option value="{{$project['id']}}">{{$project->p_name}}</option>                                            
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
+                                <!-- <div class="form-group form-float">
+                                    <div>
+                                        <select name="project" id="project" class="project">
+                                            <option value="" selected>All</option>
+                                            @foreach($projects as $project)                                                            
+                                            <option value="{{$project['id']}}">{{$project->p_name}}</option>                                            
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div> -->
                             </div>
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group form-float">
                                     <div>
                                         <select name="type" class="type">
-                                            <option value="">All</option>
+                                            <option value="" selected>All</option>
                                             <option value="2">Developer</option>
                                             <option value="1">Member</option>
                                             <option value="0">Admin</option>
@@ -53,37 +91,35 @@
                             </div> 
                         </div> 
 
-                        <div class="row">
+                        <div class="row slack-users">
                             @foreach($data as $user)
-                            <div class="col-12 col-sm-6 col-md-2 filter-field" user-id="{{$user['id']}}" project="{{$user['projects']}}" type="{{$user['type']}}">
+                            <div class="col-md-12 col-sm-12 col-xs-12 col-sm-4 col-md-2 filter-field" user-id="{{$user['id']}}" project="{{$user['projects']}}" type="{{$user['type']}}">
                                 <div class="slack-card" data-slack_id="{{$user['id']}}">                                    
-                                    <div class="row">
-                                        <div class="col-md-6" style="padding: .1em .1em .1em .5em;">
-                                            <div class="row slack-card-row">
-                                                <div class="slack-card-title">
-                                                    <span id = "{{$user['id']}}" status="away" data-slack_id="{{$user['id']}}" class="slack-status"></span><span>{{$user['workspace_id']}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="image-container">
-                                                <img width="60" height="auto" src="{{(isset($user['profile']['image_original']) ? $user['profile']['image_original']: '')}}" />
+                                    <div class="slack-status-info">
+                                        <div class="row slack-card-row">
+                                            <div class="slack-card-title">
+                                                <span id = "{{$user['id']}}" status="away" data-slack_id="{{$user['id']}}" class="slack-status"></span>
+                                                <span>{{$user['workspace_id']}}</span>
                                             </div>
                                         </div>
-                                        <div class="col-md-6" style="padding:0">                                            
-                                            <div class="content-container">
-                                                <p class="user-name"> {{$user['display_name']}} </p>
-                                                @foreach($user['project'] as $project)
-                                                <p>{{$project}}</p>
-                                                @endforeach
-                                                <p>task name</p>                                            
-                                                <p>track</p>                                            
-                                                <p>Today 8 hours</p>                                            
-                                                <p>Week 35 hours</p>                                                
-                                            </div>
+                                        <div class="image-container">
+                                            <img width="60" height="auto" src="{{(isset($user['profile']['image_original']) && $user['profile']['image_original'] != '') ? $user['profile']['image_original']: 'image/user.png'}}" />
                                         </div>
                                     </div>
+                                    <div class="slack-user-info">                                            
+                                        <p class="user-name"> {{$user['display_name']}} </p>
+                                        @foreach($user['project'] as $project)
+                                        <p>{{$project}}</p>
+                                        @endforeach
+                                        <p>task name</p>                                            
+                                        <p>track</p>                                            
+                                        <p>Today 8 hours</p>                                            
+                                        <p>Week 35 hours</p>                                                
+                                    </div>
+                                    <div style='clear:both;'></div>
                                 </div>
                             </div>
-                            @endforeach                            
+                            @endforeach
                         </div>
                     </div>
                 </form>
@@ -94,27 +130,28 @@
 @endsection
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<?php echo '<script type="text/javascript">var developerList = '.json_encode($data).';</script>'; ?>
 <script type="text/javascript">
     var selected_project = 0;
     var selected_type = '';
     var selected_user_status = '';
     $(document).ready(function(){
         $("select.project").change(function(){
-            filter();                    
+            updateUserList();
         });
     
         $("select.type").change(function(){
-            filter();
+            updateUserList();
         });
         $("select.userStatus").change(function(){
-            filter();
+            updateUserList();
         });
     });
 
     function filter(){
         selected_project = parseInt($(".project option:selected").val());
         selected_type = $(".type option:selected").val();
-        selected_user_status =  $("#userStatus").val();;
+        selected_user_status =  $("#userStatus").val();
 
         var current_project = [];
         var current_type = '';

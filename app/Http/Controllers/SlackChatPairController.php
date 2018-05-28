@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\ForbiddenKeywords;
 use App\SlackChatPair;
-use FontLib\EOT\File;
 use Illuminate\Http\Request;
 
 use App\User;
@@ -40,7 +39,7 @@ class SlackChatPairController extends Controller
      */
     public function index()
     {
-        $pairs = SlackChatPair::with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get();     
+        $pairs = SlackChatPair::with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get();
 
         return view('slack-chat-pair/index', ['pairs' => $pairs]);
     }
@@ -108,7 +107,6 @@ class SlackChatPairController extends Controller
             ->where('level', '=',11)
             ->get();
 
-
         $admins = User::where('type', '=',0)->get();
         $pair = SlackChatPair::where('id', $id)->with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
 
@@ -132,10 +130,10 @@ class SlackChatPairController extends Controller
             'name' => $request['name'],
             'project_id' => $request['project_id'] ,
             'workspace_id_1'=>$request['workspace_id_1'] ,
-            'user_id_1' => $request['userid_1'] ,
+            'user_id_1' => $request['user_id_1'] ,
             'admin_id_1'=>$request['admin_id_1'] ,
             'workspace_id_2' => $request['workspace_id_2'] ,
-            'user_id_2' => $request['userid_2'] ,
+            'user_id_2' => $request['user_id_2'] ,
             'admin_id_2'=>$request['admin_id_2'] ,
         ]);
         return redirect()->intended('/slack-chat-pair');
@@ -215,7 +213,7 @@ class SlackChatPairController extends Controller
                     }
                 }
 
-                $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true, 'count' => 12]);
+                $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true]);
 
                 if ($response['ok']) {
                     $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
@@ -230,27 +228,17 @@ class SlackChatPairController extends Controller
                     }
 
                     foreach ($response['messages'] as $message) {
-
                         if (isset($message['user'])) {
                             $message['user'] = $users[$message['user']];
                         }
-
                         $message['tsi'] = (float)$message['ts'];
                         $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
-                        $message['type'] = 'text';
-
-                        $message['text'] = $this->cutString($message['text'], '<@', '>');
-                        $file_link = '';
-                        $file_name = '';
                         if(isset($message['subtype']) && $message['subtype'] = 'file_share' && isset($message['file'])){
-                            $message['user'] = $users[$message['file']['user']];
-                            $file_link = $message['file']['url_private_download'];
-                            $file_name = $message['file']['name'];
-                            $message['type'] = 'file';
+                            $message['text'] = $this->cutString($message['text'], '<@', '>');
+                            $message['text'] = $this->cutString($message['text'], '<https:', '>', ' <a href="'.$message['file']['url_private_download'].'">'.$message['file']['name'].'</a>');
+                        }else{
+                            $message['text'] = $this->cutString($message['text'], '<@', '>');
                         }
-
-                        $message['text'] = $this->filter_urls($message['text'], $file_link, $file_name);
-
                         $data['user_1'][] = $message;
                     }
                     $data['user_1'] = array_reverse($data['user_1']);
@@ -273,7 +261,7 @@ class SlackChatPairController extends Controller
                         }
                     }
 
-                    $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true, 'count' => 12]);
+                    $response = $api->execute('im.history', ['channel' => $message_id, 'inclusive' => true]);
 
                     if ($response['ok']) {
                         $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
@@ -293,19 +281,12 @@ class SlackChatPairController extends Controller
                             }
                             $message['tsi'] = (float)$message['ts'];
                             $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
-                            $message['type'] = 'text';
-
-                            $message['text'] = $this->cutString($message['text'], '<@', '>');
-                            $file_link = '';
-                            $file_name = '';
                             if(isset($message['subtype']) && $message['subtype'] = 'file_share' && isset($message['file'])){
-                                $message['user'] = $users[$message['file']['user']];
-                                $file_link = $message['file']['url_private_download'];
-                                $file_name = $message['file']['name'];
-                                $message['type'] = 'file';
+                                $message['text'] = $this->cutString($message['text'], '<@', '>');
+                                $message['text'] = $this->cutString($message['text'], '<https:', '>', ' <a href="'.$message['file']['url_private_download'].'">'.$message['file']['name'].'</a>');
+                            }else{
+                                $message['text'] = $this->cutString($message['text'], '<@', '>');
                             }
-
-                            $message['text'] = $this->filter_urls($message['text'], $file_link, $file_name);
                             $data['user_2'][] = $message;
                         }
                         $data['user_2'] = array_reverse($data['user_2']);
@@ -317,39 +298,7 @@ class SlackChatPairController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    private function uploadFile($id, $link, $token){
-        $ch = curl_init();
-        $authorization = 'Authorization: Bearer '.$token;
-        curl_setopt($ch, CURLOPT_URL, $link);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array( $authorization ));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        $result = curl_exec($ch);
-        curl_close($ch);
-        $link_arr = explode('.', $link);
-        file_put_contents(public_path('image/slack/'.$id.'.'.end($link_arr)), $result);
-    }
-    private function filter_urls($string, $file_link = '' , $file_name = ''){
-        preg_match_all("~\<(.*?)\>~",$string,$matches);
-        $urls = [];
-        if(isset($matches[1])) {
-            $urls = $matches[1];
-        }
-
-        foreach ($urls as $key => $url){
-            if($file_link != '' && $key == 0){
-                $string = str_replace('<'.$url.'>','<a href="'.$file_link.'">'.$file_name.'</a>', $string);
-                continue;
-            }
-
-            $string = str_replace('<'.$url.'>','<a href="'.$url.'" target="_blank">'.$url.'</a>', $string);
-        }
-
-        return $string;
-
-    }
-
-    private function cutString($string, $firstChar, $secondChar, $replace = '', $recurse = true){
+    private function cutString($string, $firstChar, $secondChar, $replace = ''){
         $result = $string;
 
         $firstPos = strpos($string, $firstChar);
@@ -365,7 +314,7 @@ class SlackChatPairController extends Controller
                 return $result.$string;
             }
         }
-        if(strpos($result, $firstChar) !== false && $recurse){
+        if(strpos($result, $firstChar) !== false){
             return $this->cutString($result, $firstChar, $secondChar );
         }
         return $result;
@@ -399,9 +348,35 @@ class SlackChatPairController extends Controller
                     $message['tsi'] = (float)$message['ts'];
                     $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
 
-                    $message['text'] = $this->cutString($message['text'], '<@', '>');
-                    $message['text'] = $this->filter_urls($message['text']);
+                    if(isset($message['subtype']) && $message['subtype'] = 'file_share' && isset($message['file'])){
+                        $message['text'] = $this->cutString($message['text'], '<@', '>');
+                        $message['text'] = $this->cutString($message['text'], '<https:', '>', ' <a href="'.$message['file']['url_private_download'].'">'.$message['file']['name'].'</a>');
+                    }else{
+                        $message['text'] = $this->cutString($message['text'], '<@', '>');
+                    }
                 }
+
+            }
+
+        } catch (SlackApiException $e) {
+            $message = [];
+        }
+
+        return response()->json(['data' => $message]);
+    }
+    
+    public function uploadFile_ajax(Request $request){
+
+        $developer = json_decode($request['user'], true);
+        $file = $request->file('attach');
+        $message = '';
+
+        try {
+            $token = SlackToken::where('workspace_id', $developer['workspace_id'])->where('user_id', $developer['admin_id'])->get()->first();
+
+            if($token) {
+                $response = exec('curl -F file=@'.$file->getRealPath().' -F channels='.$developer['slack_id'].' -F filename='.$file->getClientOriginalName().' -F token='.$token->token.' https://slack.com/api/files.upload');
+
             }
 
         } catch (SlackApiException $e) {
@@ -409,69 +384,6 @@ class SlackChatPairController extends Controller
         }
 
         return response()->json(['data' => $message]);
-    }
-    
-    public function uploadFile_ajax(Request $request){
-        
-        $action = $request['action'];
-        $developer = json_decode($request['user'], true);
-        $message = 'error';
-
-        try {
-            $token = SlackToken::where('workspace_id', $developer['workspace_id'])->where('user_id', $developer['admin_id'])->get()->first();
-            $api = new SlackApi($token->token);
-            if($token) {
-                if ($action == 'auto') {
-                    $file = json_decode($request['attach'], true);
-
-                    $this->uploadFile($file['id'], $file['url_private_download'], $token->token);
-
-                    $name_arr = explode('.', $file['name']);
-
-                    $comment = isset($file['initial_comment']) ? ' -F initial_comment='.$file['initial_comment']['comment']: '';
-
-                    if(strpos($comment, '<') !== false){
-                        $comment = str_replace('<','',$comment);
-                        $comment = str_replace('>','',$comment);
-                    }
-
-                    $response = exec('curl -F file=@' . public_path('image/slack/' . $file['id'] . '.' . end($name_arr)) .$comment. ' -F channels=' . $developer['slack_id'] . ' -F filename=' .  (($file['name']=escapeshellarg($file['name']))? $file['name'] : "''"). ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
-                } else {
-                    $file = $request->file('attach');
-                    $response = exec('curl -F file=@' . $file->getRealPath() . ' -F channels=' . $developer['slack_id'] . ' -F filename=' . $file->getClientOriginalName() . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
-                }
-
-                $response = json_decode($response, true);
-                if (isset($response['ok']) && $response['ok']) {
-                    $result = $api->execute('im.history', ['channel' => $response['file']['ims'][0], 'inclusive' => true, 'count' => 1]);
-
-                    if (isset($result['ok']) && $result['ok']) {
-
-                        $message = $result['messages'][0];
-
-                        $result = $api->execute('users.info', ['user' => $message['user']]);
-
-                        $message['tsi'] = (float)$message['ts'];
-                        $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
-
-                        $message['text'] = $this->cutString($message['text'], '<@', '>');
-
-                        $message['user'] = $result['user'];
-                        $file_link = $message['file']['url_private_download'];
-                        $file_name = $message['file']['name'];
-                        $message['type'] = 'file';
-
-                        $message['text'] = $this->filter_urls($message['text'], $file_link, $file_name);
-                    }
-
-                }
-            }
-
-        }catch (SlackApiException $e) {
-            $message = 'error';
-        }
-
-        return response()->json([$message]);
     }
 
     public function destroy($id){

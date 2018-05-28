@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\SlackToken;
 use App\SlackWorkspace;
+use App\Task;
 use Illuminate\Http\Request;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
@@ -30,6 +31,75 @@ class SlackController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function index()
+    {
+        
+        $data = [];
+        
+        try {
+
+            $users = User::with(['userinfo' => function($query) {
+                $query->where('channel_id','<>', '');            
+
+            }, 'allocation' => function($query) {
+                $query->where('is_delete', '=', '0');
+
+            }, 'task_allocation' => function($query) {
+                $query->where('is_delete', '=', '0');
+
+            }])->where('slack_user_id','<>' ,'')
+               ->where('workspace_id', '<>','')
+               ->where('level', '=',11)
+               ->get();
+
+            $workspaces = DB::select('SELECT A.token , A.workspace_id FROM slack_tokens A '.
+                                        'LEFT JOIN ('.
+                                        'SELECT workspace_id FROM users WHERE workspace_id <> "" GROUP BY workspace_id'.
+                                        ') B ON A.workspace_id = B.workspace_id '.
+                                        'WHERE A.token <> ""');
+                               
+            $user_list = array();
+            $slackUsers = array();
+            foreach ($workspaces as $workspace) {
+                $api = new SlackApi($workspace->token);
+                $response = $api->execute('users.list');
+
+                if (!$response['ok']) continue;
+                $members = $response['members'];
+                for ($i = 0; $i < count($members); $i++) {
+                    array_push($slackUsers, $members[$i]);
+                }
+            }
+
+            foreach ($users as $user) {
+                foreach($slackUsers as $slack_member) {
+
+                    if ($slack_member['id'] != $user->slack_user_id) continue;
+
+                    $user_list[] = array_merge($slack_member, array(
+                        'avatar' => $slack_member['profile']['image_512'],
+                        'type' => '2',
+                        'status' => "away",
+                        'display_name' => (isset($slack_member['profile']['display_name']) && !empty($slack_member['profile']['display_name']))
+                            ? $slack_member['profile']['display_name'] : ( isset( $slack_member['real_name'] ) ? $slack_member['real_name'] : '' ) ,
+                        'workspace_id' => $user->workspace_id,
+                        'projects' => $user->allocation,
+                        'tasks' => $user->task_allocation
+                        
+                    ));
+
+                    break;
+                }
+            }
+
+        } catch (SlackApiException $e) {
+
+        }
+        $projects = Project::all();
+        $tasks = Task::all();
+        return view('slack/index', ['data' => $user_list, 'projects' => $projects, 'tasks' => $tasks]);
+    }
+/*
     public function index()
     {
         
@@ -79,7 +149,7 @@ class SlackController extends Controller
         $projects = Project::all();
         return view('slack/index', ['data' => $user_list, 'projects' => $projects]);
     }
-
+*/
     public function updateUserStatuses_ajax(Request $request){
 
         $search_project = $request->input('project');

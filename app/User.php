@@ -35,6 +35,14 @@ class User extends Authenticatable
         return $this->hasOne('App\UserInfo','user_id','id');
     }
 
+    public function allocation() {
+        return $this->hasMany('App\Allocation', 'user_id', 'id');
+    }
+
+    public function task_allocation() {
+        return $this->hasMany('App\TaskAllocation', 'user_id', 'id');
+    }
+
     public function resources(){
         return $this->belongsToMany('App\ResourceManagement','user_resource_rel','user_id','resource_id');
     }

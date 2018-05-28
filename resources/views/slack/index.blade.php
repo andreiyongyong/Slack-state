@@ -93,7 +93,7 @@
 
                         <div class="row slack-users">
                             @foreach($data as $user)
-                            <div class="col-md-12 col-sm-12 col-xs-12 col-sm-4 col-md-2 filter-field" user-id="{{$user['id']}}" project="{{$user['projects']}}" type="{{$user['type']}}">
+                            <div class="col-md-12 col-sm-12 col-xs-12 col-sm-4 col-md-2 filter-field" user-id="{{$user['id']}}" project="{{$user['tasks']}}" type="{{$user['type']}}">
                                 <div class="slack-card" data-slack_id="{{$user['id']}}">                                    
                                     <div class="slack-status-info">
                                         <div class="row slack-card-row">
@@ -108,10 +108,23 @@
                                     </div>
                                     <div class="slack-user-info">                                            
                                         <p class="user-name"> {{$user['display_name']}} </p>
-                                        @foreach($user['project'] as $project)
-                                        <p>{{$project}}</p>
-                                        @endforeach
-                                        <p>task name</p>                                            
+                                        @foreach($user['projects'] as $p)
+                                            @foreach($projects as $project)
+                                                @if($p['project_id'] == $project['id'])
+                                                    <p>{{$project->p_name}}</p>
+                                                @endif
+                                            @endforeach
+
+                                            @foreach($tasks as $task)
+                                                @if($p['project_id'] == $task['project_id'])
+                                                    @foreach($user['tasks'] as $t)
+                                                        @if($t['task_id'] == $task['id'])
+                                                            <p style='padding-left:10px;'>{{$task->task_name}}</p>
+                                                        @endif
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        @endforeach                                
                                         <p>track</p>                                            
                                         <p>Today 8 hours</p>                                            
                                         <p>Week 35 hours</p>                                                

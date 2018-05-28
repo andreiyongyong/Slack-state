@@ -57,7 +57,7 @@ Route::post('project/store', 'ProjectController@store');
 Route::post('project/addTask', 'ProjectController@addTask');
 Route::post('project/getfromstatus', 'ProjectController@getfromstatus');
 Route::post('project/editProject', 'ProjectController@editProject');
-
+Route::post('project/removeTask', 'ProjectController@removeTask');
 
 Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');
 Route::get('slack', 'SlackController@index')->name('slack.index');

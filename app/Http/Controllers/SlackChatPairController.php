@@ -40,7 +40,7 @@ class SlackChatPairController extends Controller
      */
     public function index()
     {
-        $pairs = SlackChatPair::with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get();
+        $pairs = SlackChatPair::with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get();     
 
         return view('slack-chat-pair/index', ['pairs' => $pairs]);
     }
@@ -108,6 +108,7 @@ class SlackChatPairController extends Controller
             ->where('level', '=',11)
             ->get();
 
+
         $admins = User::where('type', '=',0)->get();
         $pair = SlackChatPair::where('id', $id)->with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
 
@@ -131,10 +132,10 @@ class SlackChatPairController extends Controller
             'name' => $request['name'],
             'project_id' => $request['project_id'] ,
             'workspace_id_1'=>$request['workspace_id_1'] ,
-            'user_id_1' => $request['user_id_1'] ,
+            'user_id_1' => $request['userid_1'] ,
             'admin_id_1'=>$request['admin_id_1'] ,
             'workspace_id_2' => $request['workspace_id_2'] ,
-            'user_id_2' => $request['user_id_2'] ,
+            'user_id_2' => $request['userid_2'] ,
             'admin_id_2'=>$request['admin_id_2'] ,
         ]);
         return redirect()->intended('/slack-chat-pair');

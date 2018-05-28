@@ -40,22 +40,6 @@ class ProjectController extends Controller
                else $data[$key]['hot'] = 'white';
                $data[$key]['p_client'] = $project->p_client;
 
-<<<<<<< HEAD
-           $dev = "";
-           $developers =  DB::table('allocation')
-                            ->join('users', 'allocation.user_id','=','users.id')
-                            ->join('project', 'allocation.project_id','=','project.id')
-                            ->select('users.username', 'users.slack_user_id', 'users.workspace_id', 'allocation.user_id','allocation.project_id')
-                            ->where([
-                                ['project_id','=', $project->id],
-                                ['is_delete','=', '0']
-                            ])->get();
-            foreach ($developers as $developer) {
-                $dev .= '<img class="users-circle" src="'.\App\Http\Controllers\HelperController::getAvatar($developer->slack_user_id, $developer->workspace_id).'" width="40" height="40" /> '.$developer->username." ,";
-            }
-            if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
-            $data[$key]['developer'] = $dev;
-=======
                $dev = "";
                $developers =  DB::table('allocation')
                                 ->join('users', 'allocation.user_id','=','users.id')
@@ -66,11 +50,10 @@ class ProjectController extends Controller
                                     ['is_delete','=', '0']
                                 ])->get();
                 foreach ($developers as $developer) {
-                    $dev .= ($developer->username." ,");
+                    $dev .= '<img class="users-circle" src="'.\App\Http\Controllers\HelperController::getAvatar($developer->slack_user_id, $developer->workspace_id).'" width="40" height="40" /> '.$developer->username." ,";
                 }
                 if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
                 $data[$key]['developer'] = $dev;
->>>>>>> b811066fb77484ac24e0e6d1065292d162b9ccf8
 
                 $task = Task::where('project_id',$project->id)
                             ->orderBy('created_at', 'asc')->first();

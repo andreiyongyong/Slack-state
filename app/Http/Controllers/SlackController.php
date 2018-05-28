@@ -87,7 +87,6 @@ class SlackController extends Controller
                         'workspace_id' => $user->workspace_id,
                         'projects' => $user->allocation,
                         'tasks' => $user->task_allocation
-                        
                     ));
 
                     break;

@@ -50,6 +50,8 @@ class SlackController extends Controller
             }])->where('slack_user_id','<>' ,'')
                ->where('workspace_id', '<>','')
                ->where('level', '=',11)
+               ->where('type', '=',2)
+               ->orderBy('workspace_id', 'asc')
                ->get();
 
             $workspaces = DB::select('SELECT A.token , A.workspace_id FROM slack_tokens A '.

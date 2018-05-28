@@ -5,7 +5,7 @@
 $(document).ready(function() {
     var id = 0, task_ids = [];
     //if click record in first table..
-    $(".user-group").click(function() {
+    $("#DataTables_Table_1").on("click", ".user-group", function() {
         id = $(this).data("userid");
         
         $(".user-group").each(function( index, element ) {
@@ -32,7 +32,7 @@ $(document).ready(function() {
         });
     });
 
-    $("#tasks").on("click", ".tasks-group", function() {
+    $("#DataTables_Table_0").on("click", ".tasks-group", function() {
         if($(this).hasClass("selected")){
             $(this).css("border", "0");
             $(this).removeClass("selected");
@@ -150,11 +150,27 @@ $(document).ready(function() {
                 </h2>
             </div>
             <div class="body">
-                <div class="list-group">
-                @foreach ($users as $user)
-                    <button type="button" class="list-group-item user-group" data-userid={{ $user->id }}><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" /> {{ $user->username }}</button>
-                @endforeach
-                </div>
+                <table id = 'DataTables_Table_1' class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                        <thead> 
+                            <tr>
+                                <th>USER</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>USER</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td class="list-group-item user-group" data-userid={{ $user->id }}>
+                                    <div ><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" /> {{ $user->username }}</div>
+                                </td>
+                            </tr>
+                        @endforeach 
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>
@@ -190,7 +206,7 @@ $(document).ready(function() {
                 </h2>
                 <!-- all project list -->
                 <div style="padding-left: 300px;">
-                    <select>
+                    <select class="form-control show-tick" data-live-search="true">
                         <option value="0">All Projects</option>
                         @foreach ($projects as $project)
                             <option value="{{ $loop->index + 1 }}">{{ $project->p_name }}</option>

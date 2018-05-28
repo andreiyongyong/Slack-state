@@ -18,9 +18,9 @@ class TaskAllocationController extends Controller
 
     public function index()
     {
-        $users = User::paginate(10);
-        $projects = Project::paginate(10);
-        $tasks = Task::paginate(10);
+        $users = User::get();
+        $projects = Project::get();
+        $tasks = Task::get();
 
         return view('allocatetask/index', ['projects' => $projects, 'users' => $users, 'tasks'=> $tasks]);
     }

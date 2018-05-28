@@ -4,24 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Upwork extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'project';
+    protected $table = 'upwork';
       /**
      * The attributes that are mass assignable.
      *
      * @var array
      */ 
     protected $fillable = [
-        'p_name' , 'p_client' , 'price' , 'meet_time' ,'id'
+        'date' , 'country' , 'upwork_name', 'upwork_id', 'email', 'pssword', 'rising_talent' , 'test' , 'bid_date' , 'lancer_type' , 'security_question' , 'security_answer' , 'series'
    ];
-
-    function tasks(){
-        return $this->hasMany('App\Task','project_id','id');
-    }
 }

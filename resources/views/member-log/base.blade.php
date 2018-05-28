@@ -1,4 +1,5 @@
 @extends('layouts.app-template')
+@section("title", "Tracks")
 @section('content')
 <section class="content">
     <div class="container-fluid">

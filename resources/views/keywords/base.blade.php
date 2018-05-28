@@ -1,5 +1,6 @@
  
 @extends('layouts.app-template')
+@section("title", "Forbidden Keywords")
 @section('content')
 <section class="content">
     <div class="container-fluid">

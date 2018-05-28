@@ -1,4 +1,5 @@
 @extends('layouts.app-template')
+@section("title", "Message")
 @section('content')
 <section class="content">
     <div class="container-fluid">

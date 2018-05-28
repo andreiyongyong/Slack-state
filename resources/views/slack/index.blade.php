@@ -91,8 +91,13 @@
 
                                 <div class="col-md-12 col-sm-12 col-xs-12 col-sm-4 col-md-2 filter-field" 
                                     user-id="{{$user['id']}}" 
-                                    project_list="{{$project_list}}" type="{{$user['type']}}">
-                                    <div class="slack-card" data-slack_id="{{$user['id']}}">                                    
+                                    project-list="{{$project_list}}" 
+                                    user-type="{{$user['type']}}"
+                                    slack-id = "{{$user['id']}}"
+                                    token="{{$user['token']}}"
+                                    presence="away">
+
+                                    <div class="slack-card">
                                         <div class="slack-status-info">
                                             <div class="row slack-card-row">
                                                 <div class="slack-card-title">
@@ -149,86 +154,85 @@
     var selected_user_status = '';
     $(document).ready(function(){
         $("select.project").change(function(){
-            filterProject($(this).val());
+            filterUsers();
         });
     
         $("select.type").change(function(){
-            updateUserList();
+            filterUsers();
         });
         $("select.userStatus").change(function(){
-            updateUserList();
+            filterUsers();
         });
+
+        getPreferences();
     });
 
-    function filterProject(project) {    
+    function filterUsers() {
+        var project = $("select.project").val();
+        var type = $("select.type").val();
+        var presence = $("select.userStatus").val();
+
         var cards = $('.slack-users').children();
         for (var i = 0; i < cards.length; i++) {
             var card = cards.eq(i);
-            var project_list = card.attr('project_list');
-            console.log(project_list);
-            if (project != '' && project_list.indexOf(project + ",") == -1) {
+            var projectList = card.attr('project-list');
+            var userType = card.attr('user-type');
+            var userPresence = card.attr('presence');
+            
+            if (project != '' && projectList.indexOf(project + ",") == -1) {
                 card.hide();
             } else {
-                card.show();
+
+                if (type != '' && userType != type) {
+                    card.hide();
+                } else {
+
+                    if (presence != '' && presence != userPresence) {
+                        card.hide();
+                    } else {
+                        card.show();
+                    }
+                }
             }
         }
     }
 
-    function filter(){
-        selected_project = parseInt($(".project option:selected").val());
-        selected_type = $(".type option:selected").val();
-        selected_user_status =  $("#userStatus").val();
-
-        var current_project = [];
-        var current_type = '';
-        var current_user_status = '';
-        for (i = 0; i < $(".filter-field").length; i++){
-            var userObj = $(".filter-field").eq(i);
-            var userId = userObj.attr('user-id');
-
-            current_project = JSON.parse($(".filter-field").eq(i).attr('project'));
-            current_type = $(".filter-field").eq(i).attr('type');
-            current_user_status = $('#' + userId).attr('status');
-
-            $(".filter-field").eq(i).show();
-            if (selected_user_status == ''){
-                if (selected_project == 0){
-                    if (selected_type != '' && selected_type != current_type){
-                        $(".filter-field").eq(i).hide();
-                        continue;
-                    }
-                } else {
-                    var k = $.inArray(selected_project, current_project);
-                    if ($.inArray(selected_project, current_project) == -1){
-                        $(".filter-field").eq(i).hide();
-                        continue;
-                    } else if (selected_type != '' && selected_type != current_type){
-                        $(".filter-field").eq(i).hide();
-                        continue;
-                    }
-                }
-            } else {
-                if (selected_user_status != current_user_status) {
-                    $(".filter-field").eq(i).hide();
-                    continue;
-                } else {
-                    if (selected_project == 0){
-                        if (selected_type != '' && selected_type != current_type){
-                            $(".filter-field").eq(i).hide();
-                            continue;
-                        }
-                    } else {
-                        if ($.inArray(selected_project, current_project) == -1){
-                            $(".filter-field").eq(i).hide();
-                            continue;
-                        } else if (selected_type != '' && selected_type != current_type){
-                            $(".filter-field").eq(i).hide();
-                            continue;
+    function getPreferences() {
+        var cards = $('.slack-users').children();
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards.eq(i);
+            var token = card.attr('token');
+            var slackId = card.attr('slack-id');
+            
+            $.ajax({
+                type: "POST",
+                url: "slack/presence",
+                data: {
+                    token: token,
+                    slack_id: slackId
+                },
+                cache: false,
+                success: function(data) {
+                    
+                    var slackId = data.slack_id;
+                    if (data.response.ok) {
+                        if (data.response.presence == 'active') {
+                            $('#' + slackId).addClass('active');
+                            $("[slack-id=" + slackId + "]").attr('presence', 'active');
+                            $("[slack-id=" + slackId + "]").children().eq(0).addClass('active');
+                        } else {
+                            $('#' + slackId).removeClass('active');
+                            $("[slack-id=" + slackId + "]").attr('presence', 'away');
+                            $("[slack-id=" + slackId + "]").children().eq(0).removeClass('active');
                         }
                     }
+                    
+                    console.log(data);
                 }
-            }    
+            });
         }
+
+        setTimeout(getPreferences, 20000)
     }
 </script>
 

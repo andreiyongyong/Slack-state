@@ -47,8 +47,9 @@ class SlackController extends Controller
             }, 'task_allocation' => function($query) {
                 $query->where('is_delete', '=', '0');
 
-            }])->where('slack_user_id','<>' ,'')
-               ->where('workspace_id', '<>','')
+            }])
+            ->where('slack_user_id', '<>', '')
+               ->where('workspace_id', '<>', '')
                ->where('level', '=',11)
                ->where('type', '=',2)
                ->orderBy('workspace_id', 'asc')
@@ -64,7 +65,7 @@ class SlackController extends Controller
             $slackUsers = array();
             foreach ($workspaces as $workspace) {
                 $api = new SlackApi($workspace->token);
-                $response = $api->execute('users.list');
+                $response = $api->execute('users.list', ['limit' =>	1000]);
 
                 if (!$response['ok']) continue;
                 $members = $response['members'];
@@ -74,6 +75,14 @@ class SlackController extends Controller
             }
 
             foreach ($users as $user) {
+                $token = "";
+                foreach ($workspaces as $workspace) {
+                    if ($workspace->workspace_id == $user->workspace_id) {
+                        $token = $workspace->token;
+                        break;
+                    }
+                }
+
                 foreach($slackUsers as $slack_member) {
 
                     if ($slack_member['id'] != $user->slack_user_id) continue;
@@ -86,7 +95,8 @@ class SlackController extends Controller
                             ? $slack_member['profile']['display_name'] : ( isset( $slack_member['real_name'] ) ? $slack_member['real_name'] : '' ) ,
                         'workspace_id' => $user->workspace_id,
                         'projects' => $user->allocation,
-                        'tasks' => $user->task_allocation
+                        'tasks' => $user->task_allocation,
+                        'token' => $token
                     ));
 
                     break;
@@ -100,6 +110,19 @@ class SlackController extends Controller
         $tasks = Task::all();
         return view('slack/index', ['data' => $user_list, 'projects' => $projects, 'tasks' => $tasks]);
     }
+
+    public function getPresence(Request $request) {
+        $token = $request->input('token');
+        $slackId = $request->input('slack_id');
+        
+        $api = new SlackApi($token);
+        $response = $api->execute('users.getPresence', ['user' => $slackId]);
+        $res = [];
+        $res['slack_id'] = $slackId;
+        $res['response'] = $response;
+        return $res;
+    }
+
 /*
     public function index()
     {

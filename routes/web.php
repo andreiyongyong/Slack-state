@@ -61,6 +61,7 @@ Route::post('project/removeTask', 'ProjectController@removeTask');
 
 Route::post('slack/send', 'SlackController@sendMessage')->name('slack.send');
 Route::get('slack', 'SlackController@index')->name('slack.index');
+Route::post('slack/presence', 'SlackController@getPresence');
 
 
 Route::get('slack-chat/{id}', 'SlackChatPairController@slackChat')->name('slack-chat.slackChat');

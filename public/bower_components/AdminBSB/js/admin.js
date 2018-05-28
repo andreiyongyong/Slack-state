@@ -475,12 +475,6 @@ $(document).ready(function () {
     selected_type = $(".type option:selected").val();
     selected_user_status =  $("#userStatus").val(); */
 
-    updateUserList();
-
-    setInterval(function () {
-        // updateUserList();
-    }, 20000);
-
     setInterval(function () {
         $.ajax( {
             type: 'get',
@@ -507,72 +501,3 @@ $(document).ready(function () {
     });
 });
 
-function updateUserList() {
-    var params = {
-        project: $(".project option:selected").val(),
-        type:  $(".type option:selected").val(),
-        user_status: $("#userStatus").val() 
-    }
-    $.ajax({
-        type: 'post',
-        url: '/update-status-slack',
-        /** created by Yong An */
-        data: params,
-        success: function (response) {
-            developerList = response.developer_list;
-            var developer_list = response.developer_list;
-            var html = "";
-            for(var i = 0; i < developerList.length; i++) {
-                /* var userList = developer_list[i];
-                html = html + '<div class="row">';
-                for(var j = 0; j < userList.length; j++) { */
-                    var user = developer_list[i];
-
-                    var profileImg = user.profile.image_original;
-                    if (profileImg == '' || profileImg == 'undefined' || profileImg == undefined) {
-                        profileImg = 'image/user.png';
-                    }
-                    var status = "";
-                    if(user.status == "active") status = "active";
-
-                    var projectNames = user.project_names;
-                    var strPName = "";
-                    for(var idx = 0; idx < projectNames.length; idx++) {
-                        strPName = strPName + '<p>' + projectNames[idx] + '</p>'
-                    }
-
-                    html = html + '<div class="col-md-12 col-sm-12 col-xs-12 col-sm-4 col-md-2 filter-field">'
-                    + '<div class="slack-card">'
-                    +    '<div class="slack-status-info">'
-                    +         '<div class="row slack-card-row">'
-                    +             '<div class="slack-card-title">'
-                    +                 '<span class="slack-status ' + status + '"></span><span>' + user.workspace_id + '</span>'
-                    +             '</div>'
-                    +         '</div>'
-                    +         '<div class="image-container">'
-                    +             '<img width="60" height="auto" src="' + profileImg + '" />'
-                    +         '</div>'
-                    +      '</div>'
-                    +      '<div class="slack-user-info">'                                            
-                    +          '<p class="user-name"> ' + user.display_name + ' </p>'
-                    +          strPName
-                    +          '<p>task name</p>'
-                    +          '<p>track</p>'
-                    +          '<p>Today 8 hours</p>'
-                    +          '<p>Week 35 hours</p>'
-                    +       '</div>'
-                    +    '<div style="clear:both;"></div>'
-                    +'</div>'
-                    +'</div>';
-                //}
-                html = html + '</div>';
-            }
-
-            $('.slack-users').empty().append(html);
-        }
-    });
-}
-
-function filterUserList() {
-
-}

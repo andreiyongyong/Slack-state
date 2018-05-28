@@ -65,7 +65,7 @@ class SlackController extends Controller
             $slackUsers = array();
             foreach ($workspaces as $workspace) {
                 $api = new SlackApi($workspace->token);
-                $response = $api->execute('users.list');
+                $response = $api->execute('users.list', ['limit' =>	1000]);
 
                 if (!$response['ok']) continue;
                 $members = $response['members'];
@@ -114,7 +114,7 @@ class SlackController extends Controller
     public function getPresence(Request $request) {
         $token = $request->input('token');
         $slackId = $request->input('slack_id');
-
+        
         $api = new SlackApi($token);
         $response = $api->execute('users.getPresence', ['user' => $slackId]);
         $res = [];

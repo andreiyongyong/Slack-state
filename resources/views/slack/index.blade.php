@@ -213,6 +213,7 @@
                 },
                 cache: false,
                 success: function(data) {
+                    
                     var slackId = data.slack_id;
                     if (data.response.ok) {
                         if (data.response.presence == 'active') {
@@ -225,6 +226,7 @@
                             $("[slack-id=" + slackId + "]").children().eq(0).removeClass('active');
                         }
                     }
+                    
                     console.log(data);
                 }
             });

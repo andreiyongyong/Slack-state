@@ -16,6 +16,7 @@ class ModifyRoomfieldUserinfoTable extends Migration
         Schema::table('user_infos', function (Blueprint $table) {
             $table->string('room')->nullable()->change();
             $table->string('skypeid')->nullable()->change();
+            $table->string('project_id')->nullable()->change();
         });
     }
 

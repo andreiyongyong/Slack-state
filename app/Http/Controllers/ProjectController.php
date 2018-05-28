@@ -28,7 +28,7 @@ class ProjectController extends Controller
     public function index()
     {  
         $data = array();
-//         $projects = Project::get();
+
         $projects = Project::where('status', 'Live')->get();
         if(count($projects) > 0) { 
             foreach ($projects as $key => $project) {

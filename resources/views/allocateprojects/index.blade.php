@@ -134,7 +134,17 @@ $(document).ready(function() {
             <div class="body">
                 <div class="list-group">
                 @foreach ($users as $user)
-                    <button type="button" class="list-group-item user-group" data-userid={{ $user->id }}>{{ $user->username }}</button>
+                    @if ( DB::table('allocation')->where([['user_id','=', $user->id],['is_delete','=', '0']])->count() == 0)
+                    <button type="button" class="list-group-item user-group" data-userid={{ $user->id }}>
+                        <svg height="20" width="20">
+                        <circle cx="10" cy="13" r="7"  fill="red" />
+                        </svg>{{ $user->username }}</button>
+                    @else
+                    <button type="button" class="list-group-item user-group" data-userid={{ $user->id }}>
+                        <svg height="20" width="20">
+                        <circle cx="10" cy="13" r="7"  fill="white" />
+                        </svg>{{ $user->username }}</button>
+                    @endif
                 @endforeach
                 </div>
             </div>

@@ -1,6 +1,5 @@
 @extends('slack.base')
 @section('action-content')
-
     <style>
         .slack-user-info {
             width: calc(100% - 100px);
@@ -93,7 +92,7 @@
 
                         <div class="row slack-users">
                             @foreach($data as $user)
-                            <div class="col-md-12 col-sm-12 col-xs-12 col-sm-4 col-md-2 filter-field" user-id="{{$user['id']}}" project="{{$user['projects']}}" type="{{$user['type']}}">
+                            <div class="col-md-12 col-sm-12 col-xs-12 col-sm-4 col-md-3 filter-field" user-id="{{$user['id']}}" project="{{$user['projects']}}" type="{{$user['type']}}">
                                 <div class="slack-card" data-slack_id="{{$user['id']}}">                                    
                                     <div class="slack-status-info">
                                         <div class="row slack-card-row">
@@ -111,10 +110,12 @@
                                         @foreach($user['project'] as $project)
                                         <p>{{$project}}</p>
                                         @endforeach
-                                        <p>task name</p>                                            
-                                        <p>track</p>                                            
-                                        <p>Today 8 hours</p>                                            
-                                        <p>Week 35 hours</p>                                                
+                                        @foreach($user['items'] as $worklog)
+
+                                        <p>task name: &nbsp;{{ $worklog['task_name'] }}</p>                                         
+                                        <p>Today: &nbsp;{{ round($worklog['length']/3600,1) }}&nbsp;hours</p>                                                                                                          
+                                        @endforeach
+                                        <p>Week: &nbsp;{{ round($user['week_hours']/3600, 1) }}&nbsp;hours</p>                                                 
                                     </div>
                                     <div style='clear:both;'></div>
                                 </div>

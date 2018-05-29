@@ -475,7 +475,7 @@ $(document).ready(function () {
     selected_type = $(".type option:selected").val();
     selected_user_status =  $("#userStatus").val(); */
 
-    updateUserList();
+    //updateUserList();
 
     setInterval(function () {
         // updateUserList();

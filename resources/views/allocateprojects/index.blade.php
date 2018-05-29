@@ -4,6 +4,7 @@
 <script>
 $(document).ready(function() {
     var id = 0, proj_name = [];
+    $("#DataTables_Table_0_length").children().children().val(25);
 
     $("#DataTables_Table_1").on('click', '.user-group', function(){
         id = $(this).data("userid");

@@ -28,7 +28,8 @@ class User extends Authenticatable
 
 
     protected $fillable = [
-        'username' , 'email' , 'room' , 'country' , 'age' , 'github_id', 'channel_id', 'project_id', 'skypeid', 'workspace_id', 'slack_user_id'
+        'username' , 'email' , 'country' , 'age' , 'github_id', 'channel_id', 'workspace_id', 'slack_user_id',
+        'time_doctor_email', 'time_doctor_password' ,'time_doctor_token', 'type', 'level'
    ];
 
     function userinfo(){

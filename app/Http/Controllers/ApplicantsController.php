@@ -104,9 +104,13 @@ class ApplicantsController extends Controller
                 'email' => $request['email'],
                 //'password' => bcrypt($request['password']),
                 'type' => $request['type'],
+                'country' => $request['country'],
+                'age' => $request['age'],
                 'level' => $request['level'],
-                'github_id'=>$request['github_id'],
-                // 'skypeid'=>$request['skypeid'],
+                'github_id'=> $request['github_id'],
+                'time_doctor_email' => $request['time_doctor_email'],
+                'time_doctor_password' => $request['time_doctor_password'],
+                'time_doctor_token' => $request['time_doctor_token'],
                 //'image' => $input['imagename'],
                 // 'slack_user_id'=> $slack_user_id,
                 'slack_user_id'=> $request['slack_user_id'],
@@ -119,9 +123,13 @@ class ApplicantsController extends Controller
                 'email' => $request['email'],
                 'password' => bcrypt($request['password']),
                 'type' => $request['type'],
+                'country' => $request['country'],
+                'age' => $request['age'],
                 'level' => $request['level'],
                 'github_id'=>$request['github_id'],
-                // 'skypeid'=>$request['skypeid'],
+                'time_doctor_email' => $request['time_doctor_email'],
+                'time_doctor_password' => $request['time_doctor_password'],
+                'time_doctor_token' => $request['time_doctor_token'],
                 //'image' => $input['imagename'],
                 // 'slack_user_id'=> $slack_user_id,
                 'slack_user_id'=> $request['slack_user_id'],
@@ -132,20 +140,7 @@ class ApplicantsController extends Controller
         
         UserInfo::create([
             'user_id' => $last_inserted_id,
-            'stack' => $request['stack'],
-            'github_id'=>$request['github_id'],
-            // 'skypeid'=>$request['skypeid'],
-            // 'room' => $request['room'],
-            'country'=>$request['country'],
-            'age' => $request['age'],
-            // 'notes' => $request['notes'],
-            // 'called'=>$request['called'],
-            // 'approved' => $request['approved'],
-            'time_doctor_email' => $request['time_doctor_email'],
-            'time_doctor_password' => $request['time_doctor_password'],
-            'time_doctor_token' => $request['time_doctor_token'],
-            'channel_id' => $request['channel_id'] === null ? '' : $request['channel_id'],
-            // 'project_id'=> $request['project'] === null ? '' : $request['project']
+            'stack' => $request['stack']
         ]);
         return redirect()->intended('/applicants');
     }

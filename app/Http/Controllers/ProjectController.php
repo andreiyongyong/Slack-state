@@ -82,7 +82,7 @@ class ProjectController extends Controller
            if($project->hot == "Normal") $data[$key]['hot'] = 'green';
            if($project->hot == "Loose") $data[$key]['hot'] = 'grey';
            $data[$key]['p_client'] = $project->p_client;
-
+           $data[$key]['level'] = $project->level;
            $dev = "";
            $developers =  DB::table('allocation')
                             ->join('users', 'allocation.user_id','=','users.id')

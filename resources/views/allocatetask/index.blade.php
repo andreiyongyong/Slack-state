@@ -166,7 +166,7 @@ $(document).ready(function() {
                         @foreach ($users as $user)
                             <tr>
                                 <td class="list-group-item user-group" data-userid={{ $user->id }}>
-                                    <div ><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" /> {{ $user->username }}</div>
+                                    <div ><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" /> {{ $user->workspace_id }}{{" ".$user->username }}</div>
                                 </td>
                             </tr>
                         @endforeach 

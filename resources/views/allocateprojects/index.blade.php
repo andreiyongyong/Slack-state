@@ -153,7 +153,7 @@ $(document).ready(function() {
                                         <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
                                         <svg style="float: right" height="20" width="20">
                                     <circle cx="10" cy="13" r="7"  fill="red" />
-                                    </svg>{{ $user->username }} </div>
+                                    </svg>{{ $user->workspace_id }}{{" ".$user->username }} </div>
                                     @else
                                     <div>
                                         <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />

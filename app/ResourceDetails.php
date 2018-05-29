@@ -50,9 +50,14 @@ class ResourceDetails extends Model
         }
     }
 
-    static function get_metas_by_resource_id($resource_id){
-        $query = DB::table('resource_details')->where('resource_id', $resource_id)->get();
-        
+    static function get_metas_by_resource_id($resource_id, $type = ''){
+
+        if($type != ''){
+            $query = DB::table('resource_details')->where('resource_id', $resource_id)->where('meta_type', $type)->get();
+        }else{
+            $query = DB::table('resource_details')->where('resource_id', $resource_id)->get();
+        }
+
         if( $query !== null ) {
             $metas = [];
             foreach ($query as $meta){
@@ -67,7 +72,7 @@ class ResourceDetails extends Model
             return $metas;
             
         } else{
-            return null;
+            return [];
         }
     }
 }

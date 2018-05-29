@@ -212,7 +212,7 @@ var slackChatPair = function () {
 
               instance.toggleLoader(false);
                       $('.slack-message').val('');
-                      $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
+                      $('.messaging-block .slack-massages.'+user).scrollTop($('.messaging-block .slack-massages.'+user)[0].scrollHeight);
                   }
               });
           });
@@ -320,6 +320,9 @@ var slackChatPair = function () {
         formdata.append("attach", action == 'auto' ? JSON.stringify(file) : file);
         formdata.append("action", action);
         formdata.append("user", JSON.stringify(instance[user]));
+        if(action == 'auto'){
+            formdata.append("sender", JSON.stringify(instance[(user=='user_1') ? 'user_2' : 'user_1']));
+        }
 
         $.ajax({
             url: instance.urls.uploadFile,
@@ -333,7 +336,7 @@ var slackChatPair = function () {
                 }
             },
             success: function (message) {
-                message = message[0];
+
                 if(message != 'error'){
 
                     if(user == 'user_1'){

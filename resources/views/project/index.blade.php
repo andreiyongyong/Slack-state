@@ -35,6 +35,7 @@
                                 <th>CLIENT</th>
                                 <th>DEVELOPERS</th>
                                 <th>TASK</th>
+                                <th>LEVEL</th>
                                 <th>STATUS</th>
                                 <th></th>
                               </tr>
@@ -46,6 +47,7 @@
                                 <th>CLIENT</th>
                                 <th>DEVELOPERS</th>
                                 <th>TASK</th>
+                                <th>LEVEL</th>
                                 <th>STATUS</th>
                                 <th></th>
                               </tr>
@@ -62,6 +64,7 @@
                                 <td>{{ $project['p_client'] }}</td>
                                 <td><?=$project['developer']?></td>
                                 <td>{{ $project['task']}}</td>
+                                <td>{{ $project['level']}}</td>
                                 <td>{{ $project['status']}}</td>
                                 <td align = "center">
                                     <form class="row" method="POST" action="{{ route('project.destroy', ['id' => $project['id']]) }}" onsubmit = "return confirm('Are you sure?')">
@@ -90,6 +93,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
+      $(".input-sm").val(100);  
       $("ul.dropdown-menu li").click(function(){
         status = $(this).text();
         $.ajax({

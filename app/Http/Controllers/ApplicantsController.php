@@ -77,7 +77,7 @@ class ApplicantsController extends Controller
 
         $image->move($destinationPath, $input['imagename']);
 */
-        $slack_user_id = '';
+//        $slack_user_id = '';
         if($request['workspace'] != ''){
             try {
                 $token = SlackToken::where('workspace_id', $request['workspace'])->get()->first();
@@ -187,13 +187,13 @@ class ApplicantsController extends Controller
         $constraints = [
             'username' => 'required|max:20'
         ];
-        if($request->file('image')){
-            $image = $request->file('image');
-            $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/image');
-
-            $image->move($destinationPath, $input['imagename']);
-        }
+//        if($request->file('image')){
+//            $image = $request->file('image');
+//            $input['imagename'] = time().'.'.$image->getClientOriginalExtension();
+//            $destinationPath = public_path('/image');
+//
+//            $image->move($destinationPath, $input['imagename']);
+//        }
 
         $slack_user_id = '';
         if($request['workspace'] != ''){
@@ -218,25 +218,21 @@ class ApplicantsController extends Controller
         $input = [
             'username' => $request['username'],
             'type' => $request['type'],
+            'country'=>$request['country'] ,
+            'age' => $request['age'] ,
             'level' => $request['level'],
-            'image' => '',
+            'github_id' => $request['github_id'],
+            'time_doctor_email' => $request['time_doctor_email'],
+            'time_doctor_password' => $request['time_doctor_password'],
+            'time_doctor_token' => $request['time_doctor_token'],
+            'slack_user_id'=> $request['slack_user_id'],
+//            'image' => '',
             'workspace_id' => $request['workspace'] === null ? '' : $request['workspace'],
-            'slack_user_id' => $slack_user_id,
+//            'slack_user_id' => $slack_user_id,
             'channel_id' => $request['channel_id']
         ];
         $input_info = [
-            'stack' => $request['stack'] ,
-            'skypeid'=>$request['skypeid'] ,
-            'room' => $request['room'] ,
-            'country'=>$request['country'] ,
-            'age' => $request['age'] ,
-            'notes' => $request['notes'] ,
-            'called'=> isset($request['called']) ? 1 : 0 ,
-            'approved' => isset($request['approved']) ? 1 : 0 ,
-            'time_doctor_email' => $request['time_doctor_email'] ,
-            'time_doctor_password' => $request['time_doctor_password'],
-            'channel_id' => $request['channel_id'],
-            'project_id'=> $request['project'] === null ? '' : $request['project']
+            'stack' => $request['stack']
         ];
         if ($request['password'] != null && strlen($request['password']) > 0) {
             $constraints['password'] = 'required|min:6|confirmed';

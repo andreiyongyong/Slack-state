@@ -7,6 +7,10 @@ $(document).ready(function() {
     $("#DataTables_Table_0_length").children().children().val(25);
 
     $("#DataTables_Table_1").on('click', '.user-group', function(){
+        proj_name = [];
+        var proj = $("#DataTables_Table_0").find(".projects-group");
+        proj.removeClass("selected");
+        proj.css("border", "0");
         id = $(this).data("userid");
         $(".user-group").each(function( index, element ) {
             $(element).css("border", "1px solid #ddd");
@@ -67,7 +71,6 @@ $(document).ready(function() {
                         flag = 1;
                     }
                 }
-                location.reload();
             }
         })
     });
@@ -154,13 +157,13 @@ $(document).ready(function() {
                                         <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
                                         <svg style="float: right" height="20" width="20">
                                     <circle cx="10" cy="13" r="7"  fill="red" />
-                                    </svg>{{ $user->workspace_id }}{{" ".$user->username }} </div>
+                                    </svg>{{ $user->workspace_id }}&nbsp;&nbsp;&nbsp;&nbsp;{{$user->username }} </div>
                                     @else
                                     <div>
                                         <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
                                         <svg style="float: right" height="20" width="20">
                                     <circle cx="10" cy="13" r="7"  fill="white" />
-                                    </svg>{{ $user->username }} </div>
+                                    </svg>{{ $user->workspace_id }}&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }} </div>
                                     @endif
                                 </td>
                             </tr>

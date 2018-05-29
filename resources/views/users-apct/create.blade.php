@@ -120,40 +120,7 @@
                                         <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="">
-                                            <label class="form-label">Project</label>
-                                            <select name="project" id="project">
-                                                <option value=" "></option>
-                                                @foreach($projects as $project)
-                                                    <option value="{{$project->id}}">{{$project->p_name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div> -->
-                            </div>  
-                            <!-- <div class="row clearfix">
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="skypeid" id="skypeid" value="{{ old('skypeid')  }}"  min="1" max="100" required>
-                                            <label class="form-label">Skype ID</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="room" id="room" value="{{ old('room')  }}"  min="1" max="100" required>
-                                            <label class="form-label">Room</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                            </div>   -->
+                            </div>
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
@@ -205,55 +172,6 @@
                                     </div>
                                 </div>
                             </div>
-                        <!--     <div class="row clearfix"> 
-                                <div class="col-md-8">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="notes" id="notes" value="{{ old('notes') }}"  min="1" max="200" required>
-                                            <label class="form-label">Notes</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group form-float">
-                                        <div class="form-line ">
-                                            <input type="checkbox" class="form-control" name="called" id="called" value="1" >
-                                            <label for="called" class="form-label">Called</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="checkbox" class="form-control" name="approved" checked id="approved" value="1" >
-                                            <label for="approved" class="form-label">Approved</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>   -->
-                            <!-- <div class="row clearfix">
-                                <div class="col-md-12">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="password" class="form-control" name="password" id="password" value="{{ old('password') }}"  min="1" max="200">
-                                            <label class="form-label">Password</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
-                                    </div>
-                                </div>
-                            </div>     
-                            <div class="row clearfix">
-                                <div class="col-md-12">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}"  min="1" max="200">
-                                            <label class="form-label">Confirm Password</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
-                                    </div>
-                                </div>
-                            </div> -->
                             <div class="row clearfix">
                                 <div class="cal-xs-12">
                                     <h4 style="margin-left: 20px;">Slack Options</h4>

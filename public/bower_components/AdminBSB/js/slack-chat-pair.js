@@ -212,7 +212,7 @@ var slackChatPair = function () {
 
               instance.toggleLoader(false);
                       $('.slack-message').val('');
-                      $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
+                      $('.messaging-block .slack-massages.'+user).scrollTop($('.messaging-block .slack-massages.'+user)[0].scrollHeight);
                   }
               });
           });

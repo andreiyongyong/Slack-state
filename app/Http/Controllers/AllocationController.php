@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\ResourceDetails;
 use App\ResourceManagement;
 use App\SlackToken;
 use App\User;
@@ -128,6 +129,12 @@ class AllocationController extends Controller
                         'text' => 'Resource '.$resource->name.' have been assigned to you.',
                         'as_user' => true
                     ]);
+                   $files = ResourceDetails::get_metas_by_resource_id($id, 'file');
+
+                   foreach ($files as $file){
+                       $response = exec('curl -F file=@' . public_path('/resources/files/') . $file['value']. ' -F channels=' . $user->channel_id . ' -F filename=' . $file['value'] . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
+                   }
+
                 }
 
             } catch (SlackApiException $e) {}

@@ -34,28 +34,37 @@
                                     </div>
                                 </div>
                             </div>  
+                            {{--<div class="row clearfix">--}}
+                                {{--<div class="col-md-6">--}}
+                                    {{--<div class="form-group form-float">--}}
+                                        {{--<div class="form-line">--}}
+                                            {{--<input type="text" class="form-control" name="firstname" id="firstname" value="{{ $user->firstname  }}"  min="1" max="50" required>--}}
+                                            {{--<label class="form-label">First Name</label>--}}
+                                        {{--</div> --}}
+                                        {{--<div class="help-info"> Max. 50 characters</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="col-md-6">--}}
+                                    {{--<div class="form-group form-float">--}}
+                                        {{--<div class="form-line">--}}
+                                            {{--<input type="text" class="form-control" name="lastname" id="lastname" value="{{ $user->lastname  }}"  min="1" max="50" required>--}}
+                                            {{--<label class="form-label">Last Name</label>--}}
+                                        {{--</div> --}}
+                                        {{--<div class="help-info"> Max. 50 characters</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>  --}}
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" name="firstname" id="firstname" value="{{ $user->firstname  }}"  min="1" max="50" required>
-                                            <label class="form-label">First Name</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 50 characters</div>
+                                            <input type="text" class="form-control" name="github_id" id="github_id" value="{{ $user->github_id  }}"  min="1" max="100" required>
+                                            <label class="form-label">Github ID</label>
+                                        </div>
+                                        <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="lastname" id="lastname" value="{{ $user->lastname  }}"  min="1" max="50" required>
-                                            <label class="form-label">Last Name</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 50 characters</div>
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">Type</label>
@@ -67,7 +76,7 @@
                                         </div> 
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">Level </label>
@@ -79,10 +88,10 @@
                                         </div> 
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <label class="form-label">Upload image</label> 
-                                </div>
-                                <div class="col-md-2"><input type="file" name="image"/></div>
+                                {{--<div class="col-md-2">--}}
+                                    {{--<label class="form-label">Upload image</label> --}}
+                                {{--</div>--}}
+                                {{--<div class="col-md-2"><input type="file" name="image"/></div>--}}
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6">
@@ -104,45 +113,12 @@
                                         <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="">
-                                            <label class="form-label">Project</label>
-                                            <select name="project" id="project">
-                                                <option value=" "></option>
-                                                @foreach($projects as $project)
-                                                    <option value="{{$project->id}}" {{(($user->userinfo['project_id'] == $project->id) ? 'selected' : '')}}>{{$project->p_name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" name="skypeid" id="skypeid" value="{{ $user->userinfo['skypeid']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Skype ID</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="room" id="room" value="{{ $user->userinfo['room']  }}"  min="1" max="100" required>
-                                            <label class="form-label">Room</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 100 characters</div>
-                                    </div>
-                                </div>
-                            </div>  
-                            <div class="row clearfix">
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="country" id="country" value="{{ $user->userinfo['country']  }}"  min="1" max="100" required>
+                                            <input type="text" class="form-control" name="country" id="country" value="{{ $user->country  }}"  min="1" max="100" required>
                                             <label class="form-label">Country</label>
                                         </div> 
                                         <div class="help-info"> Max. 100 characters</div>
@@ -151,7 +127,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="number" class="form-control" name="age" id="age" value="{{ $user->userinfo['age']  }}"  min="1" max="3" required>
+                                            <input type="number" class="form-control" name="age" id="age" value="{{ $user->age  }}"  min="1" max="3" required>
                                             <label class="form-label">Age</label>
                                         </div> 
                                         <div class="help-info"> Max. 3 characters</div>
@@ -162,7 +138,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" name="time_doctor_email" id="time_doctor_email" value="{{ $user->userinfo['time_doctor_email']  }}"  min="1" max="100" required>
+                                            <input type="text" class="form-control" name="time_doctor_email" id="time_doctor_email" value="{{ $user->time_doctor_email  }}"  min="1" max="100" required>
                                             <label class="form-label">Time Doctor Email</label>
                                         </div> 
                                         <div class="help-info"> Max. 100 characters</div>
@@ -171,60 +147,44 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" name="time_doctor_password" id="time_doctor_password" value="{{ $user->userinfo['time_doctor_password']  }}"  min="1" max="100" required>
+                                            <input type="text" class="form-control" name="time_doctor_password" id="time_doctor_password" value="{{ $user->time_doctor_password  }}"  min="1" max="100" required>
                                             <label class="form-label">Time Doctor Password</label>
                                         </div> 
                                         <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row clearfix"> 
-                                <div class="col-md-8">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="text" class="form-control" name="notes" id="notes" value="{{ $user->userinfo['notes']  }}"  min="1" max="200" required>
-                                            <label class="form-label">Notes</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="checkbox" class="form-control" name="called" id="called" value="{{$user->userinfo['called']}}" {{ ( $user->userinfo['called'] == 1)? 'checked' : '' }} >
-                                            <label for="called" class="form-label">Called</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="checkbox" class="form-control" name="approved" id="approved" value="{{$user->userinfo['approved']}}" {{ ( $user->userinfo['approved'] == 1 )? 'checked' : '' }} >
-                                            <label for="approved" class="form-label">Approved</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>  
                             <div class="row clearfix">
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="password" class="form-control" name="password" id="password"  min="1" max="200" required>
-                                            <label class="form-label">Password</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-float">
-                                        <div class="form-line">
-                                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation"    min="1" max="200" required>
-                                            <label class="form-label">Confirm Password</label>
-                                        </div> 
-                                        <div class="help-info"> Max. 200 characters</div>
+                                            <input type="text" class="form-control" name="time_doctor_token" id="time_doctor_token" value="{{ $user->time_doctor_token }}"  min="1" max="100" required>
+                                            <label class="form-label">Time Doctor Token</label>
+                                        </div>
+                                        <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
                             </div>
+                            {{--<div class="row clearfix">--}}
+                                {{--<div class="col-md-6">--}}
+                                    {{--<div class="form-group form-float">--}}
+                                        {{--<div class="form-line">--}}
+                                            {{--<input type="password" class="form-control" name="password" id="password"  min="1" max="200" required>--}}
+                                            {{--<label class="form-label">Password</label>--}}
+                                        {{--</div> --}}
+                                        {{--<div class="help-info"> Max. 200 characters</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                                {{--<div class="col-md-6">--}}
+                                    {{--<div class="form-group form-float">--}}
+                                        {{--<div class="form-line">--}}
+                                            {{--<input type="password" class="form-control" name="password_confirmation" id="password_confirmation"    min="1" max="200" required>--}}
+                                            {{--<label class="form-label">Confirm Password</label>--}}
+                                        {{--</div> --}}
+                                        {{--<div class="help-info"> Max. 200 characters</div>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
                             <div class="row clearfix">
                                 <div class="cal-xs-12">
                                     <h4 style="margin-left: 20px;">Slack Options</h4>
@@ -245,9 +205,20 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="text" class="form-control" name="channel_id" id="channel_id" value="{{ $user->userinfo['channel_id']  }}"  min="1" max="100" required>
+                                            <input type="text" class="form-control" name="channel_id" id="channel_id" value="{{ $user->channel_id  }}"  min="1" max="100" required>
                                             <label class="form-label">Channel Id</label>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row clearfix">
+                                <div class="col-md-6">
+                                    <div class="form-group form-float">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" name="slack_user_id" id="slack_user_id" value="{{ $user->slack_user_id }}"  min="1" max="100" required>
+                                            <label class="form-label">Slack User Id</label>
+                                        </div>
+                                        <div class="help-info"> Max. 100 characters</div>
                                     </div>
                                 </div>
                             </div>

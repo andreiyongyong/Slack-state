@@ -242,7 +242,7 @@ class SlackChatPairController extends Controller
                         $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
                         if(isset($message['subtype']) && $message['subtype'] = 'file_share' && isset($message['file'])){
                             $message['user'] = $users[$message['file']['user']];
-                            $file_link = $message['file']['url_private_download'];
+                            $file_link = url('/download-file/'.$message['file']['id'].'/'.$token->token);
                             $file_name = $message['file']['name'];
                             $message['type'] = 'file';
                         }
@@ -299,7 +299,7 @@ class SlackChatPairController extends Controller
                             $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
                             if(isset($message['subtype']) && $message['subtype'] = 'file_share' && isset($message['file'])){
                                 $message['user'] = $users[$message['file']['user']];
-                                $file_link = $message['file']['url_private_download'];
+                                $file_link = $file_link = url('/download-file/'.$message['file']['id'].'/'.$token->token);;
                                 $file_name = $message['file']['name'];
                                 $message['type'] = 'file';
                             }
@@ -325,7 +325,7 @@ class SlackChatPairController extends Controller
 
         foreach ($urls as $key => $url){
             if($file_link != '' && $key == 0){
-                $string = str_replace('<'.$url.'>','<a href="'.$file_link.'">'.$file_name.'</a>', $string);
+                $string = str_replace('<'.$url.'>','<a href="'.$file_link.'" target="_blank">'.$file_name.'</a>', $string);
                 continue;
             }
 
@@ -426,8 +426,9 @@ class SlackChatPairController extends Controller
             if($token) {
                 if ($action == 'auto') {
                     $file = json_decode($request['attach'], true);
-
-                    $this->uploadFile($file['id'], $file['url_private_download'], $token->token);
+                    $sender = json_decode($request['sender'], true);
+                    $sender_token = SlackToken::where('workspace_id', $sender['workspace_id'])->where('user_id', $sender['admin_id'])->get()->first();
+                    $this->uploadFile($file['id'], $file['url_private_download'], $sender_token->token);
 
                     $name_arr = explode('.', $file['name']);
 
@@ -460,7 +461,7 @@ class SlackChatPairController extends Controller
                         $message['text'] = $this->cutString($message['text'], '<@', '>');
 
                         $message['user'] = $result['user'];
-                        $file_link = $message['file']['url_private_download'];
+                        $file_link = $file_link = url('/download-file/'.$message['file']['id'].'/'.$token->token);;
                         $file_name = $message['file']['name'];
                         $message['type'] = 'file';
 
@@ -474,6 +475,38 @@ class SlackChatPairController extends Controller
         }
 
         return response()->json($message);
+    }
+    
+    public function downloadFile($id, $token){
+
+        try{
+            $api = new SlackApi($token);
+
+           $response = $api->execute('files.info', ['file' => $id]);
+
+           if($response['ok']){
+               $file = $response['file'];
+               $path = public_path('image/slack/downloads/'.$file['name']);
+               $ch = curl_init();
+               $authorization = 'Authorization: Bearer '.$token;
+               curl_setopt($ch, CURLOPT_URL, $file['url_private_download']);
+               curl_setopt($ch, CURLOPT_HTTPHEADER, array( $authorization ));
+               curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+               curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+               $result = curl_exec($ch);
+               curl_close($ch);
+               file_put_contents($path, $result);
+
+               return response()->download($path);
+           }else{
+               echo $response['error'];
+               die;
+           }
+
+        } catch (SlackApiException $e){
+            echo $e->getMessage();
+            die;
+        }
     }
 
     public function destroy($id){

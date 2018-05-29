@@ -320,6 +320,9 @@ var slackChatPair = function () {
         formdata.append("attach", action == 'auto' ? JSON.stringify(file) : file);
         formdata.append("action", action);
         formdata.append("user", JSON.stringify(instance[user]));
+        if(action == 'auto'){
+            formdata.append("sender", JSON.stringify(instance[(user=='user_1') ? 'user_2' : 'user_1']));
+        }
 
         $.ajax({
             url: instance.urls.uploadFile,

@@ -81,6 +81,7 @@ Route::post('/get-channel-chat-pair', 'SlackChatPairController@getChannelChat_aj
 Route::post('/send-slack-message-pair', 'SlackChatPairController@sendSlackMessage_ajax');
 Route::post('/select-pair', 'SlackChatPairController@selectPair_ajax');
 Route::post('/upload-file', 'SlackChatPairController@uploadFile_ajax');
+Route::get('/download-file/{id}/{token}', 'SlackChatPairController@downloadFile');
 
 Route::post('/update-status-slack', 'SlackController@updateUserStatuses_ajax')->name('slack.updateUserStatuses');
 

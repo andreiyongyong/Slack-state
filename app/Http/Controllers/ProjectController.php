@@ -29,7 +29,7 @@ class ProjectController extends Controller
     {  
         $data = array();
 
-        $projects = Project::where('status', 'Live')->get();
+        $projects = Project::where('status', 'Live')->orderBy('level', 'asc')->get();
         if(count($projects) > 0) { 
             foreach ($projects as $key => $project) {
                $data[$key]['id'] = $project->id;
@@ -55,11 +55,12 @@ class ProjectController extends Controller
                 if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
                 $data[$key]['developer'] = $dev;
 
-            $task = Task::where('project_id',$project->id)
-                        ->orderBy('created_at', 'asc')->first();
-            if(!is_object($task)) $data[$key]['task'] = "";
-            else $data[$key]['task'] = $task->task_name;
-            $data[$key]['status'] = $project->status;
+                $task = Task::where('project_id',$project->id)
+                            ->orderBy('created_at', 'asc')->first();
+                if(!is_object($task)) $data[$key]['task'] = "";
+                else $data[$key]['task'] = $task->task_name;
+                $data[$key]['status'] = $project->status;
+                $data[$key]['level'] = $project->level;
             }
         }
         return view('project/index', ['projects' => $data]);

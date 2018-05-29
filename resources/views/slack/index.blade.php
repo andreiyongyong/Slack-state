@@ -119,19 +119,12 @@
                                                     @endif
                                                 @endforeach
 
-                                                @foreach($tasks as $task)
-                                                    @if($p['project_id'] == $task['project_id'])
-                                                        @foreach($user['tasks'] as $t)
-                                                            @if($t['task_id'] == $task['id'])
-                                                                <p style='padding-left:10px;'>{{$task->task_name}}</p>
-                                                            @endif
-                                                        @endforeach
-                                                    @endif
-                                                @endforeach
-                                            @endforeach                                
-                                            <p>track</p>                                            
-                                            <p>Today 8 hours</p>                                            
-                                            <p>Week 35 hours</p>                                                
+                                            @endforeach
+                                            @foreach($user['items'] as $worklog)
+                                                <p>task name: &nbsp;{{ $worklog['task_name'] }}</p>
+                                                <p>Today: &nbsp;{{ round($worklog['length']/3600,1) }}&nbsp;hours</p>
+                                            @endforeach
+                                            <p>Week: &nbsp;{{ round($user['week_hours']/3600, 1) }}&nbsp;hours</p>
                                         </div>
                                         <div style='clear:both;'></div>
                                     </div>

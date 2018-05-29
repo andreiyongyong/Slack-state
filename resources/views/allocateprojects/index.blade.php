@@ -4,8 +4,13 @@
 <script>
 $(document).ready(function() {
     var id = 0, proj_name = [];
+    $("#DataTables_Table_0_length").children().children().val(25);
 
     $("#DataTables_Table_1").on('click', '.user-group', function(){
+        proj_name = [];
+        var proj = $("#DataTables_Table_0").find(".projects-group");
+        proj.removeClass("selected");
+        proj.css("border", "0");
         id = $(this).data("userid");
         $(".user-group").each(function( index, element ) {
             $(element).css("border", "1px solid #ddd");

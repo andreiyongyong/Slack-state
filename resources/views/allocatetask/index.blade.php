@@ -6,6 +6,11 @@ $(document).ready(function() {
     var id = 0, task_ids = [];
     //if click record in first table..
     $("#DataTables_Table_1").on("click", ".user-group", function() {
+        task_ids = [];
+        var tsk = $("#DataTables_Table_0").find(".tasks-group");
+        tsk.removeClass("selected");
+        tsk.css("border", "0"); 
+
         id = $(this).data("userid");
         
         $(".user-group").each(function( index, element ) {

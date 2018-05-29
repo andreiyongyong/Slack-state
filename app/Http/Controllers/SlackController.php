@@ -12,6 +12,8 @@ use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 use App\User;
 use App\Project;
 use App\Allocation;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Client;
 
 class SlackController extends Controller
 {
@@ -24,6 +26,7 @@ class SlackController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        date_default_timezone_set('US/Eastern');
     }
 
     /**
@@ -35,7 +38,11 @@ class SlackController extends Controller
     {
         
         $data = [];
-        
+
+        $day = date('w');
+        $week_start = date('Y-m-d', strtotime('-'.($day-1).' days'));
+        $week_end = date('Y-m-d', strtotime('+'.(7-$day).' days'));
+
         try {
 
             $users = User::with(['userinfo' => function($query) {
@@ -86,13 +93,50 @@ class SlackController extends Controller
                 foreach($slackUsers as $slack_member) {
 
                     if ($slack_member['id'] != $user->slack_user_id) continue;
+                    //integrate time doctor api
+                    //Get time doctor user_id from time doctor email.
+                    $headers = [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer '.env("TD_TOKEN"),
+                    ];
 
-                    $user_list[] = array_merge($slack_member, array(
+                    $client = new Client(['headers' => $headers]);
+                    try {
+                        $response1 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
+                            . env("TD_COMPANYID") . "/users?emails=" . $user['userinfo']->time_doctor_email, []);
+                    }
+                    catch (GuzzleException $e){
+
+                    }
+                    $TD_userInfo = json_decode($response1->getBody(), true);
+                    $TD_userid= $TD_userInfo['users'][0]['user_id'];
+
+                    //Get week worklog
+
+                    $response2 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
+                        .env("TD_COMPANYID")."/worklogs?start_date=".$week_start."&end_date=".$week_end.
+                        "&offset=0&limit=300&user_ids=".$TD_userid, []);
+                    $week_worklogs = json_decode($response2->getBody(), true);
+                    $week_hours = $week_worklogs['total'];
+
+                    //Get today worklog
+
+                    $response3 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
+                        .env("TD_COMPANYID")."/worklogs?start_date=".date("Y-m-d")."&end_date="
+                        .date("Y-m-d")."&offset=0&limit=100&user_ids=".$TD_userid, []);
+
+                    $today_worklogs = json_decode($response3->getBody(), true);
+
+
+                    $user_list[] = array_merge($today_worklogs['worklogs'], $slack_member, array(
+                        'week_hours' => $week_hours,
                         'avatar' => $slack_member['profile']['image_512'],
                         'type' => '2',
                         'status' => "away",
-                        'display_name' => (isset($slack_member['profile']['display_name']) && !empty($slack_member['profile']['display_name']))
-                            ? $slack_member['profile']['display_name'] : ( isset( $slack_member['real_name'] ) ? $slack_member['real_name'] : '' ) ,
+                        'display_name' => (isset($slack_member['profile']['display_name']) &&
+                            !empty($slack_member['profile']['display_name']))
+                            ? $slack_member['profile']['display_name'] : ( isset( $slack_member['real_name'] ) ?
+                                $slack_member['real_name'] : '' ) ,
                         'workspace_id' => $user->workspace_id,
                         'projects' => $user->allocation,
                         'tasks' => $user->task_allocation,
@@ -108,6 +152,7 @@ class SlackController extends Controller
         }
         $projects = Project::all();
         $tasks = Task::all();
+
         return view('slack/index', ['data' => $user_list, 'projects' => $projects, 'tasks' => $tasks]);
     }
 
@@ -123,57 +168,6 @@ class SlackController extends Controller
         return $res;
     }
 
-/*
-    public function index()
-    {
-        
-        $data = [];
-        
-        try {
-
-            $users = User::with(['userinfo' => function($query) {
-                $query->where('channel_id','<>', '');            
-
-            }])->where('slack_user_id','<>' ,'')
-                ->where('workspace_id', '<>','')
-                ->where('level', '=',11)
-                ->paginate(100);
-            
-            $user_list = array();
-            foreach ($users as $user){
-            
-                $token = SlackToken::where('workspace_id', $user->workspace_id)->get()->first();
-
-                if($token) {
-                    $api = new SlackApi($token->token);
-                    $project = Project::find($user->userinfo['project_id']);
-                    $projects = Allocation::where('user_id', '=', $user->id)
-                        ->where('is_delete', '=', '0')->pluck('project_id');
-                    $project_names = Project::whereIn('id', $projects)->get()->pluck('p_name');
-                    $responce = $api->execute('users.info', ['user' => $user->slack_user_id]);
-                    
-                    $user_list[] = array_merge($responce['user'], array(
-                            'avatar' => $responce['user']['profile']['image_512'],
-                            'type' => '2',
-                            'status' => "away",
-                            'display_name' => (isset($responce['user']['profile']['display_name']) && !empty($responce['user']['profile']['display_name']))
-                                ? $responce['user']['profile']['display_name'] : ( isset( $responce['user']['real_name'] ) ? $responce['user']['real_name'] : '' ) ,
-                            'workspace_id' => $user->workspace_id,
-                            'project' => $project_names !== null ? $project_names : [],
-                            'project_id' => $project !== null ? $project->id : '',
-                            'projects' => $projects !== null ? $projects: []
-                        )
-                    );
-                }
-            }
-
-        } catch (SlackApiException $e) {
-
-        }
-        $projects = Project::all();
-        return view('slack/index', ['data' => $user_list, 'projects' => $projects]);
-    }
-*/
     public function updateUserStatuses_ajax(Request $request){
 
         $search_project = $request->input('project');

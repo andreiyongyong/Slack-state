@@ -218,7 +218,7 @@ class ApplicantsController extends Controller
         $input = [
             'username' => $request['username'],
             'type' => $request['type'],
-            'country'=>$request['country'] ,
+            'country'=>$request['country'],
             'age' => $request['age'] ,
             'level' => $request['level'],
             'github_id' => $request['github_id'],

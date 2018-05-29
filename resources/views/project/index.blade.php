@@ -37,7 +37,7 @@
                                 <th>TASK</th>
                                 <th>LEVEL</th>
                                 <th>STATUS</th>
-                                <th></th>
+                                <th>ACTION</th>
                               </tr>
                           </thead>
                           <tfoot>
@@ -49,7 +49,7 @@
                                 <th>TASK</th>
                                 <th>LEVEL</th>
                                 <th>STATUS</th>
-                                <th></th>
+                                <th>ACTION</th>
                               </tr>
                           </tfoot>
                           <tbody>
@@ -67,7 +67,8 @@
                                 <td>{{ $project['level']}}</td>
                                 <td>{{ $project['status']}}</td>
                                 <td align = "center">
-                                    <form class="row" method="POST" action="{{ route('project.destroy', ['id' => $project['id']]) }}" onsubmit = "return confirm('Are you sure?')">
+                                    <form class="row" method="POST" action="{{ route('project.destroy',
+                                    ['id' => $project['id']]) }}" onsubmit = "return confirm('Are you sure?')">
                                           <input type="hidden" name="_method" value="DELETE">
                                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                           <a href="{{ route('project.edit', ['id' => $project['id']]) }}" >
@@ -92,7 +93,9 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
+    var mytable;
     $(document).ready(function(){
+        mytable = $("#DataTables_Table_0").DataTable();
       $(".input-sm").val(100);  
       $("ul.dropdown-menu li").click(function(){
         status = $(this).text();
@@ -102,13 +105,28 @@
             data: {status : status},
             dataType: "JSON",
             success: function(resp) {
-              response = resp.string;
-              $("tbody").html("");
-              for ( i = 0 ; i < response.length; i++){
-                project_id = (response[i].id).toString();
-                $("tbody").append("<tr><td><svg height='20' width='20' style='position: absolute;left: 50px;margin-top: 5px;' ><circle cx='10' cy='10' r='8'  fill='"+response[i].hot+"'/></svg></td><td>"+response[i].p_name+"</td><td>"+response[i].p_client+"</td><td>"+response[i].developer+"</td><td>"+response[i].task+"</td><td>"+response[i].status+"</td><td align = 'center'><a href='/project/"+response[i].id+"/edit' >Edit</a></td></tr>");
 
-              }
+                if (mytable) mytable.clear();
+              response = resp.string;
+
+              var result = response.map(function(item){
+                  var result = [];
+                    result.push("<svg height='20' width='20' style='position: absolute;left: 50px;"
+                         + "margin-top: 5px;' ><circle cx='10' cy='10' r='8'  fill='"+item.hot+"'/></svg>");
+                    result.push(item.p_name);
+                    result.push(item.p_client);
+                    result.push(item.developer);
+                    result.push(item.task);
+                    result.push(item.level);
+                    result.push(item.status);
+                    result.push("<a href='/project/"+item.id+"/edit'>Edit</a>");
+                    result.push("");
+                    // .... add all the values required
+                  console.log(result);
+                    return result;
+                });
+                mytable.rows.add(result); // add to DataTable instance
+                mytable.draw(); // always redraw
             }
         })
       })

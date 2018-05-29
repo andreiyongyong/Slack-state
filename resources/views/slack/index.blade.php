@@ -47,7 +47,7 @@
                             <div class="col-sm-12 col-md-3">
                                 <div class="form-group form-float">
                                     <div>
-                                        <select name="project" id="project" class="form-control show-tick project" data-live-search="true">
+                                        <select name="project" id="project" class="project" data-live-search="true">
                                             <option value="" selected>All</option>
                                             @foreach($projects as $project)                                                            
                                             <option value="{{$project['id']}}">{{$project->p_name}}</option>                                            

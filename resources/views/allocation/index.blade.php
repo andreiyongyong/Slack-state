@@ -30,7 +30,7 @@
                           <div class="form-group form-float">
                               <div>
                                   <label class="form-label">Project</label>
-                                  <select name="project" id="select-project">
+                                  <select name="project" id="select-project" data-live-search="true">
                                       @foreach($projects as $project)
                                           <option value="{{$project->id}}">{{$project->p_name}}</option>
                                       @endforeach

@@ -333,7 +333,7 @@ var slackChatPair = function () {
                 }
             },
             success: function (message) {
-                message = message[0];
+
                 if(message != 'error'){
 
                     if(user == 'user_1'){

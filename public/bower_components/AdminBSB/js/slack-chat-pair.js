@@ -4,8 +4,6 @@ var slackChatPair = function () {
   instance = {
       user_1: [],
       user_2: [],
-      messages_1_last : -1,
-      messages_2_last : -1,
       messages_list : {},
       auto: false,
       autoMessages : [],
@@ -88,12 +86,6 @@ var slackChatPair = function () {
           data: msg_data,
           success: function (response) {
               var message = response.data;
-
-              if(msg_data.user == 'user_1'){
-                  instance.messages_1_last = parseFloat(message.tsi);
-              }else{
-                  instance.messages_2_last = parseFloat(message.tsi);
-              }
               instance.messages_list[message.tsi] = message;
               var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
               var display_name = ('user' in message) ? message.user.profile.real_name : '';
@@ -194,13 +186,6 @@ var slackChatPair = function () {
                   },
                   success: function (response) {
                       var message = response.data;
-
-                      if(user == 'user_1'){
-                          instance.messages_1_last = parseFloat(message.tsi);
-                      }else{
-                          instance.messages_2_last = parseFloat(message.tsi);
-                      }
-
                       var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
                       var display_name = ('user' in message) ? message.user.profile.real_name : '';
                       instance.messages_list[message.tsi] = message;
@@ -209,7 +194,7 @@ var slackChatPair = function () {
                           '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" style="display:none;" data-type="'+message.type+'" data-ts="'+message.tsi+'" data-user="user_2"></span><p class="info-txt">' + message.text + '</p></div></div></div>');
 
               instance.toggleLoader(false);
-                      $('.slack-message').val('');
+                      $('.slack-message.'+user).val('');
                       document.getElementById('scroll_'+user).scrollTop = document.getElementById('scroll_'+user).scrollHeight;
 
                   }
@@ -264,7 +249,7 @@ var slackChatPair = function () {
                 if(!cron || response.data.user_1.length > 0) {
                     $.each(response.data.user_1, function (index, message) {
 
-                        if(instance.messages_1_last < message.tsi){
+                        if($('.messaging-block .slack-massages.user_1 .msg-btns[data-ts="'+parseFloat(message.tsi)+'"]').length == 0) {
                             instance.messages_list[message.tsi] = message;
                             var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
                             var display_name = ('user' in message) ? message.user.profile.real_name : '';
@@ -286,12 +271,11 @@ var slackChatPair = function () {
                             }
                         }
                     });
-                    instance.messages_1_last = parseFloat($('.messaging-block .slack-massages.user_1 .msg-btns').last().attr('data-ts'));
                 }
 
                 if(!cron || response.data.user_2.length > 0) {
                     $.each(response.data.user_2, function (index, message) {
-                        if(instance.messages_2_last < parseFloat(message.tsi)) {
+                        if($('.messaging-block .slack-massages.user_2 .msg-btns[data-ts="'+parseFloat(message.tsi)+'"]').length == 0) {
 
                             instance.messages_list[message.tsi] = message;
                             var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
@@ -313,7 +297,6 @@ var slackChatPair = function () {
                             }
                         }
                     });
-                    instance.messages_2_last = parseFloat($('.messaging-block .slack-massages.user_2 .msg-btns').last().attr('data-ts'));
                 }
                 if(!cron){
                     instance.toggleLoader(false);
@@ -346,12 +329,6 @@ var slackChatPair = function () {
             success: function (message) {
 
                 if(message != 'error'){
-
-                    if(user == 'user_1'){
-                        instance.messages_1_last = parseFloat(message.tsi);
-                    }else{
-                        instance.messages_2_last = parseFloat(message.tsi);
-                    }
                     instance.messages_list[message.tsi] = message;
                     var avatar = ('user' in message && 'image_512' in message.user.profile) ? message.user.profile.image_512 : $('.messaging-block').attr('data-photo');
                     var display_name = ('user' in message) ? message.user.profile.real_name : '';
@@ -359,7 +336,7 @@ var slackChatPair = function () {
                     $('.messaging-block .slack-massages.'+ user).append('' +
                         '<div class="table-div"><div class="table-cell w-60-px"><img width="40" height="40" class="img-circle" src="' + avatar + '"></div>' +
                         '<div class="table-cell info-div"><span class="first-name">' + display_name + '</span><span class="reply-time">' + message.ts + '</span><span class="msg-btns" style="display:none;" data-type="'+message.type+'" data-ts="'+message.tsi+'" data-user="user_2"></span><p class="info-txt">' + message.text + '</p></div></div></div>');
-                    $document.getElementById('scroll_'+user).scrollTop = document.getElementById('scroll_'+user).scrollHeight;
+                    document.getElementById('scroll_'+user).scrollTop = document.getElementById('scroll_'+user).scrollHeight;
                 }
                 if(action != 'auto'){
                     instance.toggleLoader(false);

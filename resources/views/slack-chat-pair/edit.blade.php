@@ -67,7 +67,7 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">User 1 </label>
-                                            <select name="user_id_1">
+                                            <select name="userid_1">
                                                 @foreach($users as $user)
                                                     <option value="{{$user->id}}" {{(($pair->user_id_1 == $user->id) ? 'selected' : '')}}>{{$user->username}}</option>
                                                 @endforeach
@@ -80,7 +80,7 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">User 2 </label>
-                                            <select name="user_id_2">
+                                            <select name="userid_2">
                                                 @foreach($users as $user)
                                                     <option value="{{$user->id}}" {{(($pair->user_id_2 == $user->id) ? 'selected' : '')}}>{{$user->username}}</option>
                                                 @endforeach

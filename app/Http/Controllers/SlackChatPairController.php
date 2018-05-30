@@ -131,10 +131,10 @@ class SlackChatPairController extends Controller
             'name' => $request['name'],
             'project_id' => $request['project_id'] ,
             'workspace_id_1'=>$request['workspace_id_1'] ,
-            'user_id_1' => $request['user_id_1'] ,
+            'user_id_1' => $request['userid_1'] ,
             'admin_id_1'=>$request['admin_id_1'] ,
             'workspace_id_2' => $request['workspace_id_2'] ,
-            'user_id_2' => $request['user_id_2'] ,
+            'user_id_2' => $request['userid_2'] ,
             'admin_id_2'=>$request['admin_id_2'] ,
         ]);
         return redirect()->intended('/slack-chat-pair');

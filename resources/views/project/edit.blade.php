@@ -18,7 +18,7 @@
                                 <th>Level</th>
                                 <th>Status</th>
                                 <th>Hot</th>
-                                <th></th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -29,24 +29,26 @@
                                 <td><input type="text" class="form-control" name="p_client" id="p_client" value="{{ $project->p_client }}"  min="1" max="100" required></td>
                                 <td>
                                     <select class="form-control show-tick" id = 'level'>
-                                        <option>LV1</option>
-                                        <option>LV2</option>
-                                        <option>LV3</option>
-                                        <option>LV4</option>
-                                        <option>LV5</option>
+                                        <?php $level_array = array("LV1","LV2","LV3","LV4","LV5"); ?>
+                                        @foreach($level_array as $key=>$level)
+                                            <option value="{{ ($key+1) }}"  {{ $project->level == $level ? 'selected="selected"' : '' }}>{{ $level }}</option>
+                                        @endforeach
                                     </select>
                                 </td>
                                 <td>
                                     <select class="form-control show-tick" id = "status">
-                                        <option>Upcoming</option>
-                                        <option>Live</option>
-                                        <option>Hold</option>
-                                        <option>Closed</option>
-                                        <option>Deleted</option>
+                                        <?php $status_array = array("Upcoming","Live","Hold","Closed","Deleted"); ?>
+                                        @foreach($status_array as $key=>$status)
+                                            <option value="{{ ($key+1) }}"  {{ $project->status == $status ? 'selected="selected"' : '' }}>{{ $status }}</option>
+                                        @endforeach
                                     </select>
                                 </td>
                                 <td>
                                     <select class="form-control show-tick" id= "hot">
+                                        <?php $hot_array = array("Hot","Normal","Loose"); ?>
+                                        @foreach($hot_array as $key=>$hot)
+                                            <option value="{{ ($key+1) }}"  {{ $project->hot == $hot ? 'selected="selected"' : '' }}>{{ $hot }}</option>
+                                        @endforeach
                                         <option>Hot</option>
                                         <option>Normal</option>
                                         <option>Loose</option>

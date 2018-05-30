@@ -54,7 +54,7 @@
                                         <option>Loose</option>
                                     </select>
                                 </td>
-                                <td align="center"><button class="btn btn-primary" id="save" type="submit">Save</button></td>
+                                <td align="center"><button class="btn btn-primary waves-effect" id="save" type="submit">Save</button></td>
                             </tr>
                             </tbody>
                         </table>

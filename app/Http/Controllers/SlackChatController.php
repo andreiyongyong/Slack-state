@@ -33,27 +33,19 @@ class SlackChatController extends Controller
      */
     public function index()
     {
-        $data['projects'] = Project::with('tasks')->get();
-        $data['developers'] = User::with(['userinfo' => function($query){
-            $query->where('channel_id','<>', '');
-        }])->where('slack_user_id','<>' ,'')
-            ->where('workspace_id', '<>','')
-            ->where('type', '=',2)
-            ->where('level', '=',11)
-            ->get();
+        $data['developers'] = DB::table('users')
+            ->join('slack_tokens', 'slack_tokens.workspace_id','=','users.workspace_id')
+            ->select('users.id', 'users.username', 'users.slack_user_id', 'users.channel_id', 'slack_tokens.token')
+            ->where([
+                ['slack_tokens.user_id','=', Auth::user()->id]
+            ])->get();
 
         foreach ($data['developers'] as $key => $developer){
             try {
-                $token = SlackToken::where('workspace_id', $developer->workspace_id)->where('user_id', Auth::user()->id)->get()->first();
-
-                if($token) {
-                    $api = new SlackApi($token->token);
-
-                    $response = $api->execute('users.getPresence', ['user' => $developer->slack_user_id]);
-
-                    if ($response['ok']) {
-                        $data['developers'][$key]->status = $response['presence'];
-                    }
+                $api = new SlackApi($developer->token);
+                $response = $api->execute('users.getPresence', ['user' => $developer->slack_user_id]);
+                if ($response['ok']) {
+                    $data['developers'][$key]->status = $response['presence'];
                 }
             } catch (SlackApiException $e) {
                 $data['developers'][$key]->status = 'away';
@@ -118,17 +110,12 @@ class SlackChatController extends Controller
         $data = [];
         foreach ($developers as $developer){
             try {
+                $api = new SlackApi($developer['token']);
 
-                $token = SlackToken::where('workspace_id', $developer['workspace_id'])->get()->first();
+                $response = $api->execute('users.getPresence', ['user' => $developer['slack_id']]);
 
-                if($token) {
-                    $api = new SlackApi($token->token);
-
-                    $response = $api->execute('users.getPresence', ['user' => $developer['slack_id']]);
-
-                    if ($response['ok']) {
-                        $data[$developer['slack_id']] = $response['presence'];
-                    }
+                if ($response['ok']) {
+                    $data[$developer['slack_id']] = $response['presence'];
                 }
             } catch (SlackApiException $e) {
                 return response()->json(['data' => $data]);
@@ -144,38 +131,34 @@ class SlackChatController extends Controller
         $developer = $request['developer'];
         $channelId = $developer['channel_id'];
         $users = [];
-
         $data = [];
 
             try {
-                $token = SlackToken::where('workspace_id', $developer['workspace_id'])->get()->first();
+                $api = new SlackApi($developer['token']);
+                $response = $api->execute('channels.history', ['channel' => $channelId, 'inclusive' => true]);
 
-                if($token) {
-                    $api = new SlackApi($token->token);
-                    $response = $api->execute('channels.history', ['channel' => $channelId, 'inclusive' => true]);
+                if ($response['ok']) {
+                    $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
+                        return $val !== null;
+                    });
 
-                    if ($response['ok']) {
-                        $userIds = array_filter(array_unique(array_pluck($response['messages'], 'user')), function ($val) {
-                            return $val !== null;
-                        });
-
-                        foreach ($userIds as $userId) {
-                            $result = $api->execute('users.info', ['user' => $userId]);
-                            if ($result['ok']) {
-                                $users[$result['user']['id']] = $result['user'];
-                            }
+                    foreach ($userIds as $userId) {
+                        $result = $api->execute('users.info', ['user' => $userId]);
+                        if ($result['ok']) {
+                            $users[$result['user']['id']] = $result['user'];
                         }
-
-                        foreach ($response['messages'] as $message) {
-                            if (isset($message['user'])) {
-                                $message['user'] = $users[$message['user']];
-                            }
-                            $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
-                            $data[] = $message;
-                        }
-                        $data = array_reverse($data);
                     }
+
+                    foreach ($response['messages'] as $message) {
+                        if (isset($message['user'])) {
+                            $message['user'] = $users[$message['user']];
+                        }
+                        $message['ts'] = date('Y/m/d H:i:s', (int)$message['ts']);
+                        $data[] = $message;
+                    }
+                    $data = array_reverse($data);
                 }
+
             } catch (SlackApiException $e) {
                 return response()->json(['data' => $data]);
             }
@@ -190,18 +173,13 @@ class SlackChatController extends Controller
         $error = false;
 
         try {
-            $token = SlackToken::where('workspace_id', $developer['workspace_id'])->get()->first();
+            $api = new SlackApi($developer['token']);
 
-            if($token) {
-                $api = new SlackApi($token->token);
-
-                $response = $api->execute('chat.postMessage', [
-                    'channel' => $channelId,
-                    'text' => $message,
-                    'as_user' => true
-                ]);
-            }
-
+            $response = $api->execute('chat.postMessage', [
+                'channel' => $channelId,
+                'text' => $message,
+                'as_user' => true
+            ]);
         } catch (SlackApiException $e) {
                 $error = true;
         }

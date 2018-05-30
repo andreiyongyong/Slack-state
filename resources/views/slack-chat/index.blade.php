@@ -16,20 +16,18 @@
                           <div class="col-xs-12 m-b-2-px">
                               <div class="form-group form-float">
                                       @foreach($data['developers'] as $developer)
-                                      @if($developer->userinfo !== null)
                                           <?php
                                               $data = array(
                                                   'id' => $developer->id,
                                                   'slack_id' => $developer->slack_user_id,
-                                                  'channel_id' => $developer->userinfo['channel_id'],
-                                                  'workspace_id' => $developer->workspace_id
+                                                  'channel_id' => $developer->channel_id,
+                                                  'token' => $developer->token
                                               );
                                           ?>
                                           <div class="col-md-2">
-                                              <button class="btn btn-default select-developer" data-creds="{{json_encode($data)}}" value="{{$developer['username']}}">{{$developer['username']}}</button>
+                                              <button class="btn btn-default select-developer" data-creds="{{json_encode($data)}}" value="{{$developer->username}}">{{$developer->username}}</button>
                                               <span class="slack-status {{(($developer->status == 'active') ? 'active' : '')}}" data-slack_id="{{$developer->slack_user_id}}"></span>
                                           </div>
-                                      @endif
                                       @endforeach
                               </div>
                           </div>

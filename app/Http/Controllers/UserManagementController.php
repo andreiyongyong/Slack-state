@@ -119,28 +119,21 @@ class UserManagementController extends Controller
 
         $input = [
             'username' => $request['username'],
-            'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
             'type' => $request['type'],
+            'country'=>$request['country'],
+            'age' => $request['age'] ,
             'level' => $request['level'],
-            'image' => '',
+            'time_doctor_email' => $request['time_doctor_email'],
+            'time_doctor_password' => $request['time_doctor_password'],
+            'time_doctor_token' => $request['time_doctor_token'],
+//            'image' => '',
             'workspace_id' => $request['workspace'] === null ? '' : $request['workspace'],
-            'slack_user_id' => $slack_user_id,
+//            'slack_user_id' => $slack_user_id,
+            'slack_user_id' => $request['slack_user_id'],
             'channel_id' => $request['channel_id']
         ];
         $input_info = [
-            'stack' => $request['stack'] ,
-            'skypeid'=>$request['skypeid'] ,
-            'room' => $request['room'] ,
-            'country'=>$request['country'] ,
-            'age' => $request['age'] ,
-            'notes' => $request['notes'] ,
-            'called'=> isset($request['called']) ? 1 : 0 ,
-            'approved' => isset($request['approved']) ? 1 : 0 ,
-            'time_doctor_email' => $request['time_doctor_email'] ,
-            'time_doctor_password' => $request['time_doctor_password'],
-            'channel_id' => $request['channel_id'],
-            'project_id'=> $request['project'] === null ? '' : $request['project']
+            'stack' => $request['stack']
         ];
         if ($request['password'] != null && strlen($request['password']) > 0) {
             $constraints['password'] = 'required|min:6|confirmed';

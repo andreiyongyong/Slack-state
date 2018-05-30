@@ -1,11 +1,27 @@
 @extends('allocateprojects.base')
-@section('action-content') 
+@section('action-content')
+<style>
+    .header {
+        display: flex;  
+    }
+
+    @media (max-width: 768px) {
+        .header {
+            display: list-item;  
+        }
+    }
+</style>  
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
     var id = 0, proj_name = [];
+    $("#DataTables_Table_0_length").children().children().val(25);
 
     $("#DataTables_Table_1").on('click', '.user-group', function(){
+        proj_name = [];
+        var proj = $("#DataTables_Table_0").find(".projects-group");
+        proj.removeClass("selected");
+        proj.css("border", "0");
         id = $(this).data("userid");
         $(".user-group").each(function( index, element ) {
             $(element).css("border", "1px solid #ddd");
@@ -66,7 +82,6 @@ $(document).ready(function() {
                         flag = 1;
                     }
                 }
-                location.reload();
             }
         })
     });
@@ -116,6 +131,19 @@ $(document).ready(function() {
             }
         })
     })
+
+    $("#userAssigned").change(function(){
+        if ($("#userAssigned").val() == '0'){
+            $("#DataTables_Table_1").find(".assigned").parent().parent().show();
+            $("#DataTables_Table_1").find(".unassigned").parent().parent().show();
+        } else if ($("#userAssigned").val() == '1'){
+            $("#DataTables_Table_1").find(".assigned").parent().parent().hide();
+            $("#DataTables_Table_1").find(".unassigned").parent().parent().show();
+        } else {
+            $("#DataTables_Table_1").find(".assigned").parent().parent().show();
+            $("#DataTables_Table_1").find(".unassigned").parent().parent().hide();
+        }
+    })
 });
 </script>
 <div class="row clearfix">
@@ -127,9 +155,18 @@ $(document).ready(function() {
     <div class="col-lg-4 col-md-4">
         <div class="card">
             <div class="header">
-                <h2>
-                    Users
-                </h2>
+                <div class="col-sm-12 col-md-4">
+                    <h2>
+                        Users
+                    </h2>
+                </div>
+                <div class="col-sm-12 col-md-8">
+                    <select id="userAssigned" class="userAssigned">
+                        <option value="0" selected>All</option>
+                        <option value="1">Non-assigned</option>
+                        <option value="2">Assigned</option>
+                    </select>
+                </div>
             </div>
             <div class="body">
                 <div class="table-responsive">
@@ -149,17 +186,17 @@ $(document).ready(function() {
                             <tr>
                                 <td class="user-group" data-userid = {{$user->id}}>
                                     @if ( DB::table('allocation')->where([['user_id','=', $user->id],['is_delete','=', '0']])->count() == 0)
-                                    <div>
+                                    <div class="unassigned">
                                         <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
                                         <svg style="float: right" height="20" width="20">
                                     <circle cx="10" cy="13" r="7"  fill="red" />
-                                    </svg>{{ $user->username }} </div>
+                                    </svg>{{ $user->workspace_id }}&nbsp;&nbsp;&nbsp;&nbsp;{{$user->username }} </div>
                                     @else
-                                    <div>
+                                    <div class="assigned">
                                         <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
                                         <svg style="float: right" height="20" width="20">
                                     <circle cx="10" cy="13" r="7"  fill="white" />
-                                    </svg>{{ $user->username }} </div>
+                                    </svg>{{ $user->workspace_id }}&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }} </div>
                                     @endif
                                 </td>
                             </tr>

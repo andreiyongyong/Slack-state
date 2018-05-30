@@ -29,7 +29,7 @@ class ProjectController extends Controller
     {  
         $data = array();
 
-        $projects = Project::where('status', 'Live')->get();
+        $projects = Project::where('status', 'Live')->orderBy('level', 'asc')->get();
         if(count($projects) > 0) { 
             foreach ($projects as $key => $project) {
                $data[$key]['id'] = $project->id;
@@ -38,8 +38,8 @@ class ProjectController extends Controller
                elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
                elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
                else $data[$key]['hot'] = 'white';
-               $data[$key]['p_client'] = $project->p_client;
 
+               $data[$key]['p_client'] = $project->p_client;
                $dev = "";
                $developers =  DB::table('allocation')
                                 ->join('users', 'allocation.user_id','=','users.id')
@@ -55,11 +55,12 @@ class ProjectController extends Controller
                 if(strlen($dev) != 0) $dev = substr($dev, 0 ,strlen($dev)-1);
                 $data[$key]['developer'] = $dev;
 
-            $task = Task::where('project_id',$project->id)
-                        ->orderBy('created_at', 'asc')->first();
-            if(!is_object($task)) $data[$key]['task'] = "";
-            else $data[$key]['task'] = $task->task_name;
-            $data[$key]['status'] = $project->status;
+                $task = Task::where('project_id',$project->id)
+                            ->orderBy('created_at', 'asc')->first();
+                if(!is_object($task)) $data[$key]['task'] = "";
+                else $data[$key]['task'] = $task->task_name;
+                $data[$key]['status'] = $project->status;
+                $data[$key]['level'] = $project->level;
             }
         }
         return view('project/index', ['projects' => $data]);
@@ -78,10 +79,12 @@ class ProjectController extends Controller
             $data[$key]['id'] = $project->id;
            $data[$key]['p_name'] = $project->p_name;
            if($project->hot == "Hot") $data[$key]['hot'] = 'red';
-           if($project->hot == "Normal") $data[$key]['hot'] = 'green';
-           if($project->hot == "Loose") $data[$key]['hot'] = 'grey';
-           $data[$key]['p_client'] = $project->p_client;
+           elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
+           elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+           else $data[$key]['hot'] = 'white';
 
+           $data[$key]['p_client'] = $project->p_client;
+           $data[$key]['level'] = $project->level;
            $dev = "";
            $developers =  DB::table('allocation')
                             ->join('users', 'allocation.user_id','=','users.id')

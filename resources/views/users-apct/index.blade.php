@@ -24,11 +24,8 @@
                               <tr>
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
-                                  <th>CALLED</th>
-                                  <th>SKYPE ID</th>
                                   <th>COUNTRY</th>
                                   <th>AGE</th>
-                                  <th>APPROVE</th>
                                   <th>ACTION</th>
                               </tr>
                           </thead>
@@ -36,11 +33,8 @@
                               <tr>
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
-                                  <th>CALLED</th>
-                                  <th>SKYPE ID</th>
                                   <th>COUNTRY</th>
                                   <th>AGE</th>
-                                  <th>APPROVE</th>
                                   <th>ACTION</th>
                               </tr>
                           </tfoot>
@@ -50,11 +44,8 @@
                                   <tr>
                                       <td><img class="users-circle" src="{{ $user->image ? asset ("/image/".$user->image) :  asset ("/image/user_temp.jpg") }}" width="50" height="50" />&nbsp;{{ $user->username }}</td>
                                       <td>{{ $user->email }}</td>
-                                      <td>{{ $user->userinfo['called'] }}</td>
-                                      <td>{{ $user->userinfo['skypeid'] }}</td>
-                                      <td>{{ $user->userinfo['country'] }}</td>
-                                      <td>{{ $user->userinfo['age'] }}</td>
-                                      <td>{{ ( $user->userinfo['approved'] == 1 )? 'Yes' : 'No' }}</td>
+                                      <td>{{ $user->country }}</td>
+                                      <td>{{ $user->age }}</td>
                                       <td align = 'center'>
                                           <form class="row" method="POST" action="{{ route('applicants.destroy', ['id' => $user->id]) }}" onsubmit = "return confirm('Are you sure?')">
                                                 <input type="hidden" name="_method" value="DELETE">

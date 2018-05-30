@@ -27,7 +27,6 @@ $(document).ready(function() {
                     $(".uproject").html(""); 
                     if (response.string == "notfound") return; 
                     resp = JSON.parse(response.string);
-                    console.log(resp);
                     for ( i = 0 ; i < resp.length; i++){
                         if(resp[i].owner.login == "{{ env('GITHUB_USERNAME') }}")
                             $(".uproject").append("<li class='list-group-item alloc' data-invite_id=  "+resp[i].owner.id+">"+resp[i].name+"</li>");
@@ -82,7 +81,6 @@ $(document).ready(function() {
                     data = response.string;
                     for ( i = 0 ; i < data.length; i++){
                         resp = JSON.parse(data[i]);
-                        console.log(resp);
                         $(".uproject").append("<li class='list-group-item alloc' data-invite_id =  "+resp.inviter.id+">"+resp.repository.name+"</li>");
                   
                     }
@@ -116,7 +114,6 @@ $(document).ready(function() {
             alert("Please select a project to delete");
             return;
         }
-        console.log(del_invite);
         $.ajax({
             type:"POST",
             url: '/gitmanage/del_invite',
@@ -151,11 +148,29 @@ $(document).ready(function() {
                 </h2>
             </div>
             <div class="body">
-                <div class="list-group">
-                @foreach ($users as $user)
-                    <button type="button" class="list-group-item user-group" data-gitname="{{ $user->github_id }}">{{ $user->username }}</button>
-                @endforeach
-                </div>
+                <table id = 'DataTables_Table_1' class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <thead>
+                    <tr>
+                        <th>USER</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>USER</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    @foreach ($users as $user)
+                        <tr>
+                            <td class="list-group-item user-group" data-gitname="{{ $user->github_id }}">
+                                <div>
+                                    <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
+                                    {{ $user->workspace_id }}&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }} </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

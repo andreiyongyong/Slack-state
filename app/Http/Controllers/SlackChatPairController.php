@@ -108,7 +108,8 @@ class SlackChatPairController extends Controller
             ->get();
 
         $admins = User::where('type', '=',0)->get();
-        $pair = SlackChatPair::where('id', $id)->with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
+        $pair = SlackChatPair::where('id', $id)->with(['project'])->with(['workspace_1'])->with(['user_1'])
+            ->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get()->first();
 
         if ($pair == null || $pair->count() == 0) {
             return redirect()->intended('/slack-chat-pair');

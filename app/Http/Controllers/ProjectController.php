@@ -38,8 +38,8 @@ class ProjectController extends Controller
                elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
                elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
                else $data[$key]['hot'] = 'white';
-               $data[$key]['p_client'] = $project->p_client;
 
+               $data[$key]['p_client'] = $project->p_client;
                $dev = "";
                $developers =  DB::table('allocation')
                                 ->join('users', 'allocation.user_id','=','users.id')
@@ -79,8 +79,10 @@ class ProjectController extends Controller
             $data[$key]['id'] = $project->id;
            $data[$key]['p_name'] = $project->p_name;
            if($project->hot == "Hot") $data[$key]['hot'] = 'red';
-           if($project->hot == "Normal") $data[$key]['hot'] = 'green';
-           if($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+           elseif($project->hot == "Normal") $data[$key]['hot'] = 'green';
+           elseif($project->hot == "Loose") $data[$key]['hot'] = 'grey';
+           else $data[$key]['hot'] = 'white';
+
            $data[$key]['p_client'] = $project->p_client;
            $data[$key]['level'] = $project->level;
            $dev = "";

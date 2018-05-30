@@ -27,7 +27,6 @@ $(document).ready(function() {
                     $(".uproject").html(""); 
                     if (response.string == "notfound") return; 
                     resp = JSON.parse(response.string);
-                    console.log(resp);
                     for ( i = 0 ; i < resp.length; i++){
                         if(resp[i].owner.login == "{{ env('GITHUB_USERNAME') }}")
                             $(".uproject").append("<li class='list-group-item alloc' data-invite_id=  "+resp[i].owner.id+">"+resp[i].name+"</li>");
@@ -82,7 +81,6 @@ $(document).ready(function() {
                     data = response.string;
                     for ( i = 0 ; i < data.length; i++){
                         resp = JSON.parse(data[i]);
-                        console.log(resp);
                         $(".uproject").append("<li class='list-group-item alloc' data-invite_id =  "+resp.inviter.id+">"+resp.repository.name+"</li>");
                   
                     }
@@ -116,7 +114,6 @@ $(document).ready(function() {
             alert("Please select a project to delete");
             return;
         }
-        console.log(del_invite);
         $.ajax({
             type:"POST",
             url: '/gitmanage/del_invite',

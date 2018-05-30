@@ -28,10 +28,8 @@ class GitManageController extends Controller
 
     public function index()
     {
-    	$users = User::paginate(10);
-        foreach ($users as $user) {
-           
-        }
+    	$users = User::where('type','=', 2)->orderBy('workspace_id', 'asc')->get();
+
     	try {
             $repos = $this->client->api('current_user')->repositories();
             

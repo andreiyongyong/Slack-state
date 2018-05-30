@@ -148,11 +148,29 @@ $(document).ready(function() {
                 </h2>
             </div>
             <div class="body">
-                <div class="list-group">
-                @foreach ($users as $user)
-                    <button type="button" class="list-group-item user-group" data-gitname="{{ $user->github_id }}">{{ $user->username }}</button>
-                @endforeach
-                </div>
+                <table id = 'DataTables_Table_1' class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                    <thead>
+                    <tr>
+                        <th>USER</th>
+                    </tr>
+                    </thead>
+                    <tfoot>
+                    <tr>
+                        <th>USER</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    @foreach ($users as $user)
+                        <tr>
+                            <td class="list-group-item user-group" data-gitname="{{ $user->github_id }}">
+                                <div>
+                                    <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
+                                    {{ $user->workspace_id }}&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }} </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -11,6 +11,7 @@ use App\Task;
 use App\User;
 use App\SlackToken;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SlackChatController extends Controller
 {
@@ -60,6 +61,56 @@ class SlackChatController extends Controller
         }
 
         return view('slack-chat.index', ['data' => $data]);
+    }
+
+    public function groupMessage(){
+        $developers =  DB::table('users')
+            ->join('slack_tokens', 'slack_tokens.workspace_id','=','users.workspace_id')
+            ->select('users.id', 'users.username', 'users.slack_user_id', 'slack_tokens.token')
+            ->where([
+                ['slack_tokens.user_id','=', Auth::user()->id]
+            ])->get();
+        return view('slack-chat.group', ['developers' => $developers]);
+    }
+    
+    public function sendGroupMessage_ajax(Request $request){
+        $developers = json_decode($request['developers'], true);
+        $message    = $request['message'];
+        $file       = $request->file('attach');
+        $data = [
+            'error' => false,
+            'msg'   => 'Successfully Sent'
+        ];
+        if(!empty($developers)) {
+            try {
+                foreach ($developers as $developer) {
+                    $api = new SlackApi($developer['token']);
+
+                    if($message != ''){
+                        $response = $api->execute('chat.postMessage', [
+                            'channel' => $developer['slack_user_id'],
+                            'text' => $message,
+                            'as_user' => true
+                        ]);
+                    }
+                    if ($file !== null) {
+                        $response = exec('curl -F file=@' . $file->getRealPath() . ' -F channels=' . $developer['slack_user_id'] . ' -F filename=' . $file->getClientOriginalName() . ' -F token=' . $developer['token'] . ' https://slack.com/api/files.upload');
+                    }
+                }
+            } catch (SlackApiException $e) {
+                $data = [
+                    'error' => true,
+                    'msg' => $e->getMessage()
+                ];
+            }
+        }else{
+            $data = [
+                'error' => true,
+                'msg' => 'Select user to send'
+            ];
+        }
+
+        return response()->json($data);
     }
 
     public function updateUserStatuses_ajax(Request $request){

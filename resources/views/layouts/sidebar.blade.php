@@ -72,7 +72,7 @@
                         </a>
                     </p>
                 </div>
-                <div id="collapseTwo" class="panel-collapse collapse {{(in_array(Request::segment(1),['slack', 'workspaces', 'slack-chat-pair', 'slack-chat', 'keywords' ]) ? 'in' : '')}}">
+                <div id="collapseTwo" class="panel-collapse collapse {{(in_array(Request::segment(1),['slack', 'workspaces', 'slack-chat-pair', 'slack-chat', 'keywords', 'group-message' ]) ? 'in' : '')}}">
                     <div class="panel-body">
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "slack" ? "active" : "" }}" >
@@ -91,6 +91,12 @@
                                 <a href="{{ route('slack-chat-pair.index') }}">
                                     <!-- <i class="material-icons">forum</i> -->
                                     <span>Slack Chat Pair</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::segment(1) == "group-message" ? "active" : "" }}" >
+                                <a href="{{ route('group-message.index') }}">
+                                    <!-- <i class="material-icons">forum</i> -->
+                                    <span>Group Message</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "slack-admin-state" ? "active" : "" }}" >

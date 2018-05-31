@@ -8,7 +8,7 @@ $(document).ready(function() {
     //when you select a user, it takes this user's repositories from one owner
     $(".user-group").click(function() {
         git_username = $(this).data("gitname");
-        if(git_username == "" || git_username == null) git_username = "nogitusername";
+        // if(git_username == "" || git_username == null) git_username = "nogitusername";
         $(".user-group").each(function( index, element ) {
             $(element).css("border", "1px solid #ddd");
         });
@@ -18,20 +18,29 @@ $(document).ready(function() {
             type: "POST",
             url: '/gitmanage/ajaxrepofromuser',
             data: { git_username: git_username },
-            dataType:"json",
-            success: function( response ) {
-                if(response.status == "error"){
-                    alert(response.string); 
-                    return;
-                }else{
-                    $(".uproject").html(""); 
-                    if (response.string == "notfound") return; 
-                    resp = JSON.parse(response.string);
-                    for ( i = 0 ; i < resp.length; i++){
-                        if(resp[i].owner.login == "{{ env('GITHUB_USERNAME') }}")
-                            $(".uproject").append("<li class='list-group-item alloc' data-invite_id=  "+resp[i].owner.id+">"+resp[i].name+"</li>");
+            // dataType:"json",
+            success: function( resp ) {
+                var flag = 0;
+                $(".uproject").html("<li class='list-group-item'>No data available in table</li>");
+                for ( i = 0 ; i < resp.length; i++){
+                    if(resp[i].git_username == git_username.trim()){
+                        if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-invite_id =  "+resp[i].invite_id+">"+resp[i].repository+"</li>");
+                        else $(".uproject").append("<li class='list-group-item alloc' data-invite_id =  "+resp[i].invite_id+">"+resp[i].repository+"</li>");
+                        flag = 1;
                     }
                 }
+                {{--if(response.status == "error"){--}}
+                    {{--alert(response.string); --}}
+                    {{--return;--}}
+                {{--}else{--}}
+                    {{--$(".uproject").html(""); --}}
+                    {{--if (response.string == "notfound") return; --}}
+                    {{--resp = JSON.parse(response.string);--}}
+                    {{--for ( i = 0 ; i < resp.length; i++){--}}
+                        {{--if(resp[i].owner.login == "{{ env('GITHUB_USERNAME') }}")--}}
+                            {{--$(".uproject").append("<li class='list-group-item alloc' data-invite_id=  "+resp[i].owner.id+">"+resp[i].name+"</li>");--}}
+                    {{--}--}}
+                {{--}--}}
             },
             error: function(err){
                 alert('ajax error');
@@ -162,7 +171,7 @@ $(document).ready(function() {
                     <tbody>
                     @foreach ($users as $user)
                         <tr>
-                            <td class="list-group-item user-group" data-gitname="{{ $user->github_id }}">
+                            <td class="list-group-item user-group" data-gitname="{{$user->github_id}}">
                                 <div>
                                     <img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />
                                     {{ $user->workspace_id }}&nbsp;&nbsp;&nbsp;&nbsp;{{ $user->username }} </div>
@@ -202,6 +211,9 @@ $(document).ready(function() {
             <div class="header">
                 <h2>
                     All Repositories
+                    <a href="{{ url('gitmanage/updateinfo') }}" class="btn btn-info waves-effect" style="right: -250px;">
+                        Update Repository
+                    </a>
                 </h2>
             </div> 
             <div class="body">
@@ -210,6 +222,8 @@ $(document).ready(function() {
                         <thead> 
                             <tr>
                                 <th>REPOSITORY</th>
+
+
                             </tr>
                         </thead>
                         <tbody>

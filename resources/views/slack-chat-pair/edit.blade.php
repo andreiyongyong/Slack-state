@@ -41,7 +41,7 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">Workspace 1 </label>
-                                            <select name="workspace_id_1">
+                                            <select name="workspace_id_1" class="workspace_id_1">
                                                 @foreach($workspaces as $workspace)
                                                     <option value="{{$workspace->id}}" {{(($pair->workspace_id_1 == $workspace->id) ? 'selected' : '')}}>{{$workspace->id_}}</option>
                                                 @endforeach
@@ -53,9 +53,10 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">Workspace 2 </label>
-                                            <select name="workspace_id_2">
+                                            <select name="workspace_id_2" class="workspace_id_2">
                                                 @foreach($workspaces as $workspace)
-                                                    <option value="{{$workspace->id}}" {{(($pair->workspace_id_2 == $workspace->id) ? 'selected' : '')}}>{{$workspace->id_}}</option>
+                                                    <option value="{{$workspace->id}}" {{(($pair->workspace_id_2 == $workspace->id) ? 'selected' : '')}}>
+                                                        {{$workspace->id_}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -67,12 +68,11 @@
                                     <div class="form-group form-float">
                                         <div>
                                             <label class="form-label">User 1 </label>
-                                            <select name="userid_1">
+                                            <select name="userid_1" id="userid_1">
                                                 @foreach($users as $user)
                                                     <option value="{{$user->id}}" {{(($pair->user_id_1 == $user->id) ? 'selected' : '')}}>{{$user->username}}</option>
                                                 @endforeach
                                             </select>
-
                                         </div>
                                     </div>
                                 </div>
@@ -123,7 +123,34 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("select.workspace_id_1").change(function(){
+            var workspace_id_1 = $("select.workspace_id_1").val();
+            userinfo = filterUsers(workspace_id_1);
+            $.ajax({
+                type : 'POST',
+                url : '/slackchat/filterusers',
+                data : {workspace_id: workspace_id_1},
+                dataType : 'JSON',
+                success : function (resp) {
+                    // console.log(resp);
+                    // $("#userid_1").empty();
+                    // for (i = 0; i < resp.length ; i++){
+                    //     $("#userid_1").append("<option value='"+resp[i].user_id_1+"'>"+resp[i].username+"</option>");
+                    // }
+                }
+            });
+
+        });
+
+        function filterUsers(workspace_id) {
+
+        }
+    });
+</script>
 @endsection
  
  

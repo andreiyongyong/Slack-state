@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\ForbiddenKeywords;
 use App\SlackChatPair;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\User;
 use App\SlackWorkspace;
 use App\Project;
 use App\SlackToken;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
+use Wgmv\SlackApi\Facades\SlackChat;
 
 class SlackChatPairController extends Controller
 {
@@ -39,7 +40,8 @@ class SlackChatPairController extends Controller
      */
     public function index()
     {
-        $pairs = SlackChatPair::with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get();
+        $pairs = SlackChatPair::with(['project'])->with(['workspace_1'])->with(['user_1'])->with(['admin_1'])
+            ->with(['workspace_2'])->with(['user_2'])->with(['admin_2'])->get();
 
         return view('slack-chat-pair/index', ['pairs' => $pairs]);
     }
@@ -72,12 +74,12 @@ class SlackChatPairController extends Controller
         SlackChatPair::create([
             'name' => $request['name'],
             'project_id' => $request['project_id'] ,
-            'workspace_id_1'=>$request['workspace_id_1'] ,
+            'workspace_id_1' => $request['workspace_id_1'] ,
             'user_id_1' => $request['user_id_1'] ,
-            'admin_id_1'=>$request['admin_id_1'] ,
+            'admin_id_1' => $request['admin_id_1'] ,
             'workspace_id_2' => $request['workspace_id_2'] ,
             'user_id_2' => $request['user_id_2'] ,
-            'admin_id_2'=>$request['admin_id_2'] ,
+            'admin_id_2' => $request['admin_id_2'] ,
         ]);
         return redirect()->intended('/slack-chat-pair');
     }
@@ -138,6 +140,18 @@ class SlackChatPairController extends Controller
             'admin_id_2'=>$request['admin_id_2'] ,
         ]);
         return redirect()->intended('/slack-chat-pair');
+    }
+
+    Public function filterusers(Request $request){
+        $users = DB::table('slack_chat_pair')
+            ->join('users', 'slack_chat_pair.user_id_1', '=', 'users.id')
+            ->select('slack_chat_pair.user_id_1','users.username')
+            ->where([
+                ['type','=', 2],
+                ['workspace_id_1','=', $request['workspace_id']]
+            ])->get();
+
+        return response()->json($users);
     }
 
     public function slackChat($id){

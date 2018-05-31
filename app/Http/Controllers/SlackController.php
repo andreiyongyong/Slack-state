@@ -56,7 +56,7 @@ class SlackController extends Controller
             }])
             ->where('slack_user_id', '<>', '')
                ->where('workspace_id', '<>', '')
-               ->where('level', '=',11)
+//               ->where('level', '=',11)
                ->where('type', '=',2)
                ->where('channel_id','<>', '')
                ->orderBy('workspace_id', 'asc')

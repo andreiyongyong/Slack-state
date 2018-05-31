@@ -1,6 +1,6 @@
 @extends('slack-chat.base')
 @section('slack-chat-pair-scripts')
-    <script src="{{ asset ("/bower_components/AdminBSB/js/slack-chat-pair.js") }}"></script>
+    <script src="{{ asset ("/js/slack-chat-pair.js") }}"></script>
 @stop
 @section('title', $pair->project['p_name'])
 @section('action-content')

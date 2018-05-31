@@ -14,5 +14,5 @@
 </section>
 @endsection
 @section('allocation-scripts')
-    <script src="{{ asset ("/bower_components/AdminBSB/js/allocation.js") }}"></script>
+    <script src="{{ asset ("/js/allocation.js") }}"></script>
 @stop

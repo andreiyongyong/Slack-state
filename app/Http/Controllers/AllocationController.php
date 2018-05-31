@@ -124,15 +124,30 @@ class AllocationController extends Controller
                 if($token) {
                     $api = new SlackApi($token->token);
                     $resource = ResourceManagement::find($id);
+
+                    $message = 'Resource : '.$resource->name."\n";
+                    $message .= 'Content : '.$resource->content."\n";
+
+                    $metas = ResourceDetails::get_metas_by_resource_id($id);
+                    if(!empty($metas)){
+                        $message .= "Details` \n";
+
+                        foreach ($metas as $meta){
+                            if($meta['type'] != 'file'){
+                                $message .= '    '.$meta['key'].' : '.$meta['value']."\n";
+                            }
+                        }
+                    }
+
                     $response = $api->execute('chat.postMessage', [
                         'channel' => $user->channel_id,
-                        'text' => 'Resource '.$resource->name.' have been assigned to you.',
+                        'text' => $message,
                         'as_user' => true
                     ]);
-                   $files = ResourceDetails::get_metas_by_resource_id($id, 'file');
 
-                   foreach ($files as $file){
-                       $response = exec('curl -F file=@' . public_path('/resources/files/') . $file['value']. ' -F channels=' . $user->channel_id . ' -F filename=' . $file['value'] . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
+                   foreach ($metas as $file){
+                       if($file['type'] == 'file'){
+                           $response = exec('curl -F file=@' . public_path('/resources/files/') . $file['value']. ' -F channels=' . $user->channel_id . ' -F filename=' . $file['value'] . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');                       }
                    }
 
                 }

@@ -1,6 +1,6 @@
 @extends('slack-chat.base')
 @section('slack-chat-scripts')
-    <script src="{{ asset ("/bower_components/AdminBSB/js/slack-chat.js") }}"></script>
+    <script src="{{ asset ("/js/slack-chat.js") }}"></script>
 @stop
 @section('action-content')
 <div class="row clearfix">

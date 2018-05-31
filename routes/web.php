@@ -82,6 +82,8 @@ Route::post('/send-slack-message-pair', 'SlackChatPairController@sendSlackMessag
 Route::post('/select-pair', 'SlackChatPairController@selectPair_ajax');
 Route::post('/upload-file', 'SlackChatPairController@uploadFile_ajax');
 Route::get('/download-file/{id}/{token}', 'SlackChatPairController@downloadFile');
+Route::get('/group-message', 'SlackChatController@groupMessage')->name('group-message.index');
+Route::post('/send-slack-message-group', 'SlackChatController@sendGroupMessage_ajax');
 Route::post('/slackchat/filterusers', 'SlackChatPairController@filterusers');
 
 Route::post('/update-status-slack', 'SlackController@updateUserStatuses_ajax')->name('slack.updateUserStatuses');

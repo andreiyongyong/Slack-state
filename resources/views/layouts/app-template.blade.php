@@ -274,5 +274,6 @@
 @yield('slack-chat-pair-scripts')
 @yield('slack-chat-group-scripts')
 @yield('allocation-scripts')
+@yield('message-templates-scripts')
   </body>
 </html>

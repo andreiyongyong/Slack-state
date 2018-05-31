@@ -66,11 +66,11 @@
                         </a>
                     </p>
                 </div>
-                <div id="collapseSix" class="panel-collapse collapse {{(in_array(Request::segment(1),['template', 'messaging', 'group-message' ]) ? 'in' : '')}}">
+                <div id="collapseSix" class="panel-collapse collapse {{(in_array(Request::segment(1),['templates', 'messaging', 'group-message' ]) ? 'in' : '')}}">
                     <div class="panel-body">
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "template" ? "active" : "" }}" >
-                                <a href="javascript:">
+                                <a href="{{ route('templates.index') }}">
                                     <!-- <i class="material-icons">forum</i> -->
                                     <span>Template</span>
                                 </a>

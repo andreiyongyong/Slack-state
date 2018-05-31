@@ -121,3 +121,8 @@ Route::post('/delete-user-resource', 'AllocationController@deleteUserResource_aj
 Route::post('/add-token', 'SlackWorkspaceController@addToken')->name('workspace-tokens.addToken');
 Route::get('/delete-token/{id}', 'SlackWorkspaceController@deleteToken')->name('workspace-tokens.deleteToken');
 
+//Message Templates
+Route::get('/templates' , 'TemplateController@index')->name('templates.index');
+Route::post('/templates/store' , 'TemplateController@store');
+Route::get('/templates/get' , 'TemplateController@getTemplates');
+Route::get('/templates/destroy/{id}' , 'TemplateController@destroy');

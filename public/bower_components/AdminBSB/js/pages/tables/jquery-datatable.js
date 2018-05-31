@@ -17,6 +17,15 @@ $(function () {
         "bInfo": false
     });
 
+    $('.group-table').DataTable({
+        responsive: true,
+        bLengthChange : false,
+        searching: false,
+        paging: false,
+        order: [[ 1, "asc" ]],
+        "bInfo": false
+    });
+
     //Exportable table
     $('.js-exportable').DataTable({
         dom: 'Bfrtip',

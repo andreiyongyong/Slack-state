@@ -14,7 +14,7 @@ class ModifyFieldwordUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->Integer('workspace_id')->nullable()->change();
+            $table->integer('workspace_id')->nullable()->default(0)->change();
         });
     }
 

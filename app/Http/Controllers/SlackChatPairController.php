@@ -243,8 +243,10 @@ class SlackChatPairController extends Controller
                     }
 
                     foreach ($response['messages'] as $message) {
-                        if (isset($message['user'])) {
+                        if (isset($message['user']) && isset($users[$message['user']])) {
                             $message['user'] = $users[$message['user']];
+                        }else{
+                            continue;
                         }
 
                         $message['type'] = 'text';
@@ -300,8 +302,10 @@ class SlackChatPairController extends Controller
                         }
 
                         foreach ($response['messages'] as $message) {
-                            if (isset($message['user'])) {
+                            if (isset($message['user']) && isset($users[$message['user']])) {
                                 $message['user'] = $users[$message['user']];
+                            }else{
+                                continue;
                             }
 
                             $message['type'] = 'text';

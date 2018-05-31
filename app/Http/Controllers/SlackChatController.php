@@ -36,9 +36,7 @@ class SlackChatController extends Controller
         $data['developers'] = DB::table('users')
             ->join('slack_tokens', 'slack_tokens.workspace_id','=','users.workspace_id')
             ->select('users.id', 'users.username', 'users.slack_user_id', 'users.channel_id', 'slack_tokens.token')
-            ->where([
-                ['slack_tokens.user_id','=', Auth::user()->id]
-            ])->get();
+            ->where('slack_tokens.user_id','=', Auth::user()->id)->get();
 
         foreach ($data['developers'] as $key => $developer){
             try {
@@ -58,10 +56,10 @@ class SlackChatController extends Controller
     public function groupMessage(){
         $developers =  DB::table('users')
             ->join('slack_tokens', 'slack_tokens.workspace_id','=','users.workspace_id')
-            ->select('users.id', 'users.username', 'users.slack_user_id', 'slack_tokens.token')
-            ->where([
-                ['slack_tokens.user_id','=', Auth::user()->id]
-            ])->get();
+            ->select('users.id', 'users.username', 'users.workspace_id', 'users.slack_user_id', 'slack_tokens.token')
+            ->where('slack_tokens.user_id','=', Auth::user()->id)
+            ->where('users.type','=', 2)
+            ->get();
         return view('slack-chat.group', ['developers' => $developers]);
     }
     

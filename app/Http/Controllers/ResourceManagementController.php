@@ -42,8 +42,7 @@ class ResourceManagementController extends Controller
     {
 
         ResourceManagement::create([
-            'title' => $request['title'],
-            'url' => $request['url'],
+            'name' => $request['name'],
             'content' => $request['content'],
             'type' => $request['type'],
             'level' => $request['level'],
@@ -96,14 +95,12 @@ class ResourceManagementController extends Controller
     {
         ResourceManagement::findOrFail($id);
         $constraints = [
-            'title' => 'required|max:100',
-            'url'=> 'required|max:191',
+            'name' => 'required|max:100',
             'content' => 'required'
         ];
 
         $input = [
-            'title' => $request['title'],
-            'url' => $request['url'],
+            'name' => $request['name'],
             'content' => $request['content'],
             'type' => $request['type'],
             'level' => $request['level'],

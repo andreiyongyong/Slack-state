@@ -21,7 +21,7 @@
                         </a>
                     </p>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse {{(in_array(Request::segment(1),['project', "resource-management", "allocation", 'messaging', 'forum-master', 'member-log','git-manage' ]) ? 'in' : '')}}">
+                <div id="collapseOne" class="panel-collapse collapse {{(in_array(Request::segment(1),['project', "resource-management", "allocation", 'forum-master', 'member-log','git-manage' ]) ? 'in' : '')}}">
                     <div class="panel-body">
                         <ul class="list">
                             <li class="{{ Request::segment(1) == "project" ? "active" : "" }}" >
@@ -34,12 +34,6 @@
                                 <a href="{{ url('resource-management') }}">
                                     <i class="material-icons">filter_tilt_shift</i>
                                     <span>Resources</span>
-                                </a>
-                            </li>
-                            <li class="{{ Request::segment(1) == "messaging" ? "active" : "" }}" >
-                                <a href="{{ route('messaging.index') }}">
-                                    <i class="material-icons">forum</i>
-                                    <span>Message</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "forum-master" ? "active" : "" }}" >
@@ -60,6 +54,38 @@
                                     <span>Github</span>
                                 </a>
                             </li>   
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p class="panel-title">
+                        <a class="title" data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                            Message
+                        </a>
+                    </p>
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse {{(in_array(Request::segment(1),['templates', 'messaging', 'group-message' ]) ? 'in' : '')}}">
+                    <div class="panel-body">
+                        <ul class="list">
+                            <li class="{{ Request::segment(1) == "template" ? "active" : "" }}" >
+                                <a href="{{ route('templates.index') }}">
+                                    <!-- <i class="material-icons">forum</i> -->
+                                    <span>Template</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::segment(1) == "messaging" ? "active" : "" }}" >
+                                <a href="{{ route('messaging.index') }}">
+                                    <!-- <i class="material-icons">forum</i> -->
+                                    <span>Channel</span>
+                                </a>
+                            </li>
+                            <li class="{{ Request::segment(1) == "group-message" ? "active" : "" }}" >
+                                <a href="{{ route('group-message.index') }}">
+                                    <span>Group Message</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -91,12 +117,6 @@
                                 <a href="{{ route('slack-chat-pair.index') }}">
                                     <!-- <i class="material-icons">forum</i> -->
                                     <span>Slack Chat Pair</span>
-                                </a>
-                            </li>
-                            <li class="{{ Request::segment(1) == "group-message" ? "active" : "" }}" >
-                                <a href="{{ route('group-message.index') }}">
-                                    <!-- <i class="material-icons">forum</i> -->
-                                    <span>Group Message</span>
                                 </a>
                             </li>
                             <li class="{{ Request::segment(1) == "slack-admin-state" ? "active" : "" }}" >

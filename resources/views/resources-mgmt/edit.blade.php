@@ -16,24 +16,13 @@
                         <div class="col-md-12">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" class="form-control" name="title" id="title" value="{{ $resource->title }}"  min="1" max="100" required>
+                                    <input type="text" class="form-control" name="name" id="title" value="{{ $resource->name }}"  min="1" max="100" required>
                                     <label class="form-label">Title</label>
                                 </div> 
                                 <div class="help-info"> Max. 100 characters</div>
                             </div>
                         </div>
-                    </div> 
-                    <div class="row clearfix">
-                        <div class="col-md-12">
-                            <div class="form-group form-float">
-                                <div class="form-line">
-                                    <input type="text" class="form-control" name="url" id="url" value="{{ $resource->url  }}"  min="5" max="191" required>
-                                    <label class="form-label">url</label>
-                                </div> 
-                                <div class="help-info"> Max. 191 characters</div>
-                            </div>
-                        </div>
-                    </div>  
+                    </div>
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group form-float">

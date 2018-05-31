@@ -95,19 +95,17 @@ class SlackController extends Controller
                     if ($slack_member['id'] != $user->slack_user_id) continue;
                     //integrate time doctor api
                     //Get time doctor user_id from time doctor email.
+
                     $headers = [
                         'Content-Type' => 'application/json',
-                        'Authorization' => 'Bearer '.env("TD_TOKEN"),
+                        'Authorization' => 'Bearer '.$user->time_doctor_token
                     ];
 
                     $client = new Client(['headers' => $headers]);
-                    try {
-                        $response1 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
-                            . env("TD_COMPANYID") . "/users?emails=" . $user['userinfo']->time_doctor_email, []);
-                    }
-                    catch (GuzzleException $e){
 
-                    }
+
+                    $response1 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
+                        . env("TD_COMPANYID") . "/users?emails=" . $user['userinfo']->time_doctor_email, []);
                     $TD_userInfo = json_decode($response1->getBody(), true);
                     $TD_userid= $TD_userInfo['users'][0]['user_id'];
 

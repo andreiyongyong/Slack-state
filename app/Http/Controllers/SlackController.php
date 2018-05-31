@@ -36,7 +36,6 @@ class SlackController extends Controller
      */
     public function index()
     {
-        
         $data = [];
 
         $day = date('w');
@@ -56,7 +55,7 @@ class SlackController extends Controller
             }])
             ->where('slack_user_id', '<>', '')
                ->where('workspace_id', '<>', '')
-//               ->where('level', '=',11)
+               ->where('level', '=',11)
                ->where('type', '=',2)
                ->where('channel_id','<>', '')
                ->orderBy('workspace_id', 'asc')
@@ -103,27 +102,21 @@ class SlackController extends Controller
 
                     $client = new Client(['headers' => $headers]);
 
-
-                    $response1 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
-                        . env("TD_COMPANYID") . "/users?emails=" . $user['userinfo']->time_doctor_email, []);
-                    $TD_userInfo = json_decode($response1->getBody(), true);
-                    $TD_userid= $TD_userInfo['users'][0]['user_id'];
-
                     //Get week worklog
 
-                    $response2 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
+                    $response1 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
                         .env("TD_COMPANYID")."/worklogs?start_date=".$week_start."&end_date=".$week_end.
-                        "&offset=0&limit=300&user_ids=".$TD_userid, []);
-                    $week_worklogs = json_decode($response2->getBody(), true);
+                        "&offset=0&limit=300", []);
+                    $week_worklogs = json_decode($response1->getBody(), true);
                     $week_hours = $week_worklogs['total'];
 
                     //Get today worklog
 
-                    $response3 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
+                    $response2 = $client->request('GET', "https://webapi.timedoctor.com/v1.1/companies/"
                         .env("TD_COMPANYID")."/worklogs?start_date=".date("Y-m-d")."&end_date="
-                        .date("Y-m-d")."&offset=0&limit=100&user_ids=".$TD_userid, []);
+                        .date("Y-m-d")."&offset=0&limit=300", []);
 
-                    $today_worklogs = json_decode($response3->getBody(), true);
+                    $today_worklogs = json_decode($response2->getBody(), true);
                     $today_worklogs = $today_worklogs !== null ? $today_worklogs : ['worklogs' => []];
 
                     $user_list[] = array_merge($today_worklogs['worklogs'], $slack_member, array(

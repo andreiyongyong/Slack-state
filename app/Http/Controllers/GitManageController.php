@@ -83,8 +83,9 @@ class GitManageController extends Controller
             } else {
                 $resp = json_decode($response);
                 foreach ($resp as $key => $res){
+                    if(!is_object($res)) continue;
                     DB::table('repository_allocation')->insert([
-                        ['git_username' => $res->login, 'repository'=> $repo['name'], 'is_delete'=> 0, 'invite_id' => $res->id]
+                        ['git_username' => $res->lzogin, 'repository'=> $repo['name'], 'is_delete'=> 0, 'invite_id' => $res->id]
                     ]);
                 }
             }

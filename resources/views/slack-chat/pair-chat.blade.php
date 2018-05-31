@@ -22,7 +22,7 @@
                       </div>
                       <div style="padding-right: 0;" class="col-xs-6 m-b-2-px">
                           <div class="col-xs-12 messaging-block" data-photo="{{ URL::to('/') }}/image/user_temp.jpg">
-                                  <div class="forum-block slack-massages user_1 wrapper">
+                                  <div id="scroll_user_1" class="forum-block slack-massages user_1 wrapper">
 
                                   </div>
                           </div>
@@ -48,7 +48,7 @@
                       </div>
                       <div style="padding-left: 0;" class="col-xs-6 m-b-2-px">
                           <div class="col-xs-12 messaging-block" data-photo="{{ URL::to('/') }}/image/user_temp.jpg">
-                              <div class="forum-block slack-massages user_2 wrapper">
+                              <div id="scroll_user_2" class="forum-block slack-massages user_2 wrapper">
 
                               </div>
                           </div>

@@ -45,20 +45,20 @@ class SlackController extends Controller
 
         try {
 
-            $users = User::with(['userinfo' => function($query) {
-                $query->where('channel_id','<>', '');            
-
-            }, 'allocation' => function($query) {
+            $users = User::with([
+                'userinfo'
+                , 'allocation' => function($query) {
                 $query->where('is_delete', '=', '0');
 
-            }, 'task_allocation' => function($query) {
+                }, 'task_allocation' => function($query) {
                 $query->where('is_delete', '=', '0');
 
             }])
             ->where('slack_user_id', '<>', '')
                ->where('workspace_id', '<>', '')
-               ->where('level', '=',11)
+//               ->where('level', '=',11)
                ->where('type', '=',2)
+               ->where('channel_id','<>', '')
                ->orderBy('workspace_id', 'asc')
                ->get();
 
@@ -124,7 +124,7 @@ class SlackController extends Controller
                         .date("Y-m-d")."&offset=0&limit=100&user_ids=".$TD_userid, []);
 
                     $today_worklogs = json_decode($response3->getBody(), true);
-
+                    $today_worklogs = $today_worklogs !== null ? $today_worklogs : ['worklogs' => []];
 
                     $user_list[] = array_merge($today_worklogs['worklogs'], $slack_member, array(
                         'week_hours' => $week_hours,

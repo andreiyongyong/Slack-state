@@ -120,10 +120,12 @@
                                                 @endforeach
 
                                             @endforeach
-                                            @foreach($user['items'] as $worklog)
-                                                <p>task name: &nbsp;{{ $worklog['task_name'] }}</p>
-                                                <p>Today: &nbsp;{{ round($worklog['length']/3600,1) }}&nbsp;hours</p>
-                                            @endforeach
+                                            @if(isset($user['items']))
+                                                @foreach($user['items'] as $worklog)
+                                                    <p>task name: &nbsp;{{ $worklog['task_name'] }}</p>
+                                                    <p>Today: &nbsp;{{ round($worklog['length']/3600,1) }}&nbsp;hours</p>
+                                                @endforeach
+                                            @endif
                                             <p>Week: &nbsp;{{ round($user['week_hours']/3600, 1) }}&nbsp;hours</p>
                                         </div>
                                         <div style='clear:both;'></div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Template;
+use Dompdf\Exception;
 use Illuminate\Http\Request;
 
 class TemplateController extends Controller
@@ -26,12 +27,23 @@ class TemplateController extends Controller
      */
     public function store(Request $request)
     {
-        Template::create([
-            'title' => $request['title'],
-            'content' => ''
-        ]);
+        $data = [
+            'error' => false,
+            'msg'   => 'Successfully Created'
+        ];
+        try{
+            Template::create([
+                'title' => $request['title'],
+                'content' => ''
+            ]);
+        }catch (Exception $e){
+            $data = [
+                'error' => true,
+                'msg'   => $e->getMessage()
+            ];
+        }
 
-        return response()->json();
+        return response()->json($data);
     }
 
     public function getTemplates()
@@ -42,29 +54,6 @@ class TemplateController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -72,8 +61,44 @@ class TemplateController extends Controller
      */
     public function destroy($id)
     {
-        Template::find($id)->delete();
+        $data = [
+            'error' => false,
+            'msg'   => 'Successfully Deleted'
+        ];
+        try{
+            Template::find($id)->delete();
+        }catch (Exception $e){
+            $data = [
+                'error' => true,
+                'msg'   => $e->getMessage()
+            ];
+        }
 
-        return response()->json($id);
+        return response()->json($data);
+    }
+
+    public function getContent($id)
+    {
+        return response()->json(Template::find($id)->content);
+    }
+
+    public function saveContent(Request $request)
+    {
+        $data = [
+            'error' => false,
+            'msg'   => 'Successfully Updated'
+        ];
+        try{
+            Template::find($request['id'])->update([
+                'content' => $request['content']
+            ]);
+        }catch (Exception $e){
+            $data = [
+                'error' => true,
+                'msg'   => $e->getMessage()
+            ];
+        }
+
+        return response()->json($data);
     }
 }

@@ -4,7 +4,8 @@ var slackChatGroup = function () {
   instance = {
       user_list: [],
       urls : {
-         sendMessage    : '/send-slack-message-group'
+         sendMessage    : '/send-slack-message-group',
+         getTempContent : '/templates/get-content/'
       }
   };
 
@@ -22,6 +23,16 @@ var slackChatGroup = function () {
       $('.loading-block').toggleClass('display-none', !show);
   };
 
+    instance.renderTemplateContent = function (temp_id) {
+        $.ajax({
+            type: 'get',
+            url: instance.urls.getTempContent + temp_id,
+            success: function (content) {
+                $('#group-message').val(content);
+            }
+        });
+    };
+
   instance.eventListeners = function () {
       $(document).ready(function () {
           var body = $('body');
@@ -37,6 +48,12 @@ var slackChatGroup = function () {
                   $('.select-user').prop('checked', false);
               }
               instance.updateUsers();
+          });
+
+          body.on('click', '.template-block', function () {
+              $('.template-block').toggleClass('active', false);
+              $(this).toggleClass('active', true);
+              instance.renderTemplateContent($(this).attr('data-id'));
           });
 
 

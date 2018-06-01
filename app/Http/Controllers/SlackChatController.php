@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\SlackWorkspace;
+use App\Template;
 use Illuminate\Http\Request;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
@@ -49,8 +50,9 @@ class SlackChatController extends Controller
                 $data['developers'][$key]->status = 'away';
             }
         }
+        $templates = Template::get();
 
-        return view('slack-chat.index', ['data' => $data]);
+        return view('slack-chat.index', ['data' => $data, 'templates' => $templates != null ? $templates : []]);
     }
 
     public function groupMessage(){
@@ -60,7 +62,8 @@ class SlackChatController extends Controller
             ->where('slack_tokens.user_id','=', Auth::user()->id)
             ->where('users.type','=', 2)
             ->get();
-        return view('slack-chat.group', ['developers' => $developers]);
+        $templates = Template::get();
+        return view('slack-chat.group', ['developers' => $developers, 'templates' => $templates != null ? $templates : []]);
     }
     
     public function sendGroupMessage_ajax(Request $request){

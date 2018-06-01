@@ -15,9 +15,9 @@ class ModifyFieldProjectTable extends Migration
     {
         Schema::table('project', function (Blueprint $table) {
             $table->date('meet_time')->change();
-            $table->float('price', 10, 2)->nullable()->change();
-            $table->integer('developer')->nullable()->change();
-            $table->integer('mode')->nullable()->change();
+            $table->float('price', 10, 2)->nullable();
+            $table->integer('developer')->nullable();
+            $table->integer('mode')->nullable();
             
         });
     }
@@ -34,7 +34,6 @@ class ModifyFieldProjectTable extends Migration
             $table->dropColumn('price');
             $table->dropColumn('developer');
             $table->dropColumn('mode');
-
         });
     }
 }

@@ -81,11 +81,10 @@ class GitManageController extends Controller
             if ($err) {
                 echo "cURL Error #:" . $err;
             } else {
-                $resp = json_decode($response);
+                $resp = json_decode($response, true);
                 foreach ($resp as $key => $res){
-                    if(!is_object($res)) continue;
                     DB::table('repository_allocation')->insert([
-                        ['git_username' => $res->login, 'repository'=> $repo['name'], 'is_delete'=> 0, 'invite_id' => $res->id]
+                        ['git_username' => $res['login'], 'repository'=> $repo['name'], 'is_delete'=> 0, 'invite_id' => $res['id']]
                     ]);
                 }
             }

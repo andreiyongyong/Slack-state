@@ -64,6 +64,11 @@
 
     <link href="{{ asset("/bower_components/AdminBSB/css/themes/all-themes.css") }}" rel="stylesheet" />
     <link href="{{ asset("css/site.css") }}" rel="stylesheet"> 
+
+
+    <!-- Jquery Core Js -->
+    <script src="{{ asset ("/bower_components/AdminBSB/plugins/jquery/jquery.min.js") }}"></script>
+
     <style>
         .sidebar-menu-closed {
             width:15px;
@@ -117,9 +122,6 @@
     @include('layouts.footer')
     <!-- ./wrapper -->
     <!-- REQUIRED JS SCRIPTS --> 
-
-    <!-- Jquery Core Js -->
-    <script src="{{ asset ("/bower_components/AdminBSB/plugins/jquery/jquery.min.js") }}"></script>
 
     <!-- Bootstrap Core Js -->
     <script src="{{ asset ("/bower_components/AdminBSB/plugins/bootstrap/js/bootstrap.js") }}"></script>
@@ -182,10 +184,10 @@
     <!-- Jquery CountTo Plugin Js -->
     <script src="{{ asset ("/bower_components/AdminBSB/plugins/jquery-countto/jquery.countTo.js") }}"></script>
 
-       <!-- Morris Plugin Js -->
-    
-       <script src="{{ asset ("/bower_components/AdminBSB/plugins/raphael/raphael.min.js") }}"></script>
-       <script src="{{ asset ("/bower_components/AdminBSB/plugins/morrisjs/morris.js") }}"></script>
+   <!-- Morris Plugin Js -->
+
+   <script src="{{ asset ("/bower_components/AdminBSB/plugins/raphael/raphael.min.js") }}"></script>
+   <script src="{{ asset ("/bower_components/AdminBSB/plugins/morrisjs/morris.js") }}"></script>
  
     <!-- ChartJs -->
     <script src="{{ asset ("/bower_components/AdminBSB/plugins/chartjs/Chart.bundle.js") }}"></script>
@@ -267,6 +269,8 @@
                 $(this).hide();
                 $('#close_menu').show();
             });
+
+            $(document).trigger('after_ready');
         }); 
 </script>
 <script src="{{ asset('js/site.js') }}"></script>

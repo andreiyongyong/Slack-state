@@ -262,5 +262,30 @@ class ProjectController extends Controller
         return redirect()->back()->withTasks($tasks);
     }
 
-    
+    public function editTask(Request $request) {
+        $id = $request['id'];
+        Task::findOrFail($id);
+        $input = [
+            'task_name' => $request['task_name'],
+            'price' => $request['price']
+        ]; 
+
+        Task::where('id', $id)
+            ->update($input);
+        return redirect()->back();
+    }
+
+    public function removeTask(Request $request){
+        Task::where('id', $request['id'])->delete();
+
+        if($request->ajax())
+        {
+            $response['status'] = 'success';
+        }
+        else{
+            $response['error'] = 'error';
+        }
+        return response()->json($response) ;
+    }
+
 }

@@ -101,29 +101,34 @@
                             <th>Action</th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id = "task_table">
                         @foreach ($tasks as $task)
-                            <tr>
-                                <td>{{ $task->id }}</td>
-                                <td>{{ $task->task_name }}</td>
-                                <td>{{ $task->price }}</td>
-                                <td>{{ $task->created_at }}</td>
-                                <td align="center">
-                                    <form class="row" method="POST" action="{{ url('project/removeTask') }}" onsubmit = "return confirm('Are you sure?')">
-                                            <input type="hidden" name="id" value="{{ $task->id }}">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <a href="{{ url('project/editTask', ['id' => $project['id']]) }}" class="btn btn-info waves-effect">
-                                            Edit
-                                            </a>
-                                            {{--@if ($user->username != Auth::user()->username)--}}
-                                            <button type="submit" class="btn btn-danger waves-effect">
-                                            Delete
-                                            </button>
-                                            {{--@endif--}}
-                                    </form>
-
-                                </td>
-                            </tr>
+                            <form class="row" method="POST" action="{{ url('project/editTask') }}" >
+                                <tr>
+                                    <td>{{ $task->id }}</td>
+                                    <td>
+                                        <div style="text-decoration: underline;">{{ $task->task_name }}</div>
+                                        <input name="task_name" value="{{ $task->task_name }}" hidden>
+                                    </td>
+                                    <td>
+                                        <div style="text-decoration: underline;">{{ $task->price }}</div>
+                                        <input type="number" name="price" value="{{ $task->price }}" hidden>
+                                    </td>
+                                    <td>{{ $task->created_at }}</td>
+                                    <td align="center">
+                                        <input type="hidden" name="id" class="task_id" value="{{ $task->id }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <button type ="submit" class="btn btn-info waves-effect">
+                                        Save
+                                        </button>
+                                        {{--@if ($user->username != Auth::user()->username)--}}
+                                        <a class="btn btn-danger waves-effect del_task" data-task_id = {{$task->id}}>
+                                        Delete
+                                        </a>
+                                        {{--@endif--}}
+                                    </td>
+                                </tr>
+                            </form>
                         @endforeach
                         </tbody>
                     </table>
@@ -134,6 +139,7 @@
 </div> 
 <script type="text/javascript">
     $(document).ready(function(){
+
         $("#save").click(function(){
             p_name = $("#p_name").val();
             p_client = $("#p_client").val();
@@ -141,6 +147,7 @@
             level = $("#level").val();
             status = $("#status").val();
             hot = $("#hot").val();
+
             $.ajax({
                 type: "POST",
                 url: "/project/editProject",
@@ -154,6 +161,32 @@
                 }
             })
         })
+        
+        $("#task_table td").click(function(e){
+            var tag = $(this).children();
+            tag.first().hide();
+            tag.last().show();
+        });
+
+        $(".del_task").click(function(e){
+            console.log(e);
+            task_id = $(this).data('task_id');
+            if(!confirm("Are you sure?")) return;
+            $.ajax({
+                type: "POST",
+                url: "/project/removeTask",
+                data: {id: task_id},
+                success: function(resp){
+                    console.log(resp);
+                    if(resp.status == 'success'){
+                        // location.reload();
+                    }else{
+                        alert('ajax error');
+                    }
+                }
+            })
+        });
+
     });
 </script>
 @endsection

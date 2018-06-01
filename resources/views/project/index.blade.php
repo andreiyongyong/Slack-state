@@ -125,7 +125,6 @@
                             result.push("<a href='/project/"+item.id+"/edit'>Edit</a>");
                             result.push("");
                             // .... add all the values required
-                            console.log(result);
                             return result;
                         });
                         mytable.rows.add(result); // add to DataTable instance

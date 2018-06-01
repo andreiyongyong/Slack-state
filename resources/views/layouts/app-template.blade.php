@@ -63,12 +63,10 @@
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
 
     <link href="{{ asset("/bower_components/AdminBSB/css/themes/all-themes.css") }}" rel="stylesheet" />
-    <link href="{{ asset("css/site.css") }}" rel="stylesheet"> 
+    <link href="{{ asset("css/site.css") }}" rel="stylesheet">
 
-
-    <!-- Jquery Core Js -->
-    <script src="{{ asset ("/bower_components/AdminBSB/plugins/jquery/jquery.min.js") }}"></script>
-
+      <!-- Jquery Core Js -->
+      <script src="{{ asset ("/bower_components/AdminBSB/plugins/jquery/jquery.min.js") }}"></script>
     <style>
         .sidebar-menu-closed {
             width:15px;
@@ -121,7 +119,7 @@
     <!-- Footer -->
     @include('layouts.footer')
     <!-- ./wrapper -->
-    <!-- REQUIRED JS SCRIPTS --> 
+    <!-- REQUIRED JS SCRIPTS -->
 
     <!-- Bootstrap Core Js -->
     <script src="{{ asset ("/bower_components/AdminBSB/plugins/bootstrap/js/bootstrap.js") }}"></script>
@@ -146,8 +144,6 @@
 
     <!-- Waves Effect Plugin Js -->
     <script src="{{ asset ("/bower_components/AdminBSB/plugins/node-waves/waves.js") }}"></script>
-
-    
 
     <!-- Dropzone Plugin Js -->
     <script src="{{ asset ("/bower_components/AdminBSB/plugins/dropzone/dropzone.js") }}"></script>
@@ -231,21 +227,20 @@
 
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
-        ]) !!}; 
+        ]) !!};
 
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-    
+        var mytable;
         $(document).ready(function() {        
             // $('#log_date').datepicker({
             //   autoclose: true,
             //   format: 'yyyy/mm/dd'
             // });
-            $("#DataTables_Table_0").DataTable(); 
+            mytable = $("#DataTables_Table_0").DataTable();
 
             $('.js-modal-buttons .btn').on('click', function () {
                 var color = $(this).data('color');
@@ -274,6 +269,7 @@
         }); 
 </script>
 <script src="{{ asset('js/site.js') }}"></script>
+@yield('project-scripts')
 @yield('slack-chat-scripts')
 @yield('slack-chat-pair-scripts')
 @yield('slack-chat-group-scripts')

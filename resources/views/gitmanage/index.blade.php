@@ -1,6 +1,5 @@
 @extends('gitmanage.base')
-@section('action-content') 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+@section('action-content')
 <script>
 $(document).ready(function() {
     var git_username, repos_name = [];

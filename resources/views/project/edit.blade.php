@@ -31,7 +31,7 @@
                                     <select class="form-control show-tick" id = 'level'>
                                         <?php $level_array = array("LV1","LV2","LV3","LV4","LV5"); ?>
                                         @foreach($level_array as $key=>$level)
-                                            <option value="{{ ($key+1) }}"  {{ $project->level == $level ? 'selected="selected"' : '' }}>{{ $level }}</option>
+                                            <option {{ $project->level == $level ? 'selected="selected"' : '' }}>{{ $level }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -39,7 +39,7 @@
                                     <select class="form-control show-tick" id = "status">
                                         <?php $status_array = array("Upcoming","Live","Hold","Closed","Deleted"); ?>
                                         @foreach($status_array as $key=>$status)
-                                            <option value="{{ ($key+1) }}"  {{ $project->status == $status ? 'selected="selected"' : '' }}>{{ $status }}</option>
+                                            <option {{ $project->status == $status ? 'selected="selected"' : '' }}>{{ $status }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -47,7 +47,7 @@
                                     <select class="form-control show-tick" id= "hot">
                                         <?php $hot_array = array("Hot","Normal","Loose"); ?>
                                         @foreach($hot_array as $key=>$hot)
-                                            <option value="{{ ($key+1) }}"  {{ $project->hot == $hot ? 'selected="selected"' : '' }}>{{ $hot }}</option>
+                                            <option {{ $project->hot == $hot ? 'selected="selected"' : '' }}>{{ $hot }}</option>
                                         @endforeach
                                         <option>Hot</option>
                                         <option>Normal</option>
@@ -137,7 +137,6 @@
         </div>
     </div>
 </div> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
 

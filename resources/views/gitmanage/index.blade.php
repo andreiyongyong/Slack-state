@@ -21,11 +21,12 @@ $(document).ready(function() {
             // dataType:"json",
             success: function( resp ) {
                 var flag = 0;
-                $(".uproject").html("<li class='list-group-item'>No data available in table</li>");
+            //    $(".uproject").html("<li class='list-group-item'>No data available in table</li>");
+                $('.uproject').html("");
                 for ( i = 0 ; i < resp.length; i++){
                     if(resp[i].git_username == git_username.trim()){
-                        if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-invite_id =  "+resp[i].invite_id+">"+resp[i].repository+"</li>");
-                        else $(".uproject").append("<li class='list-group-item alloc' data-invite_id =  "+resp[i].invite_id+">"+resp[i].repository+"</li>");
+                        if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-repo_name =  "+resp[i].repository+">"+resp[i].repository+"</li>");
+                        else $(".uproject").append("<li class='list-group-item alloc' data-repo_name =  "+resp[i].repository+">"+resp[i].repository+"</li>");
                         flag = 1;
                     }
                 }
@@ -38,7 +39,7 @@ $(document).ready(function() {
                     {{--resp = JSON.parse(response.string);--}}
                     {{--for ( i = 0 ; i < resp.length; i++){--}}
                         {{--if(resp[i].owner.login == "{{ env('GITHUB_USERNAME') }}")--}}
-                            {{--$(".uproject").append("<li class='list-group-item alloc' data-invite_id=  "+resp[i].owner.id+">"+resp[i].name+"</li>");--}}
+                            {{--$(".uproject").append("<li class='list-group-item alloc' data-repo_name=  "+resp[i].name+">"+resp[i].name+"</li>");--}}
                     {{--}--}}
                 {{--}--}}
             },
@@ -90,7 +91,7 @@ $(document).ready(function() {
                     data = response.string;
                     for ( i = 0 ; i < data.length; i++){
                         resp = JSON.parse(data[i]);
-                        $(".uproject").append("<li class='list-group-item alloc' data-invite_id =  "+resp.inviter.id+">"+resp.repository.name+"</li>");
+                        $(".uproject").append("<li class='list-group-item alloc' data-repo_name =  "+resp.repository.name+">"+resp.repository.name+"</li>");
                   
                     }
                 }
@@ -98,16 +99,16 @@ $(document).ready(function() {
         })
     });
     // when click second table...
-    var del_invite = [];
+    var del_repos = [];
     $(".uproject").on('click', '.alloc', function(){
         if($(this).hasClass("selected")){
             $(this).css("border", "1px solid #ddd");
             $(this).removeClass("selected");
-            var index = del_invite.indexOf($(this).data('invite_id'));
-            del_invite.splice(index, 1);
+            var index = del_repos.indexOf($(this).data('repo_name'));
+            del_repos.splice(index, 1);
         }
         else {
-            del_invite.push($(this).data('invite_id'));
+            del_repos.push($(this).data('repo_name'));
             $(this).addClass("selected");
             $(this).css("border", "2px solid red");
         }
@@ -115,26 +116,28 @@ $(document).ready(function() {
     });
 
     $("#del_proj").click(function(){
+    	console.log(git_username);
+    	console.log(del_repos);
         if(git_username == '' || git_username == null) {
             alert("Please select a user!");
             return;
         }
-        if(del_invite.length==0){
+        if(del_repos.length==0){
             alert("Please select a project to delete");
             return;
         }
         $.ajax({
             type:"POST",
             url: '/gitmanage/del_invite',
-            data: {git_username: git_username, del_invite: del_invite},
+            data: {git_username: git_username, del_repos: del_repos},
             dataType: "json",
             success: function(resp) {
                 var flag = 0;   
                 $(".uproject").html("");                     
                 for ( i = 0 ; i < resp.length; i++){
                     if(resp[i].git_username == git_username){
-                        if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-invite_id = "+resp[i].invite_id+">"+resp[i].repository+"</li>");
-                        else $(".uproject").append("<li class='list-group-item alloc'  data-invite_id =  "+resp[i].repository+">"+resp[i].repository+"</li>");
+                        if (flag == 0) $(".uproject").html("<li class='list-group-item alloc' data-repo_name = "+resp[i].repository+">"+resp[i].repository+"</li>");
+                        else $(".uproject").append("<li class='list-group-item alloc'  data-repo_name =  "+resp[i].repository+">"+resp[i].repository+"</li>");
                         flag = 1;
                     }
                 }
@@ -197,7 +200,7 @@ $(document).ready(function() {
             </div>
             <div class="body">
                 <ul class="list-group uproject">
-                    <li class="list-group-item" style = "background-color: #f9f9f9;">No data available in table</li>
+                    <!-- <li class="list-group-item" style = "background-color: #f9f9f9;">No data available in table</li> -->
                 </ul>
             </div>
         </div>

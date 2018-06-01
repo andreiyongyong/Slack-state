@@ -31,7 +31,7 @@ class GitManageController extends Controller
      */
     public function index()
     {
-    	$users = User::orderBy('workspace_id', 'asc')->get();
+    	$users = User::where('type', 2)->orderBy('workspace_id', 'asc')->get();
 
     	try {
             $repos = $this->client->api('current_user')->repositories();
@@ -83,6 +83,7 @@ class GitManageController extends Controller
             } else {
                 $resp = json_decode($response);
                 foreach ($resp as $key => $res){
+                    if(!is_object($res)) continue;
                     DB::table('repository_allocation')->insert([
                         ['git_username' => $res->login, 'repository'=> $repo['name'], 'is_delete'=> 0, 'invite_id' => $res->id]
                     ]);
@@ -241,15 +242,43 @@ class GitManageController extends Controller
     }
 
     public function delinvite(Request $request){
-        $delinvite = array();
-        $delinvite = $request->del_invite;
+        $delrepos = array();
+        $delrepos = $request->del_repos;
         $gitname = $request->git_username;
      
-        for($i = 0; $i<count($delinvite); $i++){
+        for($i = 0; $i<count($delrepos); $i++){
             DB::table('repository_allocation')->where([
                 ['git_username' ,'=', $gitname],
-                ['invite_id','=', $delinvite[$i]]
+                ['repository','=', $delrepos[$i]]
             ])->update(['is_delete' => '1']);
+
+            $curl = curl_init();
+
+			curl_setopt_array($curl, array(
+              CURLOPT_USERAGENT => "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13",
+			  CURLOPT_URL => "https://api.github.com/repos/".env('GITHUB_USERNAME')."/".$delrepos[$i]."/collaborators/".$gitname,
+			  CURLOPT_RETURNTRANSFER => true,
+			  CURLOPT_ENCODING => "",
+			  CURLOPT_MAXREDIRS => 10,
+			  CURLOPT_TIMEOUT => 30,
+			  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			  CURLOPT_CUSTOMREQUEST => "DELETE",
+			  CURLOPT_HTTPHEADER => array(
+			    "Authorization: Bearer ".env("GITHUB_TOKEN"),
+			    "Cache-Control: no-cache"
+			  ),
+			));
+
+			$response = curl_exec($curl);
+			$err = curl_error($curl);
+
+			curl_close($curl);
+
+			if ($err) {
+			  echo "cURL Error #:" . $err;
+			} else {
+//			  echo $response;
+			}
         }
 
         $result = DB::table('repository_allocation')->where([

@@ -18,6 +18,6 @@ class market extends Model
      * @var array
      */ 
     protected $fillable = [
-        'date' , 'country' , 'market_name', 'market_id', 'email', 'pssword', 'rising_talent' , 'test' , 'bid_date' , 'lancer_type' , 'security_question' , 'security_answer' , 'series'
+        'id', 'date' , 'country' , 'market_name', 'market_id', 'email', 'password', 'rising_talent' , 'test' , 'bid_date' , 'lancer_type' , 'security_question' , 'security_answer' , 'series'.'status', 'running'
    ];
 }

@@ -16,6 +16,7 @@
         "laravel/tinker": "~1.0",
         "lisennk/laravel-slack-web-api": "^0.1.1",
         "maatwebsite/excel": "^2.1",
+        "nesbot/carbon": "^1.29",
         "wgmv/laravel-slack-api": "^0.5.0"
     },
     "require-dev": {

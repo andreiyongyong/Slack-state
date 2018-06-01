@@ -41,7 +41,13 @@ Route::resource('forum-master', 'ForumMasterController');
 Route::post('forum-master/add-forum-answer', 'ForumMasterController@addForumAnswer');
 Route::resource('aws-master', 'AwsMasterController');
 Route::resource('project' , 'ProjectController');
+
+Route::get('market/doneStatus' , 'MarketController@doneStatus')->name('market.doneStatus');
+Route::get('market/toggleStatus' , 'MarketController@toggleStatus')->name('market.toggleStatus');
+Route::get('market/toggleRunState' , 'MarketController@toggleRunState')->name('market.toggleRunState');
+Route::get('market/toggleRunningState' , 'MarketController@toggleRunningState')->name('market.toggleRunningState');
 Route::resource('market' , 'MarketController');
+
 Route::resource('slack-chat-pair' , 'SlackChatPairController');
 
 Route::resource('slack-admin-state' , 'SlackAdminStateController');

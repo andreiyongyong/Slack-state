@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
+use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
-use App\market;
+use App\Market;
+use Carbon\Carbon;
+use App\ResourceManagement;
 
 class MarketController extends Controller
 {
@@ -24,10 +26,48 @@ class MarketController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {  
-        $market = market::paginate(10);
+    {
+        $status_list = array('all', 'pending', 'updated', 'done');
+        $running_list = array('all', 'run', 'running');
+/*
+        $status = Input::get('status');
+        $running = Input::get('running');
 
-        return view('market/index', ['markets' => $market]);
+        $markets = (($status == '' || $status == 'all') && ($running == '' || $running == 'all')) ? market::get() :
+            market::where(['status' => $status, 'running' => $running])->get();
+        ;
+        
+*/
+        $markets = market::get();
+
+        foreach ($markets as $key => $market) {
+            $date_today = Carbon::today();
+            $date = Carbon::parse($market->date);
+
+            $date_bid = $date;
+            $date_bid->day = $market->bid_date;
+            $date_bid_this_month = $date_bid;
+
+            if ($date_today->gt($date_bid))
+                $date_bid_this_month = $date_bid->addMonths(1);
+            else
+                $date_bid_this_month = $date_bid;
+
+            if ($market->status != 'done') {
+                $date_diff = $date_bid_this_month->diffInDays($date_today);
+                $updated_or_pending = $date_diff < 30 ? 'updated' : 'pending';
+                $market->status = $updated_or_pending;
+                market::where('id', $market->id)->update(['status' => ($updated_or_pending == 'updated' ? 2 : 1)]);
+                // $market->running = ($market->status == 'updated' ? 0 : 1);
+                // market::where('id', $market->id)->update(['running' => $market->running]);
+            }
+        }
+
+        return view('market/index', [
+            'markets' => $markets,  
+            'status_list' => $status_list,
+            'running_list' => $running_list,
+        ]);
     }
 
     /**
@@ -136,6 +176,40 @@ class MarketController extends Controller
     public function destroy($id)
     {
         market::where('id', $id)->delete();
+        return redirect()->intended('/market');
+    }
+
+    public function toggleStatus(Request $request) {
+        $date_today = Carbon::today();
+
+        market::where('id', $request['id'])->update(['status' => 'updated']);
+        market::where('id', $request['id'])->update(['date' => $date_today]);
+        //echo $date_today;
+        return redirect()->intended('/market');
+    }
+
+    public function doneStatus(Request $request) {
+        $date_today = Carbon::today();
+
+        market::where('id', $request['id'])->update(['status' => 'done']);
+        market::where('id', $request['id'])->update(['date' => $date_today]);
+        //echo $date_today;
+        return redirect()->intended('/market');
+    }
+
+    public function toggleRunState(Request $request) {
+        $date_today = Carbon::today();
+
+        market::where('id', $request['id'])->update(['running' => 1]);
+
+        return redirect()->intended('/market');
+    }
+
+    public function toggleRunningState(Request $request) {
+        $date_today = Carbon::today();
+
+        market::where('id', $request['id'])->update(['running' => 0]);
+
         return redirect()->intended('/market');
     }
 }

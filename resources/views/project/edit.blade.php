@@ -144,23 +144,9 @@
             p_name = $("#p_name").val();
             p_client = $("#p_client").val();
             id = $("#p_id").val();
-            level_num = $("#level").val();
-            status_num = $("#status").val();
-            hots_num = $("#hot").val();
-            levels = ["LV1","LV2","LV3","LV4","LV5"];
-            for(i = 1; i <= 5; i++){
-                if(level_num == i) level = levels[(i-1)];
-            }
-
-            statuss = ["Upcoming","Live","Hold","Closed","Deleted"];
-            for(i = 1; i <= 5; i++){
-                if(status_num == i) status = statuss[(i-1)];
-            }
-
-            hots = ["Hot","Normal","Loose"];
-            for(i = 1; i <= 5; i++){
-                if(hots_num == i) hot = hots[(i-1)];
-            }
+            level = $("#level").val();
+            status = $("#status").val();
+            hot = $("#hot").val();
 
             $.ajax({
                 type: "POST",
@@ -168,6 +154,7 @@
                 data: {p_name: p_name, p_client:p_client, id: id, level:level, status:status, hot:hot},
                 success: function(resp){
                     if(resp.status == 'success'){
+
                     }else{
                         alert('ajax error');
                     }

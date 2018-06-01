@@ -27,7 +27,7 @@
               </div> 
               <div class="body">
                   <div class="table-responsive">
-                      <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                      <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover dataTable">
                           <thead> 
                               <tr>
                                 <th></th>

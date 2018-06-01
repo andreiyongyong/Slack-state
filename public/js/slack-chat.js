@@ -9,7 +9,8 @@ var slackChat = function () {
       urls : {
          updateStatuses : '/update-statuses',
          getChannelChat : '/get-channel-chat',
-         sendMessage : '/send-slack-message'
+         sendMessage    : '/send-slack-message',
+         getTempContent : '/templates/get-content/'
       }
   };
 
@@ -31,6 +32,16 @@ var slackChat = function () {
       instance.selectDeveloper($('.select-developer').first());
       instance.eventListeners();
   };
+
+    instance.renderTemplateContent = function (temp_id) {
+        $.ajax({
+            type: 'get',
+            url: instance.urls.getTempContent + temp_id,
+            success: function (content) {
+                $('#slack-message').val(content);
+            }
+        });
+    };
 
   instance.toggleLoader = function (show) {
       $('.loading-block').toggleClass('display-none', !show);
@@ -67,6 +78,12 @@ var slackChat = function () {
 
           body.on('click', '.select-developer', function () {
               instance.selectDeveloper($(this));
+          });
+
+          body.on('click', '.template-block', function () {
+              $('.template-block').toggleClass('active', false);
+              $(this).toggleClass('active', true);
+              instance.renderTemplateContent($(this).attr('data-id'));
           });
 
           body.on('click', '#send-message', function () {

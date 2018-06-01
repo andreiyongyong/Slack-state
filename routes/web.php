@@ -126,3 +126,5 @@ Route::get('/templates' , 'TemplateController@index')->name('templates.index');
 Route::post('/templates/store' , 'TemplateController@store');
 Route::get('/templates/get' , 'TemplateController@getTemplates');
 Route::get('/templates/destroy/{id}' , 'TemplateController@destroy');
+Route::get('/templates/get-content/{id}' , 'TemplateController@getContent');
+Route::post('/templates/save-content' , 'TemplateController@saveContent');

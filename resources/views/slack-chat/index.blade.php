@@ -12,7 +12,15 @@
           <div class="card">
               <div class="body" style="position: relative">
                   <div class="row clearfix">
-                      <div class="col-xs-12 m-b-2-px">
+                      <div class="col-md-2 col-xs-12 group-users">
+                          <h4>Message Templates</h4>
+                          @foreach($templates as $template)
+                              <div class="col-xs-12 template-block" data-id="{{$template->id}}">
+                                  {{$template->title}}
+                              </div>
+                          @endforeach
+                      </div>
+                      <div class="col-xs-10 m-b-2-px">
                           <div class="col-xs-12 m-b-2-px">
                               <div class="form-group form-float">
                                       @foreach($data['developers'] as $developer)
@@ -44,8 +52,7 @@
                                   <div class="col-xs-11 m-b-2-px">
                                       <div class="form-group form-float">
                                           <div class="form-line">
-                                              <input type="text" class="form-control" name="message" id="slack-message" value="">
-                                              <label class="form-label">Message</label>
+                                              <textarea id="slack-message" name="message" class="form-control" style="height: 100px;"></textarea>
                                           </div>
                                       </div>
                                   </div>

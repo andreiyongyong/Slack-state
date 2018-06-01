@@ -12,7 +12,7 @@
           <div class="card">
               <div class="body" style="position: relative">
                   <div class="row clearfix">
-                      <div class="col-xs-5 m-b-2-px">
+                      <div class="col-xs-4 m-b-2-px">
                           <div class="col-xs-12">
                               <div class="col-xs-12 group-users">
                                   <input type="checkbox"  id="select-users-all" value="1">
@@ -49,7 +49,15 @@
                               </div>
                           </div>
                       </div>
-                      <div class="col-xs-7 m-b-2-px">
+                      <div class="col-md-2 col-xs-12 group-users">
+                          <h4>Message Templates</h4>
+                          @foreach($templates as $template)
+                              <div class="col-xs-12 template-block" data-id="{{$template->id}}">
+                                  {{$template->title}}
+                              </div>
+                          @endforeach
+                      </div>
+                      <div class="col-xs-6 m-b-2-px">
                           <div class="col-xs-12">
                               <textarea id="group-message" class="form-control" style="height: 300px;"></textarea>
                           </div>

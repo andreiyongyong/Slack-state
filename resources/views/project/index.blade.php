@@ -27,7 +27,7 @@
               </div> 
               <div class="body">
                   <div class="table-responsive">
-                      <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                      <table id = 'DataTables_Table_0' class="table table-bordered table-striped table-hover dataTable">
                           <thead> 
                               <tr>
                                 <th></th>
@@ -90,8 +90,6 @@
           </div>
       </div> 
   </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript">
     var mytable;
     $(document).ready(function(){

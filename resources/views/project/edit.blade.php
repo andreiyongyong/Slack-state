@@ -64,7 +64,7 @@
             <div class="body">
                 <label class="form-label">New Task</label>
                 <form id="project" class="form-horizontal" role="form" method="POST" action="{{url('project/addTask')}}">
-                    <input type="hidden" name="id" id = "p_id"value="{{$project->id}}">
+                    <input type="hidden" name="id" id = "p_id" value="{{$project->id}}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     {{ csrf_field() }}
                     <div class="row clearfix">

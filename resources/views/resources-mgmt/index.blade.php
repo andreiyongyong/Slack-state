@@ -43,10 +43,18 @@
                           <tbody>
                           @foreach ($resources as $resource)
                               <tr>
-                                  <td>{{ $resource->project }}</td>
+                                  <td>{{ $resource->project_info->p_name }}</td>
                                   <td>{{ $resource->name }}</td>
                                   <td>{{ $resource->content }}</td>
-                                  <td>{{ $resource->type }}</td>
+
+                                  @if ($resource->type == '0')
+                                      <td>Admin</td>
+                                  @elseif ($resource->type == '1')
+                                      <td>Member</td>
+                                  @else
+                                      <td>Developer</td>
+                                  @endif
+
                                   <td>{{ $resource->level }}</td>
                                   <td align = "center">
                                       <form class="row" method="POST" action="{{ route('resource-management.destroy', ['id' => $resource->id]) }}" onsubmit = "return confirm('Are you sure?')">

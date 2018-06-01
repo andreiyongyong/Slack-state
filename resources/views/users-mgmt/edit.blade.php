@@ -127,7 +127,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="number" class="form-control" name="age" id="age" value="{{ $user->age  }}"  min="1" max="3" required>
+                                            <input type="number" class="form-control" name="age" id="age" value="{{ $user->age  }}"  min="1" max="150" required>
                                             <label class="form-label">Age</label>
                                         </div> 
                                         <div class="help-info"> Max. 3 characters</div>

@@ -1,6 +1,32 @@
 @extends('users-mgmt.base') 
 
 @section('action-content')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        //when click project list ...
+        $("#project").change(function(){
+            
+            project = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: "{{URL::to('/forum-master/taskfromproj')}}",
+                data: {project: project},
+                success: function(resp){
+                    
+                    var html =  '<label class="form-label">Task</label>'
+                              + '<select name="task" id="task">';  
+                    for ( i = 0 ; i < resp.length; i++){
+                        html +=        '<option value="' + resp[i].id+ '">' + resp[i].task_name + '</option>';                 
+                    }
+                    html +=     '</select>';
+                    $(".task-form").html(html);
+                    $("#task").selectpicker('refresh');
+                }
+            })
+        })
+    });
+</script>
 <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 body-container">
         <div class="card">
@@ -21,7 +47,7 @@
                             </div> -->
                             <div>
                                 <label class="form-label">Project</label>
-                                <select name="project">
+                                <select name="project" id="project">
                                     @foreach($projects as $project)
                                         <option value="{{$project->id}}" >{{$project->p_name}}</option>
                                     @endforeach
@@ -31,13 +57,21 @@
                     </div>
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <div class="form-group form-float">
+                            <div class="task-form">
+                                <label class="form-label">Task</label>
+                                <select name="task" id="task">
+                                    @foreach($tasks as $task)
+                                        <option value="{{$task->id}}">{{$task->task_name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!-- <div class="form-group form-float">    
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="task" id="task" value="{{ old('task') }}"  min="5" max="191" required>
                                     <label class="form-label">Task</label>
                                 </div>
                                 <div class="help-info"> Max. 191 characters</div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="row clearfix">

@@ -41,8 +41,8 @@
                           <tbody>
                           @foreach ($forummaster as $forum)
                               <tr>
-                                  <td>{{ $forum->project_info->p_name }}</td>
-                                  <td>{{ $forum->task }}</td>
+                                  <td>{{ $forum->p_name }} id:{{$forum->id}}</td>
+                                  <td>{{ $forum->task_name }}</td>
                                   <td>{{ $forum->question }}</td>
                                   <td>{{ $forum->posted_date }}</td>
                                   <td align = "center">

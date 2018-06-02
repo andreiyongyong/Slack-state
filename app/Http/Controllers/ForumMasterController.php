@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\ForumMaster;
 use App\ForumInstance;
 use App\Project;
@@ -17,8 +18,11 @@ class ForumMasterController extends Controller
      */
     public function index()
     {
-        $forummaster = ForumMaster::with('project_info')->get();
-
+        $forummaster = DB::table('forummaster')
+                ->join('project', 'forummaster.project', '=', 'project.id')
+                ->join('tasks', 'forummaster.task', '=', 'tasks.id')
+                ->select('forummaster.id as id', 'project.p_name', 'tasks.task_name', 'forummaster.question', 'forummaster.posted_date')
+                ->get();
         return view('forummaster/index', ['forummaster' => $forummaster]);
     }
 
@@ -31,7 +35,10 @@ class ForumMasterController extends Controller
     {
 
         $projects = Project::get();
-        return view('forummaster/create', ['projects' => $projects]);
+        $project = Project::first()->pluck('id');
+        $tasks = DB::table('tasks')->where('project_id', '=', $project)
+                    ->get();
+        return view('forummaster/create', ['projects' => $projects, 'tasks' => $tasks]);
     }
 
     /**
@@ -78,12 +85,15 @@ class ForumMasterController extends Controller
     {
         $forum = ForumMaster::find($id);
         $projects = Project::get();
+        $project = $forum['project'];
+        $tasks = DB::table('tasks')->where('project_id', '=', $project)
+                ->get();
         // Redirect to user list if updating user wasn't existed
         if ($forum == null || $forum->count() == 0) {
             return redirect()->intended('/forum-master');
         }
 
-        return view('forummaster/edit', ['forum' => $forum, 'projects' => $projects]);
+        return view('forummaster/edit', ['forum' => $forum, 'projects' => $projects, 'tasks' => $tasks]);
     }
 
     /**
@@ -135,6 +145,18 @@ class ForumMasterController extends Controller
             'answer' => $request['answer']
         ]);
         return redirect()->intended('/forum-master/'.$request['forum_mid']);
+    }
+
+    public function taskfromproj(Request $request){
+        $project = $request['project'];
+        $tasks = DB::table('tasks')->where('project_id', '=', $project)
+                     ->get();
+        
+        if($request->ajax()){
+            return response()->json($tasks);
+        } else {
+            return "not found";
+        }
     }
 }
 

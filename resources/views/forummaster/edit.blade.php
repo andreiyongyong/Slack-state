@@ -43,7 +43,7 @@
                             <div class="form-group form-float">
                                 <div>
                                     <lavel class="form-label">Project</label>
-                                    <select name="project" id="project">
+                                    <select name="project" id="project" data-live-search="true">
                                         @foreach($projects as $project)
                                             <option value="{{$project->id}}" {{$project->id == $forum->project ? "selected": ""}}>{{$project->p_name}}</option>
                                         @endforeach

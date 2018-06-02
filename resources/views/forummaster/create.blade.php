@@ -47,7 +47,7 @@
                             </div> -->
                             <div>
                                 <label class="form-label">Project</label>
-                                <select name="project" id="project">
+                                <select name="project" id="project" data-live-search="true">
                                     @foreach($projects as $project)
                                         <option value="{{$project->id}}" >{{$project->p_name}}</option>
                                     @endforeach

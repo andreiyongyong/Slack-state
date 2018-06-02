@@ -1,6 +1,6 @@
 @extends('allocatetask.base')
 @section('action-content') 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
     var id = 0, task_ids = [];
@@ -61,7 +61,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: '/taskallocation/updatetask',
+            url: "{{URL::to('/taskallocation/updatetask')}}",
             data: {userid: id, task_ids: task_ids},
             success: function( resp ) {
                 var flag = 0;   
@@ -99,12 +99,12 @@ $(document).ready(function() {
             return;
         }
         if(del_task_ids.length==0){
-            alert("Please select a project to delete");
+            alert("Please select a task to delete");
             return;
         }
         $.ajax({
             type:"POST",
-            url: '/taskallocation/del_task',
+            url: '{{URL::to("/taskallocation/del_task")}}',
             data: {userid : id, del_task_ids: del_task_ids},
             success: function(resp) {
                 var flag = 0;   
@@ -120,12 +120,13 @@ $(document).ready(function() {
         })
     })
     //when click project list...
-    $("ul.dropdown-menu li").click(function(){
-        project_name = $(this).text();
+    $(".show-tick").change(function(){
+        project = $(this).val();
+        //alert(project);
         $.ajax({
             type: "POST",
-            url: '/taskallocation/taskfromproj',
-            data: {project_name : project_name},
+            url: '{{URL::to("/taskallocation/taskfromproj")}}',
+            data: {project : project},
             success: function(resp) {
                 var flag = 0;   
 

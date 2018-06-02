@@ -12,12 +12,20 @@
                     {{ csrf_field() }} 
                     <div class="row clearfix">
                         <div class="col-md-12">
-                            <div class="form-group form-float">
+                            <!-- <div class="form-group form-float">
                                 <div class="form-line">
                                     <input type="text" class="form-control" name="project" id="project" value="{{ old('project') }}"  min="1" max="100" required>
                                     <label class="form-label">Project</label>
                                 </div>
                                 <div class="help-info"> Max. 100 characters</div>
+                            </div> -->
+                            <div>
+                                <label class="form-label">Project</label>
+                                <select name="project">
+                                    @foreach($projects as $project)
+                                        <option value="{{$project->id}}" >{{$project->p_name}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>

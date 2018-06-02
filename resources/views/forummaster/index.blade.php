@@ -41,7 +41,7 @@
                           <tbody>
                           @foreach ($forummaster as $forum)
                               <tr>
-                                  <td>{{ $forum->project }}</td>
+                                  <td>{{ $forum->project_info->p_name }}</td>
                                   <td>{{ $forum->task }}</td>
                                   <td>{{ $forum->question }}</td>
                                   <td>{{ $forum->posted_date }}</td>

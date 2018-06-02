@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ForumMaster;
 use App\ForumInstance;
+use App\Project;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -16,7 +17,7 @@ class ForumMasterController extends Controller
      */
     public function index()
     {
-        $forummaster = ForumMaster::paginate(5);
+        $forummaster = ForumMaster::with('project_info')->get();
 
         return view('forummaster/index', ['forummaster' => $forummaster]);
     }
@@ -29,7 +30,8 @@ class ForumMasterController extends Controller
     public function create()
     {
 
-        return view('forummaster/create');
+        $projects = Project::get();
+        return view('forummaster/create', ['projects' => $projects]);
     }
 
     /**
@@ -44,7 +46,8 @@ class ForumMasterController extends Controller
             'project' => $request['project'],
             'task' => $request['task'],
             'question' => $request['question'],
-            'posted_date' => $request['posted_date']
+            'posted_date' => $request['posted_date'],
+            'project_id' => $request['project']
         ]);
 
         return redirect()->intended('/forum-master');
@@ -74,12 +77,13 @@ class ForumMasterController extends Controller
     public function edit($id)
     {
         $forum = ForumMaster::find($id);
+        $projects = Project::get();
         // Redirect to user list if updating user wasn't existed
         if ($forum == null || $forum->count() == 0) {
             return redirect()->intended('/forum-master');
         }
 
-        return view('forummaster/edit', ['forum' => $forum]);
+        return view('forummaster/edit', ['forum' => $forum, 'projects' => $projects]);
     }
 
     /**

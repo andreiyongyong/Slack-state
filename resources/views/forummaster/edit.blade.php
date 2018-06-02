@@ -15,11 +15,19 @@
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group form-float">
-                                <div class="form-line">
+                                <div>
+                                    <lavel class="form-label">Project</label>
+                                    <select name="project">
+                                        @foreach($projects as $project)
+                                            <option value="{{$project->id}}" {{$project->id == $forum->project ? "selected": ""}}>{{$project->p_name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <!-- <div class="form-line">
                                     <input type="text" class="form-control" name="project" id="project" value="{{ $forum->project }}"  min="1" max="100" required>
                                     <label class="form-label">Project</label>
                                 </div> 
-                                <div class="help-info"> Max. 100 characters</div>
+                                <div class="help-info"> Max. 100 characters</div> -->
                             </div>
                         </div>
                     </div> 

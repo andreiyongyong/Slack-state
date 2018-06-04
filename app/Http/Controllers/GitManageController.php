@@ -60,6 +60,10 @@ class GitManageController extends Controller
             $this->handleAPIException($e);
         }
 
+        foreach ($repos as $repo ){
+            print_r($repo['name']);
+            print_r('<br>');
+        }
         print_r(count($repos));exit;
 
         DB::table('repository_allocation')->delete();

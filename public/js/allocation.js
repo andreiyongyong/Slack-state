@@ -105,8 +105,17 @@ var Allocation = function () {
           $('#origin').html('');
 
           $.each(data, function (index, el) {
+              var detail_content = '';
+              if(el.details.length > 0){
+                  detail_content = '<div>Details`</div>';
+                  $.each(el.details, function (index, detail) {
+                      detail_content += '<div>'+detail.key+' : '+ detail.value +'</div>';
+                  });
+              }
+
               $('#origin').append('<div id="resource_'+ el.id +'" data-pr_id="'+ el.project_id +'" data-id="'+ el.id +'" class="draggable resource-block ui-draggable ui-draggable-handle ui-sortable-handle"' +
-                  'style="position: relative; left: 0; top: 0;" > <div>Project : '+ el.pr_name +'</div><div>Resource : '+ el.name +'</div></div>');
+                  ' style="position: relative; left: 0; top: 0;" > <div>Project : '+ el.pr_name +'</div><div>Resource : '+ el.name +'</div><div>Content : '+ el.content +'</div>'+detail_content+'</div>');
+
           });
           $(".draggable").draggable({ cursor: "crosshair", revert: "invalid"});
       };
@@ -115,8 +124,16 @@ var Allocation = function () {
           $('#drop').html('');
 
           $.each(data, function (index, el) {
+              var detail_content = '';
+              if(el.details.length > 0){
+                  detail_content = '<div>Details`</div>';
+                  $.each(el.details, function (index, detail) {
+                      detail_content += '<div>'+detail.key+' : '+ detail.value +'</div>';
+                  });
+              }
+
               $('#drop').append('<div id="resource_'+ el.id +'" data-pr_id="'+ el.project_id +'" data-id="'+ el.id +'" class="draggable in_project ui-draggable ui-draggable-handle resource-block ui-sortable-handle"' +
-                  'style="position: relative; left: 0; top: 0;" > <div>Project : '+ el.pr_name +'</div><div>Resource : '+ el.name +'</div></div>');
+                  ' style="position: relative; left: 0; top: 0;" > <div>Project : '+ el.pr_name +'</div><div>Resource : '+ el.name +'</div><div>Content : '+ el.content +'</div>'+detail_content+'</div>');
           });
           $(".draggable").draggable({ cursor: "crosshair", revert: "invalid"});
       };

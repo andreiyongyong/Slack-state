@@ -54,16 +54,17 @@ class GitManageController extends Controller
 
                 foreach ($collaborators as $key => $res){
 
-                    // http://php.net/manual/en/function.array-key-exists.php
-                    if ( isset($res['login']) && isset($repo['name']) && isset($res['id']) ) {
-                        DB::table('repository_allocation')->insert([
-                            ['git_username' => $res['login'],
-                                'repository'=> $repo['name'],
-                                'is_delete'=> 0,
-                                'invite_id' => $res['id']
-                            ]
-                        ]);
-                    }
+                    $gitUsername = empty($res['login']) ? '' : $res['login'];
+                    $repoName = empty($repo['name']) ? '' : $repo['name'];
+                    $repoId = empty($res['id']) ? '' : $res['id'];
+
+                    DB::table('repository_allocation')->insert([
+                        ['git_username' => $gitUsername,
+                            'repository'=> $repoName,
+                            'is_delete'=> 0,
+                            'invite_id' => $repoId
+                        ]
+                    ]);
                 }
             }
         }

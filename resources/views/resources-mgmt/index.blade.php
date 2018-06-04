@@ -43,7 +43,7 @@
                           <tbody>
                           @foreach ($resources as $resource)
                               <tr>
-                                  <td>{{ $resource->project_info->p_name }}</td>
+                                  <td>{{ !empty($resource->project_info) ? $resource->project_info->p_name : "" }}</td>
                                   <td>{{ $resource->name }}</td>
                                   <td>{{ $resource->content }}</td>
 

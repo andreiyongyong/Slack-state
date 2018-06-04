@@ -53,6 +53,7 @@ $app->singleton('Github\Client', function(){
     return $client;
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

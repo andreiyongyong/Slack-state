@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\User;
-use Github\Api\Repository\Collaborators;
 
 class GitManageController extends Controller
 {
@@ -54,17 +53,22 @@ class GitManageController extends Controller
 
     public function updateinfo() {
         try {
-            $repos = $this->client->api('current_user')->repositories();
+            $paginator = new \Github\ResultPager($this->client);
+            $repos = $paginator->fetchAll(
+                $this->client->api('current_user'),
+                'repositories',
+                []
+            );
         }
         catch (\RuntimeException $e){
             $this->handleAPIException($e);
         }
 
-        foreach ($repos as $repo ){
-            print_r($repo['name']);
-            print_r('<br>');
-        }
-        print_r(count($repos));exit;
+//        foreach ($repos as $repo ){
+//            print_r($repo['name']);
+//            print_r('<br>');
+//        }
+//        print_r(count($repos));exit;
 
         DB::table('repository_allocation')->delete();
         foreach ($repos as $repo ){

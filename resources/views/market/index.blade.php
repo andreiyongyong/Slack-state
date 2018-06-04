@@ -79,7 +79,7 @@
                                   <td>{{ $market->rising_talent }}</td>
                                   <td>{{ $market->bid_date }}</td>
                                   <td>{{ $market->lancer_type }}</td>
-                                  @if ($market->status == 'pending')
+                                  @if ($market->status == 'exist')
                                     <td data-status="{{$market->status}}" style="color: red;"><a href="{{ route('market.toggleStatus', ['id' => $market->id]) }}">{{ucfirst($market->status)}}</a></td>
                                   @else
                                     <td data-status="{{$market->status}}" style="color: green;">{{ucfirst($market->status)}}</td>
@@ -95,9 +95,9 @@
                                           <input type="hidden" name="_method" value="DELETE">
                                           <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                           
-                                          @if ($market->status == 'updated')
+                                          <!-- @if ($market->status == 'updated')
                                           <a href="{{ route('market.doneStatus', ['id' => $market->id]) }}"><button type="button" class="btn btn-primary">Done</button></a>
-                                          @endif
+                                          @endif -->
                                           <a href="{{ route('market.edit', ['id' => $market->id]) }}" class="btn btn-info waves-effect">Update</a>
                                           {{--@if ($user->username != Auth::user()->username)--}}
                                           <button type="submit" class="btn btn-danger waves-effect">Delete</button>

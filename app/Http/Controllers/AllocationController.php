@@ -12,7 +12,6 @@ use phpDocumentor\Reflection\Types\Resource;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class AllocationController extends Controller
 {
@@ -65,8 +64,6 @@ class AllocationController extends Controller
             if($project){
                 $project_name = $project->p_name;
                 $resources[$key]->pr_name = $project_name;
-                $resources[$key]->content = (strlen($resource->content) > 100) ? substr($resource->content, 0, 100).'...' : $resource->content;
-                $resources[$key]->details = ResourceDetails::get_metas_by_resource_id($resource->id);
             }else{
                 unset($resources[$key]);
             }
@@ -85,8 +82,6 @@ class AllocationController extends Controller
             if($project){
                 $project_name = $project->p_name;
                 $resources[$key]->pr_name = $project_name;
-                $resources[$key]->content = (strlen($resource->content) > 100) ? substr($resource->content, 0, 100).'...' : $resource->content;
-                $resources[$key]->details = ResourceDetails::get_metas_by_resource_id($resource->id);
             }else{
                 unset($resources[$key]);
             }
@@ -152,10 +147,7 @@ class AllocationController extends Controller
 
                    foreach ($metas as $file){
                        if($file['type'] == 'file'){
-                           Storage::disk('public')->put($file['value'], $file['file_content']);
-                           $response = exec('curl -F file=@' . Storage::disk('public')->path($file['value']) . ' -F channels=' . $user->channel_id . ' -F filename=' . str_replace(' ','_', $file['file_name']) . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');
-                           Storage::disk('public')->delete($file['value']);
-                       }
+                           $response = exec('curl -F file=@' . public_path('/resources/files/') . $file['value']. ' -F channels=' . $user->channel_id . ' -F filename=' . $file['value'] . ' -F token=' . $token->token . ' https://slack.com/api/files.upload');                       }
                    }
 
                 }

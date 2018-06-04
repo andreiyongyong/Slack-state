@@ -79,35 +79,30 @@
                                   <td>{{ $market->rising_talent }}</td>
                                   <td>{{ $market->bid_date }}</td>
                                   <td>{{ $market->lancer_type }}</td>
-                                  @if ($market->status == 'updated')
-                                    <td style="color: green;">UPDATED &nbsp;&nbsp;<a href="{{ route('market.doneStatus', ['id' => $market->id]) }}"><button type="button" class="btn btn-primary" style="float: right; ">DONE</button></a></td> 
-                                  @elseif ($market->status == 'pending')
-                                    <td style="color: red;"><a href="{{ route('market.toggleStatus', ['id' => $market->id]) }}">PENDING &nbsp;&nbsp;</a><a href="{{ route('market.doneStatus', ['id' => $market->id]) }}"><button type="button" class="btn btn-primary" style="float: right;">DONE</button></a></td>
+                                  @if ($market->status == 'pending')
+                                    <td data-status="{{$market->status}}" style="color: red;"><a href="{{ route('market.toggleStatus', ['id' => $market->id]) }}">{{ucfirst($market->status)}}</a></td>
                                   @else
-                                    <td style="color: red;">DONE</td>
+                                    <td data-status="{{$market->status}}" style="color: green;">{{ucfirst($market->status)}}</td>
                                   @endif
-                                  @if ($market->status != 'done')
+
                                   @if ($market->running == false)
-                                    <td id="{{ $market->id }}"><a href="{{ route('market.toggleRunState', ['id' => $market->id]) }}"><button type="button" class="btn">RUN</button></a></td>
+                                    <td data-running="run"><a href="{{ route('market.toggleRunState', ['id' => $market->id]) }}"><button type="button" class="btn">RUN</button></a></td>
                                   @else
-                                    <td id="{{ $market->id }}"><a href="{{ route('market.toggleRunningState', ['id' => $market->id]) }}"><button type="button" class="btn btn-danger">RUNNING</button></a></td>
-                                  @endif
-                                  @else
-                                  <td style="color: red;">DONE</td>
+                                    <td data-running="running"><a href="{{ route('market.toggleRunningState', ['id' => $market->id]) }}"><button type="button" class="btn btn-danger">RUNNING</button></a></td>
                                   @endif
                                   <td align = "center">
                                       <form class="row" method="POST" action="{{ route('market.destroy', ['id' => $market->id]) }}" onsubmit = "return confirm('Are you sure?')">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <a href="{{ route('market.edit', ['id' => $market->id]) }}" class="btn btn-info waves-effect">
-                                            Update
-                                            </a>
-                                            {{--@if ($user->username != Auth::user()->username)--}}
-                                            <button type="submit" class="btn btn-danger waves-effect">
-                                            Delete
-                                            </button>
-                                            {{--@endif--}}
-                                        </form>
+                                          <input type="hidden" name="_method" value="DELETE">
+                                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                          
+                                          @if ($market->status == 'updated')
+                                          <a href="{{ route('market.doneStatus', ['id' => $market->id]) }}"><button type="button" class="btn btn-primary">Done</button></a>
+                                          @endif
+                                          <a href="{{ route('market.edit', ['id' => $market->id]) }}" class="btn btn-info waves-effect">Update</a>
+                                          {{--@if ($user->username != Auth::user()->username)--}}
+                                          <button type="submit" class="btn btn-danger waves-effect">Delete</button>
+                                          {{--@endif--}}
+                                      </form>
                                   </td>
                               </tr>
                           @endforeach 
@@ -119,20 +114,21 @@
       </div>
       <script type="text/javascript">
         $(document).bind('after_ready', function() {
-            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
-                var status = $("select#status").val();
-                var flag1 = (status == '' || status == 'all' || status.toUpperCase() == data[9]);
-
-                var running = $("select#running").val();
-                var flag2 = (running == '' || running == 'all' || running.toUpperCase() == data[10]);
-
-                return flag1 && flag2;
-            });
-
             var table = $('#DataTables_Table_0').DataTable({
                 "iDisplayLength": 50,
                 "bDestroy": true,
             }); 
+            $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+                var td1 = table.cell(dataIndex, 9).node();
+                var status = $("select#status").val();
+                var flag1 = (status === '' || status === 'all' || status === $(td1).data('status').toLowerCase());
+
+                var td2 = table.cell(dataIndex, 10).node();
+                var running = $("select#running").val();
+                var flag2 = (running === '' || running === 'all' || running === $(td2).data('running').toLowerCase());
+
+                return flag1 && flag2;
+            });
 
             $('#status').change(function() {
                 table.draw();

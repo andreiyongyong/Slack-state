@@ -229,10 +229,9 @@
 }
 
 .resource-block{
-    margin: 0;
-    width: 32%;
+    width: 150px;
     padding: 5px;
-    height: 260px;
+    height: 100px;
     overflow: hidden;
     display: inline-block;
 }

@@ -35,19 +35,22 @@ class MarketController extends Controller
             $date_today = Carbon::today();
             $date_bid = Carbon::parse($market->date);
             
-			$timestamp = strtotime($market->bid_date);            
-            $date_bid->day = date("d", $timestamp);
+            $date_bid->day = $market->bid_date;
             $date_bid_this_month = $date_bid;
 
             if ($date_today->gt($date_bid)) {
-				$date_bid_this_month = $date_bid->addMonths(1);
-			} else {
 				$date_bid_this_month = $date_bid;
+			} else {
+				$date_bid_this_month = $date_bid->addMonths(1);
 			}               
 
             if ($market->status != 'done') {
                 $date_diff = $date_bid_this_month->diffInDays($date_today);
+                if ($date_today->gt($date_bid_this_month)) {
+                    $date_diff = -$date_diff;
+                }                
                 $updated_or_pending = $date_diff < 30 ? 'updated' : 'pending';
+
                 $market->status = $updated_or_pending;
                 market::where('id', $market->id)->update([
                 	'status' => ($updated_or_pending == 'updated' ? 2 : 1)

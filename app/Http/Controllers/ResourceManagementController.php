@@ -18,7 +18,6 @@ class ResourceManagementController extends Controller
     public function index()
     {
         $resources = ResourceManagement::with('project_info')->get();
-
         return view('resources-mgmt/index', ['resources' => $resources]);
     }
 

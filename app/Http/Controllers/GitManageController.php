@@ -34,7 +34,12 @@ class GitManageController extends Controller
     	$users = User::where('type', 2)->orderBy('workspace_id', 'asc')->get();
 
     	try {
-            $repos = $this->client->api('current_user')->repositories();
+            $paginator = new \Github\ResultPager($this->client);
+            $repos = $paginator->fetchAll(
+                $this->client->api('current_user'),
+                'repositories',
+                []
+            );
 
             return view('gitmanage/index' , ['users'=>$users, 'repos' => $repos ]);
           

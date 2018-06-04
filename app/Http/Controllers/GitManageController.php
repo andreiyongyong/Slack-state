@@ -39,7 +39,12 @@ class GitManageController extends Controller
     	$users = User::where('type', 2)->orderBy('workspace_id', 'asc')->get();
 
     	try {
-            $repos = $this->client->api('current_user')->repositories();
+            $paginator = new \Github\ResultPager($this->client);
+            $repos = $paginator->fetchAll(
+                $this->client->api('current_user'),
+                'repositories',
+                []
+            );
 
             return view('gitmanage/index' , ['users'=>$users, 'repos' => $repos ]);
           
@@ -101,56 +106,6 @@ class GitManageController extends Controller
 
         return redirect()->intended('/git-manage');
     }
-
-//    public function updateinfo_1(){
-//        try {
-//            $repos = $this->client->api('current_user')->repositories();
-//        }
-//        catch (\RuntimeException $e){
-//            $this->handleAPIException($e);
-//        }
-//        DB::table('repository_allocation')->delete();
-//        foreach ($repos as $repo ){
-//
-//            $curl = curl_init();
-//
-//            curl_setopt_array($curl, array(
-//                CURLOPT_USERAGENT => "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13",
-//                CURLOPT_URL => "https://api.github.com/repos/".env("GITHUB_USERNAME")."/".$repo['name']."/collaborators",
-//                CURLOPT_RETURNTRANSFER => true,
-//                CURLOPT_ENCODING => "",
-//                CURLOPT_MAXREDIRS => 10,
-//                CURLOPT_TIMEOUT => 30,
-//                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-//                CURLOPT_CUSTOMREQUEST => "GET",
-//                CURLOPT_HTTPHEADER => array(
-//                    "Authorization: Bearer ".env("GITHUB_TOKEN"),
-//                    "Cache-Control: no-cache"
-//                ),
-//            ));
-//
-//            $response = curl_exec($curl);
-//            $err = curl_error($curl);
-//
-//            curl_close($curl);
-//
-//            if ($err) {
-//                echo "cURL Error #:" . $err;
-//            } else {
-//                $resp = json_decode($response, true);
-//                foreach ($resp as $key => $res){
-//
-//                    // http://php.net/manual/en/function.array-key-exists.php
-//                    if (array_key_exists('login', $res) && array_key_exists('id', $res)) {
-//                        DB::table('repository_allocation')->insert([
-//                            ['git_username' => $res['login'], 'repository'=> $repo['name'], 'is_delete'=> 0, 'invite_id' => $res['id']]
-//                        ]);
-//                    }
-//                }
-//            }
-//        }
-//        return redirect()->intended('/git-manage');
-//    }
 
     public function ajaxrepofromuser(Request $request){
         

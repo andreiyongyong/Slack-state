@@ -29,37 +29,29 @@ class MarketController extends Controller
     {
         $status_list = array('all', 'pending', 'updated', 'done');
         $running_list = array('all', 'run', 'running');
-/*
-        $status = Input::get('status');
-        $running = Input::get('running');
-
-        $markets = (($status == '' || $status == 'all') && ($running == '' || $running == 'all')) ? market::get() :
-            market::where(['status' => $status, 'running' => $running])->get();
-        ;
-        
-*/
         $markets = market::get();
 
         foreach ($markets as $key => $market) {
             $date_today = Carbon::today();
-            $date = Carbon::parse($market->date);
-
-            $date_bid = $date;
-            $date_bid->day = $market->bid_date;
+            $date_bid = Carbon::parse($market->date);
+            
+			$timestamp = strtotime($market->bid_date);            
+            $date_bid->day = date("d", $timestamp);
             $date_bid_this_month = $date_bid;
 
-            if ($date_today->gt($date_bid))
-                $date_bid_this_month = $date_bid->addMonths(1);
-            else
-                $date_bid_this_month = $date_bid;
+            if ($date_today->gt($date_bid)) {
+				$date_bid_this_month = $date_bid->addMonths(1);
+			} else {
+				$date_bid_this_month = $date_bid;
+			}               
 
             if ($market->status != 'done') {
                 $date_diff = $date_bid_this_month->diffInDays($date_today);
                 $updated_or_pending = $date_diff < 30 ? 'updated' : 'pending';
                 $market->status = $updated_or_pending;
-                market::where('id', $market->id)->update(['status' => ($updated_or_pending == 'updated' ? 2 : 1)]);
-                // $market->running = ($market->status == 'updated' ? 0 : 1);
-                // market::where('id', $market->id)->update(['running' => $market->running]);
+                market::where('id', $market->id)->update([
+                	'status' => ($updated_or_pending == 'updated' ? 2 : 1)
+                ]);
             }
         }
 

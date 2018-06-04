@@ -99,7 +99,7 @@ class MemberLogController extends Controller
 
         $member_logs = MemberLog::find($id); 
 
-        if ($member_logs == null || count($member_logs) == 0) {
+        if (!$member_logs) {
             return redirect()->intended('/member-log');
         }  
         $member_log_temp['tot_task']   = '';

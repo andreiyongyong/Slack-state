@@ -13,15 +13,14 @@
                     <div class="row clearfix">
                         <div class="col-md-12">
                             <div class="form-group form-float">
-                                    <div>
+                                <div>
                                     <label class="form-label">Project</label>
-                                    <select name="project">
+                                    <select name="project" data-live-search="true">
                                         @foreach($projects as $project)
                                             <option value="{{$project->id}}" >{{$project->p_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-
                             </div>
                         </div>
                     </div>

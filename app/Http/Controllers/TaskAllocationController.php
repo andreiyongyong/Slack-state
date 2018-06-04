@@ -109,14 +109,11 @@ class TaskAllocationController extends Controller
     }
 
     public function taskfromproj(Request $request){
-        $project_name = $request->project_name;
-        if($project_name == "All Projects"){
+        $project = $request->project;
+        if($project == "0"){
             $task_name = Task::get();
         }else{
-            $project = Project::where('p_name', $project_name)
-                        ->get();
-
-            $task_name = Task::where('project_id',$project[0]['id'])
+            $task_name = Task::where('project_id',$project)
                         ->get();
         }
 

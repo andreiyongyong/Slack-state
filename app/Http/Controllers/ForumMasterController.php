@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use App\ForumMaster;
 use App\ForumInstance;
+use App\Project;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -16,8 +18,11 @@ class ForumMasterController extends Controller
      */
     public function index()
     {
-        $forummaster = ForumMaster::paginate(5);
-
+        $forummaster = DB::table('forummaster')
+                ->join('project', 'forummaster.project', '=', 'project.id')
+                ->join('tasks', 'forummaster.task', '=', 'tasks.id')
+                ->select('forummaster.id as id', 'project.p_name', 'tasks.task_name', 'forummaster.question', 'forummaster.posted_date')
+                ->get();
         return view('forummaster/index', ['forummaster' => $forummaster]);
     }
 
@@ -29,7 +34,11 @@ class ForumMasterController extends Controller
     public function create()
     {
 
-        return view('forummaster/create');
+        $projects = Project::get();
+        $project = Project::first()->pluck('id');
+        $tasks = DB::table('tasks')->where('project_id', '=', $project)
+                    ->get();
+        return view('forummaster/create', ['projects' => $projects, 'tasks' => $tasks]);
     }
 
     /**
@@ -44,7 +53,8 @@ class ForumMasterController extends Controller
             'project' => $request['project'],
             'task' => $request['task'],
             'question' => $request['question'],
-            'posted_date' => $request['posted_date']
+            'posted_date' => $request['posted_date'],
+            'project_id' => $request['project']
         ]);
 
         return redirect()->intended('/forum-master');
@@ -74,12 +84,16 @@ class ForumMasterController extends Controller
     public function edit($id)
     {
         $forum = ForumMaster::find($id);
+        $projects = Project::get();
+        $project = $forum['project'];
+        $tasks = DB::table('tasks')->where('project_id', '=', $project)
+                ->get();
         // Redirect to user list if updating user wasn't existed
         if ($forum == null || $forum->count() == 0) {
             return redirect()->intended('/forum-master');
         }
 
-        return view('forummaster/edit', ['forum' => $forum]);
+        return view('forummaster/edit', ['forum' => $forum, 'projects' => $projects, 'tasks' => $tasks]);
     }
 
     /**
@@ -131,6 +145,18 @@ class ForumMasterController extends Controller
             'answer' => $request['answer']
         ]);
         return redirect()->intended('/forum-master/'.$request['forum_mid']);
+    }
+
+    public function taskfromproj(Request $request){
+        $project = $request['project'];
+        $tasks = DB::table('tasks')->where('project_id', '=', $project)
+                     ->get();
+        
+        if($request->ajax()){
+            return response()->json($tasks);
+        } else {
+            return "not found";
+        }
     }
 }
 

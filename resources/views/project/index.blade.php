@@ -99,7 +99,7 @@
 
             //mytable = $("#project_datable").DataTable();
 
-            $(".input-sm").val(100);
+            $("#DataTables_Table_0_length").find(".input-sm").val(100);
             $("ul.dropdown-menu li").click(function(){
 
                 status = $(this).text();

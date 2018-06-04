@@ -26,7 +26,8 @@
                         <div class="col-md-4">
                             <div class="form-group form-float">
                                 <div class="form-line focused">
-                                    <input type="text" class="form-control focused" name="log_date" id="log_date" value="{{ $member_logs->log_date }}" required>
+                                    <!-- <input type="text" class="form-control focused" name="log_date" id="log_date" value="{{ $member_logs->log_date }}" required> -->
+                                    <input type="date" class="form-control focused" name="log_date" id="log_date" value="{{ $member_logs->log_date }}" required>
                                     <label class="form-label">Date</label>
                                 </div>
                                 <div class="help-info">YYYY-MM-DD format</div>

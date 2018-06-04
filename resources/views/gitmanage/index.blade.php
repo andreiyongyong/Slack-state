@@ -61,7 +61,6 @@ $(document).ready(function() {
             $(this).addClass("selected");
             $(this).css("border", "1px solid black");
         }
-
     });
 
     //if click arrow button...

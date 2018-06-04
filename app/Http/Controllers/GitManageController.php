@@ -18,6 +18,11 @@ class GitManageController extends Controller
 
 	private $username;
 
+	private function handleAPIException($e)
+    {
+
+    }
+
     public function __construct(\Github\Client $client)
     {
         $this->middleware('auth');
@@ -54,12 +59,16 @@ class GitManageController extends Controller
             $this->handleAPIException($e);
         }
 
+        print_r($repos);exit;
+
         DB::table('repository_allocation')->delete();
         foreach ($repos as $repo ){
-
             $collaborators = array();
             try {
-                $collaborators = $this->client->api('repo')->collaborators()->all(env("GITHUB_USERNAME"), $repo['name']);
+                $collaborators = $this->client->api('repo')->collaborators()->all(
+                    env("GITHUB_USERNAME"),
+                    $repo['name']
+                );
             }
             catch (\RuntimeException $e){
                 $this->handleAPIException($e);

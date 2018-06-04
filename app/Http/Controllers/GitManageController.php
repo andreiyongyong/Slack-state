@@ -57,6 +57,7 @@ class GitManageController extends Controller
         DB::table('repository_allocation')->delete();
         foreach ($repos as $repo ){
 
+            $collaborators = array();
             try {
                 $collaborators = $this->client->api('repo')->collaborators()->all(env("GITHUB_USERNAME"), $repo['name']);
             }

@@ -20,6 +20,7 @@ class GitManageController extends Controller
 
 	private function handleAPIException($e)
     {
+        // error processing
 
     }
 
@@ -59,7 +60,6 @@ class GitManageController extends Controller
             $this->handleAPIException($e);
         }
 
-        print_r($repos);exit;
 
         DB::table('repository_allocation')->delete();
         foreach ($repos as $repo ){

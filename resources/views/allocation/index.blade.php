@@ -46,13 +46,6 @@
                                   <div id="resource_{{$user_re->id}}" data-pr_id="{{$user_re->project_id}}" data-id="{{$user_re->id}}" class="draggable resource-block" >
                                       <div>Project : {{$user_re->pr_name}}</div>
                                       <div>Resource : {{$user_re->name}}</div>
-                                      <div>Content : {{$user_re->content}}</div>
-                                      @if(!empty($user_res->details))
-                                          <div>Details`</div>
-                                          @foreach($user_re->details as $detail)
-                                              <div>{{$detail['key']}} : {{$detail['value']}}</div>
-                                          @endforeach
-                                      @endif
                                   </div>
                               @endforeach
                           </div>
@@ -63,13 +56,6 @@
                                   <div id="resource_{{$project_re->id}}" data-pr_id="{{$project_re->project_id}}" data-id="{{$project_re->id}}" class="draggable in_project ui-draggable ui-draggable-handle resource-block" >
                                       <div>Project : {{$project_re->pr_name}}</div>
                                       <div>Resource : {{$project_re->name}}</div>
-                                      <div>Content :{{$project_re->content}}</div>
-                                      @if(!empty($project_re->details))
-                                          <div>Details`</div>
-                                          @foreach($project_re->details as $detail)
-                                              <div>{{$detail['key']}} : {{$detail['value']}}</div>
-                                          @endforeach
-                                      @endif
                                   </div>
                               @endforeach
                           </div>

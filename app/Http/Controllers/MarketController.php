@@ -27,39 +27,45 @@ class MarketController extends Controller
      */
     public function index()
     {
-        $status_list = array('all', 'pending', 'updated', 'done');
+        $status_list = array('all', 'exist', 'done');
         $running_list = array('all', 'run', 'running');
-/*
-        $status = Input::get('status');
-        $running = Input::get('running');
-
-        $markets = (($status == '' || $status == 'all') && ($running == '' || $running == 'all')) ? market::get() :
-            market::where(['status' => $status, 'running' => $running])->get();
-        ;
-        
-*/
         $markets = market::get();
 
         foreach ($markets as $key => $market) {
+            // GET TODAY DATE
             $date_today = Carbon::today();
-            $date = Carbon::parse($market->date);
-
-            $date_bid = $date;
-            $date_bid->day = $market->bid_date;
+            $date_bid = $date_today->copy();
+            // GET MARKET TABLE DATE
+            $date_market = Carbon::parse($market->date);
+            // CHECK IF DAY(BID_DATE) EXIST IN MONTH (IF NOT SET THE LAST DAY OF MONTH)
+            $max_day = cal_days_in_month(CAL_GREGORIAN, $date_bid->month, $date_bid->year);
+            if ($market->bid_date <= $max_day)
+                $date_bid->day = $market->bid_date;
+            else
+                $date_bid->day = $max_day;
+            // UPDATE CORRECTED BID_DATE
+            market::where('id', $market->id)->update(['bid_date' => $date_bid->day]);
+            $market->bid_date = $date_bid->day;
+            // FORMULAR STARTS
             $date_bid_this_month = $date_bid;
 
-            if ($date_today->gt($date_bid))
-                $date_bid_this_month = $date_bid->addMonths(1);
-            else
-                $date_bid_this_month = $date_bid;
-
+            if ($market->bid_date < $date_today->day) {
+				$date_bid_this_month = $date_bid;
+			} else {
+				$date_bid_this_month = $date_bid->addMonths(1);
+			}
+            // FOMULAR ENDS
             if ($market->status != 'done') {
-                $date_diff = $date_bid_this_month->diffInDays($date_today);
-                $updated_or_pending = $date_diff < 30 ? 'updated' : 'pending';
+                $date_diff = $date_bid_this_month->diffInDays($date_market);
+                // DIFFINDAYS ALWAYS RETURNS > 0, SO IF TODAY DATE > BID_DATE DATE_DIFF = -DATE_DIFF
+                if ($date_today->gt($date_bid_this_month)) {
+                    $date_diff = -$date_diff;
+                }
+                // FORMULA FOR CALCULATING DONE OR EXIST STATUS
+                $updated_or_pending = $date_diff < 30 ? 'done' : 'exist';
+                // UPDATE CALCULATED NEW CORRECT STATUS TO DB
                 $market->status = $updated_or_pending;
-                market::where('id', $market->id)->update(['status' => ($updated_or_pending == 'updated' ? 2 : 1)]);
-                // $market->running = ($market->status == 'updated' ? 0 : 1);
-                // market::where('id', $market->id)->update(['running' => $market->running]);
+                market::where('id', $market->id)->update(['status' => $updated_or_pending]);
             }
         }
 
@@ -182,20 +188,20 @@ class MarketController extends Controller
     public function toggleStatus(Request $request) {
         $date_today = Carbon::today();
 
-        market::where('id', $request['id'])->update(['status' => 'updated']);
-        market::where('id', $request['id'])->update(['date' => $date_today]);
-        //echo $date_today;
-        return redirect()->intended('/market');
-    }
-
-    public function doneStatus(Request $request) {
-        $date_today = Carbon::today();
-
         market::where('id', $request['id'])->update(['status' => 'done']);
         market::where('id', $request['id'])->update(['date' => $date_today]);
         //echo $date_today;
         return redirect()->intended('/market');
     }
+
+    // public function doneStatus(Request $request) {
+    //     $date_today = Carbon::today();
+
+    //     market::where('id', $request['id'])->update(['status' => 'done']);
+    //     market::where('id', $request['id'])->update(['date' => $date_today]);
+    //     //echo $date_today;
+    //     return redirect()->intended('/market');
+    // }
 
     public function toggleRunState(Request $request) {
         $date_today = Carbon::today();

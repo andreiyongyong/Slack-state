@@ -11,35 +11,21 @@ class ResourceDetails extends Model
 
     static function update_resource_meta($resource_id, $resource_key, $resource_value = '', $meta_type = ''){
         $query = DB::table('resource_details')->where('resource_id', $resource_id)->where('meta_key', $resource_key)->first();
-        $file_name = '';
-        $file_content = '';
-
-        if($meta_type == 'file'){
-            $file_name = $resource_value['file_name'];
-            $file_content = $resource_value['file_content'];
-            $resource_value = $resource_value['value'];
-        }
 
         if( $query === null ) {
             DB::table('resource_details')->insert([
                 'resource_id' => $resource_id,
                 'meta_key'    => $resource_key,
                 'meta_value'  => $resource_value == null ? '' : $resource_value,
-                'meta_type'   => $meta_type == null ? '' : $meta_type,
-                'file_content' => $file_content,
-                'file_name' => $file_name
+                'meta_type'   => $meta_type == null ? '' : $meta_type
                 ]
             );
         } else {
             DB::table('resource_details')
                 ->where('resource_id', $resource_id)
                 ->where('meta_key', $resource_key)
-                ->update([
-                    'meta_value'  => $resource_value == null ? '' : $resource_value,
-                    'meta_type'  => $meta_type == null ? '' : $meta_type,
-                    'file_content' => $file_content,
-                    'file_name' => $file_name
-                ]);
+                ->update([ 'meta_value'  => $resource_value == null ? '' : $resource_value, 'meta_type'  => $meta_type == null ? '' : $meta_type ]
+            );
         }
     }
 
@@ -79,9 +65,7 @@ class ResourceDetails extends Model
                     'id' => $meta->id,
                     'key' => $meta->meta_key,
                     'value' => $meta->meta_value,
-                    'type' => $meta->meta_type,
-                    'file_name' => $meta->file_name,
-                    'file_content' => $meta->file_content,
+                    'type' => $meta->meta_type
                 );
             }
 

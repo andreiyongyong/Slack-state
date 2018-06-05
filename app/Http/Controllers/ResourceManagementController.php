@@ -117,14 +117,14 @@ class ResourceManagementController extends Controller
     public function addResourceDetail(Request $request)
     {
         $id = $request['_id'];
-        $value = [];
 
         if($request['type'] == 'file'){
-            $file = $request->file('value');
+            $image = $request->file('value');
 
-            $value['value'] = time().'.'.$file->getClientOriginalExtension();
-            $value['file_content'] = file_get_contents($file->getRealPath());
-            $value['file_name'] = $file->getClientOriginalName();
+            $value = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/resources/files');
+
+            $image->move($destinationPath, $value);
         } else {
             $value = $request['value'];
         }
@@ -146,11 +146,12 @@ class ResourceManagementController extends Controller
     {
 
         if($request['type'] == 'file'){
-            $file = $request->file('value');
+            $image = $request->file('value');
 
-            $value['value'] = time().'.'.$file->getClientOriginalExtension();
-            $value['file_content'] = file_get_contents($file->getRealPath());
-            $value['file_name'] = $file->getClientOriginalName();
+            $value = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/resources/files');
+
+            $image->move($destinationPath, $value);
         } else {
             $value = $request['value'];
         }

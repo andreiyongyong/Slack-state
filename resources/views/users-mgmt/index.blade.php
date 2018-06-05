@@ -19,6 +19,7 @@
                               <tr> 
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
+                                  <th>WORKED DAYS</th>
                                   <th>TYPE</th>
                                   <th>LEVEL</th>
                                   <th>ACTION</th>
@@ -28,6 +29,7 @@
                               <tr> 
                                   <th>USERNAME</th>
                                   <th>EMAIL</th>
+                                  <th>WORKED DAYS</th>
                                   <th>TYPE</th>
                                   <th>LEVEL</th>
                                   <th>ACTION</th>
@@ -37,8 +39,16 @@
                           @foreach ($users as $user)
                               @if($user->userinfo !== null)
                                   <tr>
-                                      <td><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />&nbsp;{{ $user->username }}</td>
+                                      <td><img class="users-circle" src="{{\App\Http\Controllers\HelperController::getAvatar($user->slack_user_id, $user->workspace_id)}}" width="50" height="50" />  <b>{{ $user->workspace_id }}</b>&nbsp;{{ $user->username }}</td>
                                       <td>{{ $user->email }}</td>
+                                      <td>
+                                          <?php
+                                              $now = time();
+                                              $created = strtotime($user->created_at);
+                                              $worked = $now - $created;
+                                              echo round($worked / (60 * 60 * 24));
+                                          ?>
+                                      </td>
                                       <td>{{ $user->type }}</td>
                                       <td>{{ $user->level }}</td>
                                       <td align = 'center'>

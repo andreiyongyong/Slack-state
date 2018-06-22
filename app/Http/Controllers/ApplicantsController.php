@@ -10,6 +10,7 @@ use App\SlackWorkspace;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 use App\Project;
+use App\Country;
 use App\SlackToken;
 
 class ApplicantsController extends Controller
@@ -40,7 +41,7 @@ class ApplicantsController extends Controller
     {
         $users = User::with(['userinfo' => function($query){
             // $query->where('approved', 0);
-        }])->paginate(5);
+        }, 'country_name'])->paginate(100);
 
         return view('users-apct/index', ['users' => $users]);
     }
@@ -54,7 +55,8 @@ class ApplicantsController extends Controller
     {
         $workspaces = SlackWorkspace::get();
         $projects = Project::get();
-        return view('users-apct/create', ['workspaces' => $workspaces, 'projects' => $projects]);
+        $countries = Country::get();
+        return view('users-apct/create', ['workspaces' => $workspaces, 'projects' => $projects, 'countries' => $countries]);
     }
 
     /**
@@ -167,12 +169,13 @@ class ApplicantsController extends Controller
         $user = User::with('userinfo')->find($id);
         $workspaces = SlackWorkspace::get();
         $projects = Project::get();
+        $countries = Country::get();
         // Redirect to user list if updating user wasn't existed
         if ($user == null || $user->count() == 0) {
             return redirect()->intended('/applicants');
         }
 
-        return view('users-apct/edit', ['user' => $user, 'workspaces' => $workspaces, 'projects' => $projects]);
+        return view('users-apct/edit', ['user' => $user, 'workspaces' => $workspaces, 'projects' => $projects, 'countries' => $countries]);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Request;
 use App\Market;
+use App\Country;
 use Carbon\Carbon;
 use App\ResourceManagement;
 
@@ -29,7 +30,8 @@ class MarketController extends Controller
     {
         $status_list = array('all', 'exist', 'done');
         $running_list = array('all', 'run', 'running');
-        $markets = market::get();
+        $markets = market::with('country_name')->get();
+        
 
         foreach ($markets as $key => $market) {
             // GET TODAY DATE
@@ -72,7 +74,7 @@ class MarketController extends Controller
         return view('market/index', [
             'markets' => $markets,  
             'status_list' => $status_list,
-            'running_list' => $running_list,
+            'running_list' => $running_list
         ]);
     }
 
@@ -83,7 +85,10 @@ class MarketController extends Controller
      */
     public function create()
     {
-        return view('market/create');
+        $countries = Country::get();
+        return view('market/create', [
+            'countries' => $countries
+        ]);
     }
 
     /**
@@ -133,12 +138,13 @@ class MarketController extends Controller
     public function edit($id)
     {
         $market = market::find($id);
+        $countries = Country::get();
         // Redirect to user list if updating user wasn't existed
         if ($market == null || $market->count() == 0) {
             return redirect()->intended('/market');
         }
 
-        return view('market/edit', ['market' => $market]);
+        return view('market/edit', ['market' => $market, 'countries' => $countries]);
     }
 
     /**

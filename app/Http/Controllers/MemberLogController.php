@@ -36,6 +36,10 @@ class MemberLogController extends Controller
     { 
         $member_logs = DB::table('member_logs')  
         ->select('member_logs.*')
+        ->where([
+            ['task','<>',null],
+            ['url', '<>',null]
+        ])
         ->paginate(50);
 
         return view('member-log/index', ['member_logs' => $member_logs]);

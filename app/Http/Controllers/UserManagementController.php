@@ -11,6 +11,7 @@ use App\SlackWorkspace;
 use \Lisennk\Laravel\SlackWebApi\SlackApi;
 use \Lisennk\Laravel\SlackWebApi\Exceptions\SlackApiException;
 use App\Project;
+use App\Country;
 
 class UserManagementController extends Controller
 {
@@ -67,12 +68,13 @@ class UserManagementController extends Controller
         $user = User::with('userinfo')->find($id);
         $workspaces = SlackWorkspace::get();
         $projects = Project::get();
+        $countries = Country::get();
         // Redirect to user list if updating user wasn't existed
         if ($user == null || $user->count() == 0) {
             return redirect()->intended('/user-management');
         }
 
-        return view('users-mgmt/edit', ['user' => $user, 'workspaces' => $workspaces, 'projects' => $projects]);
+        return view('users-mgmt/edit', ['user' => $user, 'workspaces' => $workspaces, 'projects' => $projects, 'countries' => $countries]);
     }
 
     /**

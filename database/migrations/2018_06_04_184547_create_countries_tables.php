@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjectTables extends Migration
+class CreateCountriesTables extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateProjectTables extends Migration
      */
     public function up()
     {
-        Schema::create('project', function (Blueprint $table) {
-            $table->increments('id' , true);
-            $table->string('p_name' , 100);
-            $table->string('p_client' , 50);
-            $table->date('meet_time')->nullable($value=true);
-            $table->timestamps();
+        Schema::create('countries', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('code', 2)
+                ->index();
+            $table->string('name', 75);
         });
     }
 
@@ -29,6 +28,6 @@ class CreateProjectTables extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('countries');
     }
 }

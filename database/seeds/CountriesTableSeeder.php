@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class CountriesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,17 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         $user = factory(App\User::class)->create([
-             'username'  => 'admin',
-             'email'     => 'ad@gmail.com',
-             'password'  => bcrypt('admin'),
-             'type'      => '0' ,
-             'level'     => '0' , 
-             'image'     => ''
-         ]);
-
-         DB::table('countries')->truncate();
-         
+        DB::table('countries')->truncate();
         $countries = [
             ['name' => 'Afghanistan', 'code' => 'AF'],
             ['name' => 'Åland Islands', 'code' => 'AX'],
@@ -274,6 +264,5 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Zimbabwe', 'code' => 'ZW'],
         ];
         DB::table('countries')->insert($countries);
-
     }
 }

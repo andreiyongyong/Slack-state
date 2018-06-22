@@ -36,6 +36,10 @@ class User extends Authenticatable
         return $this->hasOne('App\UserInfo','user_id','id');
     }
 
+    function country_name(){
+        return $this->hasOne('App\Country', 'id', 'country');
+    }
+
     public function allocation() {
         return $this->hasMany('App\Allocation', 'user_id', 'id');
     }

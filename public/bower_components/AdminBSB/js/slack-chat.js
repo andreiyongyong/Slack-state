@@ -1,95 +1,96 @@
 var slackChat = function () {
-  var instance = this;
+    var instance = this;
 
-  instance = {
-      data : {
-          developers : [],
-          current_dev : {}
-      },
-      urls : {
-         updateStatuses : '/update-statuses',
-         getChannelChat : '/get-channel-chat',
-         sendMessage : '/send-slack-message'
-      }
-  };
+    instance = {
+        data : {
+            developers : [],
+            current_dev : {}
+        },
+        urls : {
+            updateStatuses : '/update-statuses',
+            getChannelChat : '/get-channel-chat',
+            sendMessage : '/send-slack-message'
+        }
+    };
 
-  instance.init = function () {
-      $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-      });
+    instance.init = function () {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-      $('.select-developer').each(function (index, dev) {
-          instance.data.developers.push(JSON.parse($(dev).attr('data-creds')));
-      });
+        $('.select-developer').each(function (index, dev) {
+            instance.data.developers.push(JSON.parse($(dev).attr('data-creds')));
+        });
 
-      setInterval(function () {
-          instance.updateStatuses()
-      }, 30000);
+        setInterval(function () {
+            instance.updateStatuses()
+        }, 30000);
 
-      instance.selectDeveloper($('.select-developer').first());
-      instance.eventListeners();
-  };
+        instance.selectDeveloper($('.select-developer').first());
+        instance.eventListeners();
+    };
 
-  instance.toggleLoader = function (show) {
-      $('.loading-block').toggleClass('display-none', !show);
-  };
+    instance.toggleLoader = function (show) {
+        $('.loading-block').toggleClass('display-none', !show);
+    };
 
-  instance.selectDeveloper = function (developer) {
-      $('.select-developer').removeClass('active');
-      developer.addClass('active');
-      $('#current_developer').html(developer.html());
+    instance.selectDeveloper = function (developer) {
+        $('.select-developer').removeClass('active');
+        developer.addClass('active');
+        $('#current_developer').html(developer.html());
 
-      instance.data.current_dev = developer.length != 0 ? JSON.parse($(developer).attr('data-creds')) : {};
-      instance.renderMessaging();
-  };
+        instance.data.current_dev = developer.length != 0 ? JSON.parse($(developer).attr('data-creds')) : {};
+        instance.renderMessaging();
+    };
 
-  instance.updateStatuses = function () {
-          $.ajax({
-              type: 'post',
-              url: instance.urls.updateStatuses,
-              data: {
-                  developers : instance.data.developers
-              },
-              success: function (response) {
-                  $.each(response.data, function (key, status) {
-                      var active = (status == 'active') ? true : false;
-                      $('.slack-status[data-slack_id="' + key + '"]').toggleClass('active', active);
-                  });
-              }
-          });
-  };
+    instance.updateStatuses = function () {
+        $.ajax({
+            type: 'post',
+            url: instance.urls.updateStatuses,
+            data: {
+                developers : instance.data.developers
+            },
+            success: function (response) {
+                $.each(response.data, function (key, status) {
+                    var active = (status == 'active') ? true : false;
+                    $('.slack-status[data-slack_id="' + key + '"]').toggleClass('active', active);
+                });
+            }
+        });
+    };
 
-  instance.eventListeners = function () {
-      $(document).ready(function () {
-          var body = $('body');
+    instance.eventListeners = function () {
+        $(document).ready(function () {
+            var body = $('body');
 
-          body.on('click', '.select-developer', function () {
-              instance.selectDeveloper($(this));
-          });
+            body.on('click', '.select-developer', function () {
+                instance.selectDeveloper($(this));
+            });
 
-          body.on('click', '#send-message', function () {
-              $.ajax({
-                  type: 'post',
-                  url: instance.urls.sendMessage,
-                  data: {
-                      developer : instance.data.current_dev,
-                      message : $('#slack-message').val()
-                  },
-                  beforeSend: function () {
-                      instance.toggleLoader(true);
-                  },
-                  success: function (response) {
-                      instance.renderMessaging();
-                      $('#slack-message').val('');
-                      $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
-                  }
-              });
-          });
+            body.on('click', '#send-message', function () {
+                $.ajax({
+                    type: 'post',
+                    url: instance.urls.sendMessage,
+                    data: {
+                        developer : instance.data.current_dev,
+                        message : $('#slack-message').val()
+                    },
+                    beforeSend: function () {
+                        instance.toggleLoader(true);
+                    },
+                    success: function (response) {
+                        instance.renderMessaging();
+                        $('#slack-message').val('');
+                        $('.messaging-block .slack-massages').scrollTop($('.messaging-block .slack-massages')[0].scrollHeight);
+                    }
+                });
+            });
 
-      });
-  };
+        });
+    };
+    
     instance.renderMessaging = function () {
         $.ajax({
             type: 'post',

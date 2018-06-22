@@ -20,4 +20,8 @@ class market extends Model
     protected $fillable = [
         'id', 'date' , 'country' , 'market_name', 'market_id', 'email', 'password', 'rising_talent' , 'test' , 'bid_date' , 'lancer_type' , 'security_question' , 'security_answer' , 'series'.'status', 'running'
    ];
+
+   function country_name(){
+    return $this->hasOne('App\Country','id','country');
+}
 }
